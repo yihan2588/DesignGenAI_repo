@@ -10,7 +10,6 @@ export default function Home() {
       </header>
       <main id="main-content">
         <section className="intro" aria-labelledby="intro-heading">
-          <p className="eyebrow">HELLO, WORLD</p>
           <h1 id="intro-heading">Hello, I’m<br /><span>Yihan Wu.</span></h1>
           <p className="specialties">AI/ML systems. Software engineering.</p>
           <p className="bio">I’m a graduate student in Electrical Engineering at Columbia University, focused on AI engineering.</p>
