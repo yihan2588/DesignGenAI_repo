@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Yihan Wu — Hello, World",
-  description: "Yihan Wu, an Electrical Engineering graduate student at Columbia University focused on AI engineering. View my résumé and get in touch.",
+  title: "At the Table — A Food Photo Journal",
+  description: "A collection of food photos and good memories by Yihan Wu.",
   formatDetection: { email: false, telephone: false, address: false },
 };
 
