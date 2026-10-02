@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SiteHeader } from "@/app/site-header";
+import { getUser, getProfile } from "@/lib/auth";
+import { isProfileComplete } from "@/lib/profile-validation";
 
 export const dynamic = "force-dynamic";
 
@@ -51,16 +54,15 @@ function photoUrl(storagePath: string): string {
 }
 
 export default async function Home() {
-  const { photos, error } = await getFoodPhotos();
+  const [{ photos, error }, user] = await Promise.all([getFoodPhotos(), getUser()]);
+  const profile = user ? await getProfile(user.id) : null;
 
   return (
     <div className="site-shell">
-      <header className="site-header">
-        <Link className="wordmark" href="/" aria-label="At the table, home">at the table<span>.</span></Link>
-        <span className="header-note">A FOOD PHOTO JOURNAL BY YIHAN WU</span>
-      </header>
+      <SiteHeader />
 
       <main id="main-content">
+        {profile && !isProfileComplete(profile) && <aside className="onboarding-banner">Welcome! Add your first and last name to finish your profile. <Link href="/profile">Complete profile →</Link></aside>}
         <section className="hero" aria-labelledby="page-title">
           <p className="eyebrow">THE COLLECTION / 01</p>
           <h1 id="page-title">Good food,<br /><em>good memories.</em></h1>
@@ -97,6 +99,10 @@ export default async function Home() {
             </ol>
           )}
         </section>
+        <aside className="member-invite" aria-label="Member space">
+          <div><p className="eyebrow">{user ? "YOUR SEAT IS WAITING" : "MAKE YOURSELF AT HOME"}</p><h2>{user ? "A table of your own." : "There is a seat for you."}</h2><p>{user ? "Visit your member space and keep your profile up to date." : "Sign in to create your profile and step into your member space."}</p></div>
+          <Link className="primary-button" href={user ? "/members" : "/login"}>{user ? "Visit my table" : "Join the table"} →</Link>
+        </aside>
       </main>
 
       <footer className="site-footer"><span>AT THE TABLE © {new Date().getFullYear()}</span><span>MADE WITH APPETITE IN NEW YORK</span></footer>
