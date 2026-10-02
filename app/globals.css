@@ -68,4 +68,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
 .member-invite { display: flex; align-items: center; justify-content: space-between; gap: 28px; padding: 38px 0 56px; border-top: 1px solid var(--line); }
 .member-invite .eyebrow { margin-bottom: 14px; color: var(--accent); }
 .member-invite .primary-button { flex-shrink: 0; }
+.privacy-main section { margin-top: 32px; }
+.privacy-main h2 { font: 400 27px Georgia, serif; }
+.privacy-main section p { font-size: 15px; line-height: 1.75; color: #5f5e55; }
 @media (max-width: 640px) { .site-header { flex-wrap: wrap; padding: 20px 0; gap: 16px; } .site-nav { gap: 18px; font-size: 12px; } .account-main { padding-top: 46px; } .account-card { padding: 22px; } .name-fields { grid-template-columns: 1fr; } .member-invite { flex-direction: column; align-items: flex-start; } .account-title { letter-spacing: -2px; } .account-title em { letter-spacing: -2px; } }

@@ -105,7 +105,7 @@ export default async function Home() {
         </aside>
       </main>
 
-      <footer className="site-footer"><span>AT THE TABLE © {new Date().getFullYear()}</span><span>MADE WITH APPETITE IN NEW YORK</span></footer>
+      <footer className="site-footer"><span>AT THE TABLE © {new Date().getFullYear()}</span><Link href="/privacy">Privacy</Link><span>MADE WITH APPETITE IN NEW YORK</span></footer>
     </div>
   );
 }
