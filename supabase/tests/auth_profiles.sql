@@ -1,5 +1,6 @@
 -- Run with an administrative SQL connection. All test changes roll back.
 begin;
+select set_config('test.gallery_baseline', (select count(*)::text from public.food_photos), true);
 insert into auth.users (id, email) values
   ('11111111-1111-4111-8111-111111111111', 'food-gallery-test-a@example.invalid'),
   ('22222222-2222-4222-8222-222222222222', 'food-gallery-test-b@example.invalid');
@@ -42,7 +43,7 @@ begin
     raise exception 'Profile owner reassignment accepted';
   exception when insufficient_privilege then null;
   end;
-  if (select count(*) from public.food_photos) <> 12 then raise exception 'Signed-in gallery read failed'; end if;
+  if (select count(*) from public.food_photos) <> current_setting('test.gallery_baseline')::integer then raise exception 'Signed-in gallery read failed'; end if;
 end $$;
 set local role anon;
 do $$
@@ -52,7 +53,7 @@ begin
     raise exception 'Anonymous profile read accepted';
   exception when insufficient_privilege then null;
   end;
-  if (select count(*) from public.food_photos) <> 12 then raise exception 'Public gallery regressed'; end if;
+  if (select count(*) from public.food_photos) <> current_setting('test.gallery_baseline')::integer then raise exception 'Public gallery regressed'; end if;
 end $$;
 reset role;
 delete from auth.users where id = '11111111-1111-4111-8111-111111111111';

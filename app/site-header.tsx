@@ -9,6 +9,7 @@ export async function SiteHeader() {
     <nav className="site-nav" aria-label="Main navigation">
       <Link href="/">Gallery</Link>
       {user ? <>
+        <Link href="/upload" prefetch={false}>Share a photo</Link>
         <Link href="/members" prefetch={false}>My table</Link>
         <Link href="/profile" prefetch={false}>Profile</Link>
         <form action={signOut}><button className="text-button">Sign out</button></form>

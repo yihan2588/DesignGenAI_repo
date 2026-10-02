@@ -78,7 +78,7 @@ export default async function Home() {
           ) : (
             <ol className="photo-grid">
               {photos.map((photo, index) => (
-                <li className="photo-card" key={photo.id}>
+                <li className="photo-card" key={photo.id} id={`photo-${photo.id}`}>
                   <div className="photo-frame">
                     <Image
                       src={photoUrl(photo.storage_path)}
@@ -100,8 +100,8 @@ export default async function Home() {
           )}
         </section>
         <aside className="member-invite" aria-label="Member space">
-          <div><p className="eyebrow">{user ? "YOUR SEAT IS WAITING" : "MAKE YOURSELF AT HOME"}</p><h2>{user ? "A table of your own." : "There is a seat for you."}</h2><p>{user ? "Visit your member space and keep your profile up to date." : "Sign in to create your profile and step into your member space."}</p></div>
-          <Link className="primary-button" href={user ? "/members" : "/login"}>{user ? "Visit my table" : "Join the table"} →</Link>
+          <div><p className="eyebrow">{user ? "A MEMORY TO SHARE" : "MAKE YOURSELF AT HOME"}</p><h2>{user ? "Bring something to the table." : "There is a seat for you."}</h2><p>{user ? "Add a food photo and its story to the public collection." : "Sign in to create your profile and share your own food photos."}</p></div>
+          <Link className="primary-button" href={user ? "/upload" : "/login"}>{user ? "Share a photo" : "Join the table"} →</Link>
         </aside>
       </main>
 
