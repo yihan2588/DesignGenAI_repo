@@ -3,6 +3,9 @@ import Link from "next/link";
 import { SiteHeader } from "@/app/site-header";
 import { getUser, getProfile } from "@/lib/auth";
 import { isProfileComplete } from "@/lib/profile-validation";
+import { createClient } from "@/lib/supabase/server";
+import { CaptionControls } from "@/app/caption-controls";
+import type { Caption } from "@/lib/caption-validation";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +58,14 @@ function photoUrl(storagePath: string): string {
 
 export default async function Home() {
   const [{ photos, error }, user] = await Promise.all([getFoodPhotos(), getUser()]);
-  const profile = user ? await getProfile(user.id) : null;
+  const supabase = await createClient();
+  const [profile, { data: captions, error: captionError }, votes] = await Promise.all([
+    user ? getProfile(user.id) : null,
+    supabase.from("latest_food_captions").select("id,photo_id,dish,region,model,created_at"),
+    user ? supabase.from("caption_votes").select("caption_id,value").eq("user_id", user.id) : null,
+  ]);
+  const byPhoto = new Map((captions as Caption[] | null)?.map(caption => [caption.photo_id, caption]));
+  const myVotes = new Map(votes?.data?.map(vote => [vote.caption_id, vote.value]));
 
   return (
     <div className="site-shell">
@@ -71,6 +81,12 @@ export default async function Home() {
         </section>
 
         <section className="gallery" aria-label="Food photo gallery">
+          <aside className="gallery-guide" aria-labelledby="caption-guide-title">
+            <div><p className="eyebrow">A SECOND LOOK</p><h2 id="caption-guide-title">Good taste. Better guesses.</h2></div>
+            <div><p>Each AI description pairs likely ingredients and flavors with a cultural region. <strong>Upvote</strong> if both sentences seem accurate; <strong>downvote</strong> if either seems off. These are visual guesses, not verified recipes.</p>
+              <p className="guide-meta">{user ? "Try a fresh description for any plate. Your vote is private, and you can change it." : <><Link href="/login">Sign in</Link> to vote or generate a fresh description.</>} Generating sends the public photo to Google Gemini.</p></div>
+          </aside>
+          {(captionError || votes?.error) && <p className="form-message" role="alert">{captionError ? "AI descriptions could not be loaded. Please refresh in a moment." : "Your saved votes could not be loaded. Please refresh in a moment."}</p>}
           {error ? (
             <p className="gallery-message" role="alert">The photo collection is temporarily unavailable. Please try again in a moment.</p>
           ) : photos.length === 0 ? (
@@ -92,7 +108,7 @@ export default async function Home() {
                   </div>
                   <div className="photo-caption">
                     <h2>{photo.title}</h2>
-                    <p>{photo.description}</p>
+                    {!captionError && <CaptionControls caption={byPhoto.get(photo.id) ?? null} photoId={photo.id} title={photo.title} signedIn={Boolean(user)} initialVote={myVotes.get(byPhoto.get(photo.id)?.id ?? "")} />}
                   </div>
                 </li>
               ))}

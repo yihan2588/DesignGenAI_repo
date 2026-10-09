@@ -73,6 +73,25 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px
 .member-invite .eyebrow { margin-bottom: 14px; color: var(--accent); }
 .member-invite .primary-button { flex-shrink: 0; }
 .privacy-main section { margin-top: 32px; }
+.gallery-guide { display: grid; grid-template-columns: 1fr 2fr; gap: 28px; padding: 16px 0 38px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
+.gallery-guide .eyebrow { margin-bottom: 12px; }
+.gallery-guide h2 { margin: 0; font: 400 29px Georgia, serif; letter-spacing: -.6px; }
+.gallery-guide p { margin: 0; max-width: 650px; font-size: 14px; line-height: 1.7; color: #5f5e55; }
+.gallery-guide .guide-meta { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.guide-meta a { color: var(--accent); text-underline-offset: 3px; }
+.ai-caption .ai-description { min-height: 82px; color: #5f5e55; }
+.caption-empty { font-style: italic; }
+.caption-vote { margin-top: 17px; }
+.vote-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.vote-buttons button { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 9px 13px; background: transparent; border: 1px solid var(--line); color: #5f5e55; font: 12px Arial, sans-serif; cursor: pointer; }
+.vote-buttons button span { font-size: 19px; line-height: 1; }
+.vote-buttons button:hover, .vote-buttons button[aria-pressed=true] { color: var(--accent); border-color: var(--accent); background: #f5ede2; }
+.vote-buttons button:disabled, .generate-button:disabled { opacity: .6; cursor: wait; }
+.photo-caption .vote-status { min-height: 19px; margin-top: 7px; font-size: 11px; }
+.generate-form { margin-top: 8px; }
+.generate-button { min-height: 44px; padding: 4px 0; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--accent); font: 12px Arial, sans-serif; cursor: pointer; }
+.generate-button:hover { border-bottom-color: var(--accent); }
+@media (max-width: 640px) { .gallery-guide { grid-template-columns: 1fr; gap: 18px; padding-bottom: 28px; } .ai-caption .ai-description { min-height: 0; } }
 .privacy-main h2 { font: 400 27px Georgia, serif; }
 .privacy-main section p { font-size: 15px; line-height: 1.75; color: #5f5e55; }
 @media (max-width: 640px) { .site-header { flex-wrap: wrap; padding: 20px 0; gap: 16px; } .site-nav { gap: 18px; font-size: 12px; } .account-main { padding-top: 46px; } .account-card { padding: 22px; } .name-fields { grid-template-columns: 1fr; } .member-invite { flex-direction: column; align-items: flex-start; } .account-title { letter-spacing: -2px; } .account-title em { letter-spacing: -2px; } }
