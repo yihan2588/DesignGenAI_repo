@@ -16,8 +16,8 @@ export async function generateCaption(image: Buffer, prompt: string, apiKey: str
       generation_config: { max_output_tokens: 512 },
       response_format: { type: "text", mime_type: "application/json", schema: {
         type: "object", properties: {
-          dish: { type: "string", description: "One short sentence about visible ingredients and likely taste." },
-          region: { type: "string", description: "One short sentence about likely cultural region." },
+          dish: { type: "string", description: "One sentence, 12 to 22 words, maximum 160 characters, about visible ingredients and likely taste." },
+          region: { type: "string", description: "One sentence, 8 to 16 words, maximum 160 characters, naming the likely geographic cultural region." },
         }, required: ["dish", "region"],
       } },
     }),

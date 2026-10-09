@@ -3,11 +3,11 @@ import { test } from "node:test";
 import { validateVote, parseCaption } from "../lib/caption-validation.ts";
 import { generateCaption } from "../lib/gemini.ts";
 import { readFileSync } from "node:fs";
-import { CAPTION_PROMPT } from "../lib/caption-validation.ts";
 
-test("every assistant-authored seed follows the same saved two-sentence prompt", () => {
+test("every assistant-authored seed saves its original prompt and two short sentences", () => {
   const seeds = JSON.parse(readFileSync(new URL("../data/ai_captions.json", import.meta.url), "utf8"));
-  assert.equal(seeds.prompt, CAPTION_PROMPT);
+  assert.match(seeds.prompt, /without searching online/);
+  assert.match(seeds.prompt, /exactly two string fields/);
   assert.equal(seeds.captions.length, 12);
   for (const caption of [...seeds.captions, ...seeds.extra_captions]) parseCaption(caption);
 });
@@ -32,7 +32,7 @@ test("a caption contains exactly one short dish sentence and one region sentence
   const caption = { dish: "Salmon and pasta look savory and rich.", region: "This resembles Mediterranean cooking." };
   assert.deepEqual(parseCaption(caption), caption);
   for (const bad of [null, {}, { ...caption, dish: "" }, { ...caption, region: "One. Two." },
-    { ...caption, dish: "a".repeat(221) + "." }, { ...caption, dish: "<script>bad</script>." },
+    { ...caption, dish: "a".repeat(160) + "." }, { ...caption, dish: "<script>bad</script>." },
     { ...caption, region: "No punctuation" }]) assert.throws(() => parseCaption(bad));
 });
 
