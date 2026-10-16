@@ -1,8 +1,8 @@
-export const MAX_SOURCE_BYTES = 20 * 1024 * 1024;
+export const MAX_SOURCE_BYTES = 50 * 1024 * 1024;
 export const MAX_UPLOAD_BYTES = 2 * 1024 * 1024;
 export function validateUploadSource(file: Pick<File, 'size' | 'type'>): string | null {
   if (!file.size) return 'Choose a nonempty image.';
-  if (file.size > MAX_SOURCE_BYTES) return 'Choose an image up to 20 MB.';
+  if (file.size > MAX_SOURCE_BYTES) return 'Choose an image up to 50 MB.';
   if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return 'Choose a JPEG, PNG, or WebP image.';
   return null;
 }
@@ -12,12 +12,13 @@ export function validateUploadSource(file: Pick<File, 'size' | 'type'>): string 
 export async function prepareUploadImage(file: File): Promise<File> {
   const error = validateUploadSource(file);
   if (error) throw new Error(error);
-  if (file.size <= MAX_UPLOAD_BYTES) return file;
   let bitmap: ImageBitmap;
   try { bitmap = await createImageBitmap(file); }
   catch { throw new Error('This image could not be read. Choose a still JPEG, PNG, or WebP image.'); }
   try {
-    if (bitmap.width * bitmap.height > 20_000_000) throw new Error('Choose an image under 20 megapixels.');
+    // Inspect dimensions even for small files: a highly compressed photo can
+    // still exceed the server decoder pixel budget.
+    if (file.size <= MAX_UPLOAD_BYTES && Math.max(bitmap.width, bitmap.height) <= 1600) return file;
     const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
     const canvas = document.createElement('canvas');
     canvas.width = Math.max(1, Math.round(bitmap.width * scale));

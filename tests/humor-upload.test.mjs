@@ -8,7 +8,6 @@ test('source validation rejects empty, unsupported and over-limit files before t
 });
 test('small files remain intact and large images are reduced below multipart transport limit', async () => {
  const small = new File(['small'],'small.jpg',{type:'image/jpeg'});
- assert.equal(await prepareUploadImage(small),small);
  let closed=false, dimensions;
  const originalBitmap=globalThis.createImageBitmap, originalDocument=globalThis.document;
  globalThis.createImageBitmap=async()=>({width:4000,height:3000,close(){closed=true;}});
@@ -21,7 +20,12 @@ test('small files remain intact and large images are reduced below multipart tra
   assert.ok((await new Response(form).arrayBuffer()).byteLength < 3*1024*1024);
   globalThis.createImageBitmap=async()=>{throw Error('decode failed');};
   await assert.rejects(prepareUploadImage(source),/could not be read/);
-  globalThis.createImageBitmap=async()=>({width:8000,height:6000,close(){}});
-  await assert.rejects(prepareUploadImage(source),/20 megapixels/);
+  globalThis.createImageBitmap=async()=>({width:8000,height:6000,close(){closed=true;}});
+  for (const file of [source,small]) {
+   closed=false; const resized=await prepareUploadImage(file);
+   assert.deepEqual(dimensions,[1600,1200]); assert.ok(resized.size<=MAX_UPLOAD_BYTES); assert.ok(closed);
+  }
+  globalThis.createImageBitmap=async()=>({width:800,height:600,close(){closed=true;}});
+  closed=false; assert.equal(await prepareUploadImage(small),small); assert.ok(closed);
  } finally {globalThis.createImageBitmap=originalBitmap;globalThis.document=originalDocument;}
 });
