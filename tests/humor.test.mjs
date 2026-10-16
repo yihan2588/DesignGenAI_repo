@@ -44,6 +44,11 @@ test('one malformed response can be repaired without silently publishing invalid
  }});
  assert.equal(result.attempts,4);assert.equal(result.guided,candidates.candidates[0].caption);
 });
+test('quota errors stop retrying and save only bounded diagnostic fields',async()=>{
+ const saved=[];let count=0;
+ await assert.rejects(generatePair(Buffer.from('x'),'credential',{onStep:async s=>saved.push(s),request:async()=>{count++;return Response.json({error:{status:'RESOURCE_EXHAUSTED',message:'quota secret credential',details:[{violations:[{quotaId:'GenerateRequestsPerDay'}]},{retryDelay:'60s'}]}},{status:429});}}),/quota limit/);
+ assert.equal(count,2);assert.equal(saved[0].provider_failure.http_status,429);assert.equal(saved[0].provider_failure.retry_seconds,60);assert.deepEqual(saved[0].provider_failure.quota_ids,['GenerateRequestsPerDay']);assert.doesNotMatch(JSON.stringify(saved),/secret|credential/);
+});
 test('a duplicate final pair triggers replacement, never a fabricated second caption',async()=>{
  let selectionCalls=0;
  const result=await generatePair(Buffer.from('x'),'test',{request:async(_,options)=>{

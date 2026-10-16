@@ -1,7 +1,28 @@
 import { BASELINE_PROMPT, PLAN_PROMPT, candidatePrompt, MODEL, PROMPT_VERSION, CAPTION_SCHEMA, PLAN_SCHEMA, CANDIDATE_SCHEMA } from "./prompts.ts";
 import { parseCaption, parsePlan, parseCandidates, normalizeCaption } from "./schemas.ts";
 
-export type Step = { stage: string; prompt: string; output?: unknown; usage?: unknown; elapsed_ms: number; error?: string };
+type ProviderFailure = { http_status: number; provider_status?: string; reason: string; quota_ids: string[]; retry_seconds?: number };
+class ProviderError extends Error {
+  readonly diagnostic: ProviderFailure;
+  constructor(message: string, diagnostic: ProviderFailure) { super(message); this.diagnostic = diagnostic; }
+}
+export type Step = { stage: string; prompt: string; output?: unknown; usage?: unknown; elapsed_ms: number; error?: string; provider_failure?: ProviderFailure };
+async function providerError(response: Response) {
+  const body = await response.json().catch(() => ({}));
+  const raw = body?.error ?? body;
+  const message = typeof raw?.message === "string" ? raw.message : "";
+  const details = Array.isArray(raw?.details) ? raw.details : [];
+  const quotaIds: string[] = details.flatMap((d: { violations?: { quotaId?: string }[] }) => Array.isArray(d.violations) ? d.violations.map(v => v.quotaId).filter((id): id is string => typeof id === "string" && /^[a-zA-Z0-9_./-]{1,160}$/.test(id)) : []);
+  const retry = details.find((d: { retryDelay?: string }) => typeof d.retryDelay === "string")?.retryDelay;
+  const diagnostic: ProviderFailure = {
+    http_status: response.status,
+    provider_status: ["RESOURCE_EXHAUSTED", "UNAVAILABLE", "INTERNAL", "INVALID_ARGUMENT", "PERMISSION_DENIED", "UNAUTHENTICATED", "NOT_FOUND"].includes(raw?.status) ? raw.status : undefined,
+    reason: /quota/i.test(message) ? "quota" : /billing/i.test(message) ? "billing" : /overload|capacity|unavailable/i.test(message) ? "capacity" : "provider_error",
+    quota_ids: quotaIds.slice(0, 6),
+    retry_seconds: typeof retry === "string" && /^\d+(\.\d+)?s$/.test(retry) ? Number(retry.slice(0, -1)) : undefined,
+  };
+  return new ProviderError(response.status === 429 ? "Gemini has reached its current rate or quota limit. Please try again later." : response.status >= 500 ? "Gemini is temporarily unavailable. Your image is saved; please retry shortly." : "Gemini could not complete this request.", diagnostic);
+}
 export async function generatePair(image: Buffer, apiKey: string, options: { request?: typeof fetch; onStep?: (step: Step) => Promise<void>; deadlineMs?: number } = {}) {
   const request = options.request ?? fetch; const start = Date.now();
   const deadline = start + (options.deadlineMs ?? 90000);
@@ -20,7 +41,7 @@ export async function generatePair(image: Buffer, apiKey: string, options: { req
           response_format: { type: "text", mime_type: "application/json", schema },
         }),
       });
-      if (!response.ok) throw new Error(response.status === 429 || response.status >= 500 ? "Gemini is busy. Please retry in a moment." : "Gemini could not complete this request.");
+      if (!response.ok) throw await providerError(response);
       const result = await response.json() as { status?: string; steps?: { type: string; content?: { type: string; text?: string }[] }[]; usage?: unknown };
       if (result.status !== "completed") throw new Error("Gemini did not complete the caption.");
       const raw = result.steps?.filter(s => s.type === "model_output").flatMap(s => s.content ?? []).filter(p => p.type === "text").map(p => p.text ?? "").join("") ?? "";
@@ -29,12 +50,20 @@ export async function generatePair(image: Buffer, apiKey: string, options: { req
       steps.push(step); await options.onStep?.(step); return value;
     } catch (error) {
       const message = error instanceof Error && /^(Gemini|Caption generation)/.test(error.message) ? error.message : "Gemini returned an incomplete or invalid response. Please retry.";
-      const step = { stage, prompt, error: message, elapsed_ms: Date.now() - started }; steps.push(step); await options.onStep?.(step);
-      throw new Error(message);
+      const step = { stage, prompt, error: message, elapsed_ms: Date.now() - started, ...(error instanceof ProviderError ? { provider_failure: error.diagnostic } : {}) }; steps.push(step); await options.onStep?.(step);
+      throw error instanceof ProviderError ? error : new Error(message);
     }
   }
   async function bounded<T>(task: () => Promise<T>): Promise<T> {
-    try { return await task(); } catch (error) { if (attempts < 4 && deadline - Date.now() > 5000) return task(); throw error; }
+    try { return await task(); } catch (error) {
+      // Do not spend another request on quota or configuration failures.
+      if (error instanceof ProviderError && error.diagnostic.http_status < 500) throw error;
+      if (attempts < 4 && deadline - Date.now() > 5000) {
+        if (error instanceof ProviderError) await new Promise(resolve => setTimeout(resolve, 1000));
+        return task();
+      }
+      throw error;
+    }
   }
   const baselineTask = bounded(() => call("baseline", BASELINE_PROMPT, CAPTION_SCHEMA, parseCaption));
   const guidedTask = (async () => {
