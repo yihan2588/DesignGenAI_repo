@@ -6,7 +6,8 @@ import { redirect } from "next/navigation";
 import { safeReturn } from "@/lib/humor/schemas";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser, getProfile } from "@/lib/auth";
-import { avatarExtension, MAX_AVATAR_BYTES, validateNames } from "@/lib/profile-validation";
+import { prepareAvatarImage } from "@/lib/avatar-image";
+import { validateNames } from "@/lib/profile-validation";
 
 export type ProfileState = { error?: string; success?: string };
 
@@ -20,12 +21,11 @@ export async function saveProfile(_previous: ProfileState, formData: FormData): 
   const photo = formData.get("photo");
   let newPath: string | null = null;
   if (photo instanceof File && photo.size > 0) {
-    if (photo.size > MAX_AVATAR_BYTES) return { error: "Choose a photo smaller than 2 MB." };
-    const bytes = new Uint8Array(await photo.arrayBuffer());
-    const extension = avatarExtension(photo.type, bytes);
-    if (!extension) return { error: "Choose a valid JPEG, PNG, or WebP photo." };
-    newPath = `${user.id}/${randomUUID()}.${extension}`;
-    const { error } = await supabase.storage.from("avatars").upload(newPath, bytes, { contentType: photo.type, upsert: false });
+    let bytes: Buffer;
+    try { bytes = await prepareAvatarImage(photo); }
+    catch (error) { return { error: error instanceof Error ? error.message : "Your photo could not be read." }; }
+    newPath = `${user.id}/${randomUUID()}.jpg`;
+    const { error } = await supabase.storage.from("avatars").upload(newPath, bytes, { contentType: "image/jpeg", upsert: false });
     if (error) return { error: "Your photo could not be uploaded. Please try again." };
   }
 
