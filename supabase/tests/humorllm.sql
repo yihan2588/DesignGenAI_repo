@@ -51,5 +51,25 @@ do $$ begin
  begin perform * from public.humor_votes;raise exception 'Anonymous votes exposed';exception when insufficient_privilege then null;end;
 end $$;
 reset role;
+-- Administrator-seeded examples must not consume a member's ten-run allowance.
+insert into public.humor_runs(image_id,owner_id,status,caption_a,caption_b,is_example,request_key,created_at)
+select '11111111-1111-4111-8111-111111111111','77777777-7777-4777-8777-777777777777','ready','Seed first.','Seed second.',true,gen_random_uuid(),now()-interval '2 minutes' from generate_series(1,12);
+insert into public.humor_runs(id,image_id,owner_id,status,request_key) values ('55555555-5555-4555-8555-555555555555','11111111-1111-4111-8111-111111111111','77777777-7777-4777-8777-777777777777','failed',gen_random_uuid());
+update public.humor_runs set created_at=now()-interval '2 minutes' where owner_id='77777777-7777-4777-8777-777777777777';
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"77777777-7777-4777-8777-777777777777","role":"authenticated"}',true);
+do $$ begin
+ if public.humor_retry('55555555-5555-4555-8555-555555555555',gen_random_uuid()) is null then raise exception 'Examples consumed member quota';end if;
+ begin update public.humor_runs set is_example=true;raise exception 'Member could bypass quota with example flag';exception when insufficient_privilege then null;end;
+end $$;
+reset role;
+insert into public.humor_runs(image_id,owner_id,status,request_key,created_at)
+select '11111111-1111-4111-8111-111111111111','77777777-7777-4777-8777-777777777777','failed',gen_random_uuid(),now()-interval '2 minutes' from generate_series(1,6);
+update public.humor_runs set created_at=now()-interval '2 minutes' where owner_id='77777777-7777-4777-8777-777777777777';
+set local role authenticated;
+do $$ begin
+ begin perform public.humor_retry('55555555-5555-4555-8555-555555555555',gen_random_uuid());raise exception 'Daily member quota bypassed';exception when raise_exception then if sqlerrm<>'You have reached 10 comparisons today. Come back tomorrow.' then raise;end if;end;
+end $$;
+reset role;
 select 'HumorLLM access, voting, claim and finalization checks passed' as result;
 rollback;

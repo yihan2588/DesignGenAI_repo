@@ -21,7 +21,7 @@ Supabase RLS, table grants, and transactional RPC functions enforce ownership an
 
 Generation needs both the user's verified session and a server-only `HUMOR_WRITER_KEY`. The database stores only its SHA-256 hash. This narrowly scoped key authorizes generation RPCs for the signed-in owner's run; it is not a service-role key. Browser clients cannot write captions or traces directly.
 
-Each run allows three normal Gemini calls and at most one repair call, with a 90-second pipeline deadline. Quotas: one upload/retry per 30 seconds, ten per rolling 24 hours per account, and 100 claimed generation runs per rolling 24 hours for the project. Failed runs remain visible to their owner; retry creates a new run without rewriting earlier comparisons. Generation is request-bound, so an interrupted request may require an explicit retry.
+Each run allows three normal Gemini calls and at most one repair call, with a 90-second pipeline deadline. Quotas: one upload/retry per 30 seconds, ten non-example runs per rolling 24 hours per account, and 100 claimed generation runs per rolling 24 hours for the project. Failed runs remain visible to their owner; retry creates a new run without rewriting earlier comparisons. Generation is request-bound, so an interrupted request may require an explicit retry.
 
 ## Local development
 
@@ -32,7 +32,7 @@ Use Node.js 22.18+ (production uses Node 24), pnpm, and the exact dependency ver
 3. Install with `pnpm install --frozen-lockfile`; run `pnpm dev`.
 4. Run `pnpm test`, `pnpm lint`, and `pnpm build`.
 
-The migrations are incremental on the existing course database. Apply `20261016035931_humorllm_comparisons.sql` after earlier migrations. Generate a random 32-byte writer key, set the same secret in Vercel and local environments, then initialize `private.humor_config.writer_key_sha256` to its hex SHA-256 digest through an administrative database connection. Do not commit the key or place it in a `NEXT_PUBLIC_` variable.
+The migrations are incremental on the existing course database. Apply `20261016035931_humorllm_comparisons.sql` after earlier migrations, followed by `20261016043001_exempt_humor_examples_from_member_quota.sql`. Only administrators can flag starter examples, and those do not consume the member allowance. Generate a random 32-byte writer key, set the same secret in Vercel and local environments, then initialize `private.humor_config.writer_key_sha256` to its hex SHA-256 digest through an administrative database connection. Do not commit the key or place it in a `NEXT_PUBLIC_` variable.
 
 `supabase/tests/humorllm.sql` tests owner access, anonymous/nonvoter restrictions, two independent voters, duplicate submissions, generation claims, and immutable publication. Run through an administrative SQL connection; its synthetic accounts, configuration, and data roll back.
 

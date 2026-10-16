@@ -5,7 +5,8 @@
     "alt": "Three Adelie penguins standing together on a blue iceberg.",
     "source": "https://www.usgs.gov/media/images/adelie-penguins",
     "image": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/media/images/3%20Amigos.jpg",
-    "credit": "Katie Dugger / USGS · Public domain"
+    "credit": "Katie Dugger / USGS · Public domain",
+    "run_id": "ad4d449c-094d-406a-ad4e-47edd1876728"
   },
   {
     "slug": "twin-bears",
@@ -13,7 +14,8 @@
     "alt": "Two young black bears standing upright beside each other in a historic forest photograph.",
     "source": "https://www.usgs.gov/media/images/twin-cub-bears",
     "image": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/thumbnails/image/TwinCubBears.gif",
-    "credit": "Frank Jay Haynes / USGS · Public domain"
+    "credit": "Frank Jay Haynes / USGS · Public domain",
+    "run_id": "934267e5-3f06-43d7-84b7-0973375a263a"
   },
   {
     "slug": "resting-otter",
@@ -21,7 +23,8 @@
     "alt": "A sea otter resting on its back in a patch of kelp.",
     "source": "https://www.fws.gov/media/sea-otter-0",
     "image": "https://www.fws.gov/sites/default/files/2021-06/Sea%20otter%203.jpg",
-    "credit": "Lilian Carswell / USFWS · Public domain"
+    "credit": "Lilian Carswell / USFWS · Public domain",
+    "run_id": "317f7544-5f73-4dc4-833b-c75d431fc9d9"
   },
   {
     "slug": "climbing-bears",
@@ -29,15 +32,17 @@
     "alt": "Two black bear cubs climbing a tree in a forest camera photograph.",
     "source": "https://www.fws.gov/media/bear-cubs",
     "image": "https://www.fws.gov/sites/default/files/2021-11/RCNX0040.JPG",
-    "credit": "USFWS · Public domain"
+    "credit": "USFWS · Public domain",
+    "run_id": "a67ae001-bd1d-4717-a020-20b47ab8b4f1"
   },
   {
     "slug": "owl",
     "title": "Office hours",
-    "alt": "A great horned owl with large eyes and raised ear tufts.",
+    "alt": "A great horned owl with dark eyes and raised ear tufts, looking to the side.",
     "source": "https://www.fws.gov/media/great-horned-owl-14",
     "image": "https://www.fws.gov/sites/default/files/images/2024-03-2/2878.jpg",
-    "credit": "Gary Stolz / USFWS · Public domain"
+    "credit": "Gary Stolz / USFWS · Public domain",
+    "run_id": "d2a6932f-a30d-4e19-8c44-33ad5f88f5ec"
   },
   {
     "slug": "kelp-otter",
@@ -45,6 +50,7 @@
     "alt": "A southern sea otter floating in the water while holding kelp.",
     "source": "https://www.fws.gov/media/southern-sea-otter-holding-kelp",
     "image": "https://www.fws.gov/sites/default/files/images/2024-07/sea_otter_usgs.jpg",
-    "credit": "USGS · Public domain"
+    "credit": "USGS · Public domain",
+    "run_id": "70546650-2c08-4e27-9e49-771837aaaffa"
   }
 ]
