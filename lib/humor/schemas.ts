@@ -1,7 +1,11 @@
 export type Choice = "A" | "B";
-export type Plan = { details: { id: string; observation: string }[]; conflicts: string[]; angles: { idea: string; detail_ids: string[] }[] };
+export type Plan = { title: string; description: string; details: { id: string; observation: string }[]; conflicts: string[]; angles: { idea: string; detail_ids: string[] }[] };
 export type Candidates = { candidates: { id: string; caption: string; detail_ids: string[] }[]; selected_id: string };
-export type Poll = { choice: Choice; a: number; b: number; total: number };
+export type Poll = { choice: Choice; a: number; b: number; total: number; baseline_slot: Choice };
+export function captionMethod(slot: Choice, baselineSlot?: Choice) {
+  if (!baselineSlot) return null;
+  return slot === baselineSlot ? "Baseline" : "HOMER-inspired";
+}
 export const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 export function safeReturn(value: unknown): string {
   if (typeof value !== "string") return "/members";
@@ -31,7 +35,7 @@ export function parsePlan(value: unknown): Plan {
     if (detail_ids.some(id => !ids.has(id))) throw new Error("Ungrounded angle.");
     return { idea: text(a.idea, 240), detail_ids };
   });
-  return { details, conflicts, angles };
+  return { title: text(obj.title, 100), description: text(obj.description, 300), details, conflicts, angles };
 }
 export function parseCandidates(value: unknown, plan: Plan): Candidates {
   const obj = record(value); const ids = new Set(plan.details.map(d => d.id));

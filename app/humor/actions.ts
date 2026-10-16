@@ -18,9 +18,8 @@ export async function castVote(runId: string, choice?: Choice): Promise<{ poll?:
 }
 export async function uploadHumor(form: FormData): Promise<{ runId?: string; error?: string }> {
   const { user } = await requireCompleteProfile();
-  const title = String(form.get("title") ?? "").trim(); const alt = String(form.get("alt_text") ?? "").trim();
   const key = form.get("request_key"); const file = form.get("photo");
-  if (!title || title.length > 100 || !alt || alt.length > 300 || form.get("public_ack") !== "on" || !isUuid(key)) return { error: "Add a title, describe the image, and confirm that your upload will be public." };
+  if (form.get("public_ack") !== "on" || !isUuid(key)) return { error: "Confirm that your upload can be shared publicly." };
   if (!(file instanceof File)) return { error: "Choose an image." };
   const client = await createClient();
   const { data: existing } = await client.from("humor_runs").select("id").eq("owner_id", user.id).eq("request_key", key).maybeSingle();
@@ -31,7 +30,7 @@ export async function uploadHumor(form: FormData): Promise<{ runId?: string; err
   const path = `${user.id}/${key}.jpg`;
   const { error: uploadError } = await client.storage.from("humor-images").upload(path, bytes, { contentType: "image/jpeg", upsert: false });
   if (uploadError) return { error: "The image could not be uploaded. Please try again." };
-  const { data, error } = await client.rpc("humor_create_upload", { p_path: path, p_title: title, p_alt: alt, p_request: key });
+  const { data, error } = await client.rpc("humor_create_upload", { p_path: path, p_title: null, p_alt: null, p_request: key });
   if (error || !data) {
     await client.storage.from("humor-images").remove([path]);
     const message = error?.message ?? "";

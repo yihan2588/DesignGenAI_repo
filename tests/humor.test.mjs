@@ -1,10 +1,20 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { safeReturn, parsePlan, parseCandidates, normalizeCaption } from '../lib/humor/schemas.ts';
+import { safeReturn, parsePlan, parseCandidates, normalizeCaption, captionMethod } from '../lib/humor/schemas.ts';
 import { generatePair } from '../lib/humor/pipeline.ts';
-const plan={details:[{id:'d1',observation:'A cat is asleep on a keyboard.'}],conflicts:['Present at work but asleep.'],angles:[{idea:'Attendance versus contribution',detail_ids:['d1']},{idea:'Paid naps',detail_ids:['d1']},{idea:'Keyboard shortcut',detail_ids:['d1']}]};
+const plan={title:'Cat on a keyboard',description:'A cat is asleep on an open laptop keyboard.',details:[{id:'d1',observation:'A cat is asleep on a keyboard.'}],conflicts:['Present at work but asleep.'],angles:[{idea:'Attendance versus contribution',detail_ids:['d1']},{idea:'Paid naps',detail_ids:['d1']},{idea:'Keyboard shortcut',detail_ids:['d1']}]};
 const candidates={candidates:[{id:'a',caption:'Perfect attendance. Questionable contribution.',detail_ids:['d1']},{id:'b',caption:'My out-of-office reply has a fur coat.',detail_ids:['d1']},{id:'c',caption:'Finally, a meeting that could have been a nap.',detail_ids:['d1']}],selected_id:'a'};
 function response(output){return Response.json({status:'completed',steps:[{type:'model_output',content:[{type:'text',text:JSON.stringify(output)}]}],usage:{total_tokens:100}})}
+test('method labels follow either randomized assignment and remain absent without a revealed mapping',()=>{
+ assert.equal(captionMethod('A','A'),'Baseline'); assert.equal(captionMethod('B','A'),'HOMER-inspired');
+ assert.equal(captionMethod('A','B'),'HOMER-inspired'); assert.equal(captionMethod('B','B'),'Baseline');
+ assert.equal(captionMethod('A',undefined),null); assert.equal(captionMethod('B',undefined),null);
+});
+test('image analysis requires bounded generated metadata before publishing',()=>{
+ assert.throws(()=>parsePlan({...plan,title:undefined})); assert.throws(()=>parsePlan({...plan,description:''}));
+ assert.throws(()=>parsePlan({...plan,title:'x'.repeat(101)})); assert.throws(()=>parsePlan({...plan,description:'x'.repeat(301)}));
+ assert.throws(()=>parsePlan({...plan,title:'<script>'}));
+});
 test('login return destinations cannot escape the app or enter API/auth routes',()=>{
  assert.equal(safeReturn('/upload'),'/upload'); assert.equal(safeReturn('/runs/77777777-7777-4777-8777-777777777777'),'/runs/77777777-7777-4777-8777-777777777777');
  for(const s of ['//evil.test','https://evil.test','/\\evil.test','/%2f%2fevil.test','/api/humor','/auth/callback','/runs/x','/members?next=https://evil.test']) assert.equal(safeReturn(s),'/members');
@@ -27,6 +37,7 @@ test('three-call pipeline keeps baseline independent and saves the selected guid
   assert.match(body.input[0].text,/VISUAL PLAN/);return response(candidates);
  }});
  assert.equal(calls.length,3); assert.equal(saved.length,3); assert.equal(result.guided,candidates.candidates[0].caption); assert.equal(result.attempts,3);
+ assert.deepEqual(result.metadata,{title:plan.title,description:plan.description});
  assert.equal(new Set(calls.map(c=>c.model)).size,1);
 });
 test('bad provider output is bounded and secret response bodies never enter errors or traces',async()=>{

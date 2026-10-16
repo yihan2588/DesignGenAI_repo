@@ -86,5 +86,5 @@ export async function generatePair(image: Buffer, apiKey: string, options: { req
     selected = generated.candidates.find(c => c.id === generated.selected_id)!.caption;
     if (normalizeCaption(baseline) === normalizeCaption(selected)) throw new Error("Gemini returned the same caption twice. Please retry.");
   }
-  return { baseline, guided: selected, candidates: generated, model: MODEL, prompt_version: PROMPT_VERSION, steps, attempts, elapsed_ms: Date.now() - start };
+  return { baseline, guided: selected, metadata: { title: guided.plan.title, description: guided.plan.description }, candidates: generated, model: MODEL, prompt_version: PROMPT_VERSION, steps, attempts, elapsed_ms: Date.now() - start };
 }

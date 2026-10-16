@@ -1,6 +1,6 @@
 # HumorLLM
 
-A blind, paired image-caption comparison app built with Next.js, Google Gemini, and Supabase. Visitors browse real example runs and community uploads. Signed-in users upload images, choose their preferred caption, and unlock the current poll only after their vote has been saved.
+A blind, paired image-caption comparison app built with Next.js, Google Gemini, and Supabase. Visitors browse real example runs and community uploads. Signed-in users upload images, choose their preferred caption, and unlock the current poll and caption-method labels only after their vote has been saved.
 
 Production: https://design-gen-ai-repo.vercel.app
 
@@ -11,13 +11,15 @@ Both approaches receive the same image and use Gemini 3.1 Flash-Lite:
 - **Baseline:** one simple caption prompt, independent of the guided pipeline.
 - **HOMER-inspired:** analyze visible facts and conflicting situations, explore three humor angles, generate three grounded candidates, and select one. Planning and candidate selection use two calls; the independent baseline runs in parallel.
 
-This is a small prompt-chain baseline inspired by HOMER, not a reproduction of HOMER and not a RAG implementation. Joke retrieval, larger datasets, and controlled evaluation remain in the saved course project plan. Public A/B positions are randomized once per run; the method mapping and full generation trace remain private. No superiority claim is made from example outputs.
+The image-analysis call also generates a neutral short title and accessible description. Users only select an image and confirm public sharing. Validated metadata and both captions are saved in one transaction before publication; failed runs retain their saved image for retry. Existing comparisons keep their earlier metadata.
+
+This is a small prompt-chain baseline inspired by HOMER, not a reproduction of HOMER and not a RAG implementation. Joke retrieval, larger datasets, and controlled evaluation remain in the saved course project plan. Public A/B positions are randomized once per run. The method mapping is returned only to accounts that have voted on that comparison; full generation traces remain private. No superiority claim is made from example outputs.
 
 ## Data and access
 
 `humor_images` stores image metadata; the public `humor-images` bucket stores sanitized JPEGs. `humor_runs` stores immutable caption pairs and completion state. `humor_votes` stores one final choice per account and run. Private tables contain the prompt chain, usage, selected candidate, and method mapping.
 
-Supabase RLS, table grants, and transactional RPC functions enforce ownership and voting. Aggregate counts cannot be read by anonymous users or authenticated nonvoters, even through direct API calls. Votes are idempotent: repeat submissions retain the first choice. No optimistic poll is shown before the database confirms the vote.
+Supabase RLS, table grants, and transactional RPC functions enforce ownership and voting. Aggregate counts and the method mapping cannot be read by anonymous users or authenticated nonvoters, even through direct API calls. Votes are idempotent: repeat submissions retain the first choice. No optimistic poll or method labels are shown before the database confirms the vote.
 
 Generation needs both the user's verified session and a server-only `HUMOR_WRITER_KEY`. The database stores only its SHA-256 hash. This narrowly scoped key authorizes generation RPCs for the signed-in owner's run; it is not a service-role key. Browser clients cannot write captions or traces directly.
 
@@ -32,7 +34,7 @@ Use Node.js 22.18+ (production uses Node 24), pnpm, and the exact dependency ver
 3. Install with `pnpm install --frozen-lockfile`; run `pnpm dev`.
 4. Run `pnpm test`, `pnpm lint`, and `pnpm build`.
 
-The migrations are incremental on the existing course database. Apply `20261016035931_humorllm_comparisons.sql` after earlier migrations, followed by `20261016043001_exempt_humor_examples_from_member_quota.sql`. Only administrators can flag starter examples, and those do not consume the member allowance. Generate a random 32-byte writer key, set the same secret in Vercel and local environments, then initialize `private.humor_config.writer_key_sha256` to its hex SHA-256 digest through an administrative database connection. Do not commit the key or place it in a `NEXT_PUBLIC_` variable.
+The migrations are incremental on the existing course database. Apply all files in `supabase/migrations` in timestamp order, including `20261016044150_reveal_caption_methods_and_generate_metadata.sql`. Only administrators can flag starter examples, and those do not consume the member allowance. Generate a random 32-byte writer key, set the same secret in Vercel and local environments, then initialize `private.humor_config.writer_key_sha256` to its hex SHA-256 digest through an administrative database connection. Do not commit the key or place it in a `NEXT_PUBLIC_` variable.
 
 `supabase/tests/humorllm.sql` tests owner access, anonymous/nonvoter restrictions, two independent voters, duplicate submissions, generation claims, and immutable publication. Run through an administrative SQL connection; its synthetic accounts, configuration, and data roll back.
 
@@ -40,6 +42,6 @@ The migrations are incremental on the existing course database. Apply `202610160
 
 The existing Vercel project deploys `main`. Production requires all four environment variables above. Google OAuth remains configured through Supabase, using the existing `/auth/callback` redirect. Login returns users to their intended comparison or upload page; upload requires a completed profile. Public galleries remain available after logout.
 
-Verify in production: upload → both generated captions → no counts before voting → persisted choice and counts after voting → reload → logout → protected-route redirect → login → saved choice restored. Also check mobile layout and anonymous API denial. Example images and credits are recorded in `data/humor_examples.json`; example captions must be generated by the real app, never manually fabricated.
+Verify in production: image-only upload → generated title, description and both captions → no counts or methods before voting → persisted choice, counts and correct method labels after voting → reload → logout → protected-route redirect → login → saved choice and labels restored. Also check mobile layout and anonymous API denial. Example images and credits are recorded in `data/humor_examples.json`; example captions must be generated by the real app, never manually fabricated.
 
 The previous food project documentation is preserved in [docs/at-the-table-history.md](docs/at-the-table-history.md). Its records are retained in Supabase, while HumorLLM is the active product. Public post deletion/moderation and durable background jobs are outside this course MVP.
