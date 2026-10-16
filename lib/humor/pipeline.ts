@@ -6,7 +6,7 @@ class ProviderError extends Error {
   readonly diagnostic: ProviderFailure;
   constructor(message: string, diagnostic: ProviderFailure) { super(message); this.diagnostic = diagnostic; }
 }
-export type Step = { stage: string; prompt: string; output?: unknown; usage?: unknown; elapsed_ms: number; error?: string; provider_failure?: ProviderFailure };
+export type Step = { stage: string; prompt: string; output?: unknown; usage?: unknown; elapsed_ms: number; error?: string; provider_failure?: ProviderFailure; validation_failure?: string; invalid_output?: string };
 async function providerError(response: Response) {
   const body = await response.json().catch(() => ({}));
   const raw = body?.error ?? body;
@@ -30,6 +30,7 @@ export async function generatePair(image: Buffer, apiKey: string, options: { req
   const controller = new AbortController();
   async function call<T>(stage: string, prompt: string, schema: object, parse: (v: unknown) => T): Promise<T> {
     const started = Date.now();
+    let rawOutput: string | undefined;
     if (++attempts > 4 || deadline - started < 1500) throw new Error("Caption generation reached its time limit. Please retry.");
     try {
       const response = await request("https://generativelanguage.googleapis.com/v1beta/interactions", {
@@ -45,12 +46,14 @@ export async function generatePair(image: Buffer, apiKey: string, options: { req
       const result = await response.json() as { status?: string; steps?: { type: string; content?: { type: string; text?: string }[] }[]; usage?: unknown };
       if (result.status !== "completed") throw new Error("Gemini did not complete the caption.");
       const raw = result.steps?.filter(s => s.type === "model_output").flatMap(s => s.content ?? []).filter(p => p.type === "text").map(p => p.text ?? "").join("") ?? "";
+      rawOutput = raw;
       const output = JSON.parse(raw); const value = parse(output);
       const step = { stage, prompt, output, usage: result.usage, elapsed_ms: Date.now() - started };
       steps.push(step); await options.onStep?.(step); return value;
     } catch (error) {
       const message = error instanceof Error && /^(Gemini|Caption generation)/.test(error.message) ? error.message : "Gemini returned an incomplete or invalid response. Please retry.";
-      const step = { stage, prompt, error: message, elapsed_ms: Date.now() - started, ...(error instanceof ProviderError ? { provider_failure: error.diagnostic } : {}) }; steps.push(step); await options.onStep?.(step);
+      const validation = error instanceof SyntaxError ? "invalid_json" : error instanceof Error && /^(Invalid AI|Duplicate detail|Ungrounded|Invalid caption)/.test(error.message) ? error.message : undefined;
+      const step = { stage, prompt, error: message, elapsed_ms: Date.now() - started, ...(error instanceof ProviderError ? { provider_failure: error.diagnostic } : {}), ...(rawOutput !== undefined ? { invalid_output: rawOutput.slice(0, 12000), validation_failure: validation } : {}) }; steps.push(step); await options.onStep?.(step);
       throw error instanceof ProviderError ? error : new Error(message);
     }
   }
