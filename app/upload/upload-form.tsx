@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { prepareUploadImage, validateUploadSource } from "@/lib/humor/upload-image";
 import { uploadHumor } from "@/app/humor/actions";
 import { startGeneration } from "@/app/humor/run-progress";
 export function UploadForm() {
@@ -12,13 +13,17 @@ export function UploadForm() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if(stage) return; setError("");
     const form=new FormData(event.currentTarget); if(!key.current) key.current=crypto.randomUUID(); form.set("request_key",key.current);
-    setStage("Uploading your image…");
-    try { const result=await uploadHumor(form); if(!result.runId) throw new Error(result.error);
+    const file = form.get("photo");
+    if (!(file instanceof File)) { setError("Choose an image."); return; }
+    const invalid = validateUploadSource(file);
+    if (invalid) { setError(invalid); return; }
+    setStage("Preparing your image…");
+    try { form.set("photo", await prepareUploadImage(file)); setStage("Uploading your image…"); const result=await uploadHumor(form); if(!result.runId) throw new Error(result.error);
       setRunId(result.runId); setStage("Reading your image and writing captions…"); await startGeneration(result.runId); router.push(`/runs/${result.runId}`); router.refresh();
-    } catch(e) { setError(e instanceof Error ? e.message : "The request was interrupted. Please try again."); setStage(""); }
+    } catch(e) { setError(e instanceof Error && !/Minified React|Server Components render|digest|Body exceeded/.test(e.message) ? e.message : "The upload was interrupted. Please refresh and try again with a smaller image."); setStage(""); }
   }
   return <form className="profile-form humor-upload" onSubmit={submit}>
-    <label className="image-drop">Your image<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required disabled={Boolean(stage)||Boolean(runId)} onChange={e=>{const file=e.target.files?.[0];setPreview(file?URL.createObjectURL(file):"");key.current="";}} /><span className="fine-print">JPEG, PNG or WebP · up to 2 MB · still images only</span></label>
+    <label className="image-drop">Your image<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required disabled={Boolean(stage)||Boolean(runId)} onChange={e=>{const file=e.target.files?.[0];setError(file ? validateUploadSource(file) ?? "" : "");setPreview(file && !validateUploadSource(file)?URL.createObjectURL(file):"");key.current="";}} /><span className="fine-print">JPEG, PNG or WebP · up to 20 MB · under 20 megapixels · larger files are resized automatically</span></label>
     {preview&&<div className="upload-preview"><Image src={preview} alt="Your selected image preview" width={600} height={400} unoptimized /></div>}
     <p className="fine-print">Gemini will create a short title and describe what’s visible in your image, along with both captions. The description also becomes the image’s accessible text.</p>
     <label className="public-confirmation"><input name="public_ack" type="checkbox" required disabled={Boolean(stage)||Boolean(runId)} /><span>I can share this image publicly. It will be sent to Google Gemini, and the completed comparison will appear in the community gallery.</span></label>
