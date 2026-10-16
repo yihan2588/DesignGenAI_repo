@@ -1,97 +1,45 @@
-# At the Table
+# HumorLLM
 
-A food photo journal built in the same Next.js app used for Assignment #1. The home page reads photo records from Supabase and renders a responsive card gallery.
+A blind, paired image-caption comparison app built with Next.js, Google Gemini, and Supabase. Visitors browse real example runs and community uploads. Signed-in users upload images, choose their preferred caption, and unlock the current poll only after their vote has been saved.
 
-## Data design
+Production: https://design-gen-ai-repo.vercel.app
 
-PostgreSQL stores one row per photo in `public.food_photos`: its title, description, accessibility text, display order, and `storage_path`. Supabase Storage holds the JPEG bytes in a public `food-photos` bucket. The app fetches the rows through Supabase's Data API with a legacy anon key and builds image URLs from the stored paths. It does not bundle or hardcode the images in the page.
+## Caption generation
 
-The gallery table has row level security (RLS) enabled and read policies for visitors and signed-in users. Visitors cannot insert, change, or delete photo records. Signed-in members can publish their own photos through **Share a photo**. Public bucket downloads are intentional; uploads require ownership policies.
+Both approaches receive the same image and use Gemini 3.1 Flash-Lite:
 
-Week 3 adds Google sign-in, a profile editor, and `/members` (My table). Signed-out direct visits to `/profile` or `/members` redirect to `/login`. New accounts must fill in both names before viewing My table; the home page also prompts unfinished profiles.
+- **Baseline:** one simple caption prompt, independent of the guided pipeline.
+- **HOMER-inspired:** analyze visible facts and conflicting situations, explore three humor angles, generate three grounded candidates, and select one. Planning and candidate selection use two calls; the independent baseline runs in parallel.
 
-`public.profiles.id` is both a primary key and a foreign key to `auth.users.id`. An AFTER INSERT trigger creates one profile per new account, with nullable names. Profile photos live in the private `avatars` Storage bucket, under the owner's UUID directory. Only an object path is stored in the profile; downloads use five-minute signed URLs.
+This is a small prompt-chain baseline inspired by HOMER, not a reproduction of HOMER and not a RAG implementation. Joke retrieval, larger datasets, and controlled evaluation remain in the saved course project plan. Public A/B positions are randomized once per run; the method mapping and full generation trace remain private. No superiority claim is made from example outputs.
 
-## Run locally
+## Data and access
 
-Use Node.js 22.18 or later and pnpm 11.19.0 (the focused tests use Node's built-in TypeScript stripping).
+`humor_images` stores image metadata; the public `humor-images` bucket stores sanitized JPEGs. `humor_runs` stores immutable caption pairs and completion state. `humor_votes` stores one final choice per account and run. Private tables contain the prompt chain, usage, selected candidate, and method mapping.
 
-1. Copy `.env.example` to `.env.local` and replace both values with your Supabase project's URL and **legacy anon** key. `.env.local` is ignored by Git.
-2. Run `pnpm install` and `pnpm dev`.
-3. Open <http://localhost:3000>.
+Supabase RLS, table grants, and transactional RPC functions enforce ownership and voting. Aggregate counts cannot be read by anonymous users or authenticated nonvoters, even through direct API calls. Votes are idempotent: repeat submissions retain the first choice. No optimistic poll is shown before the database confirms the vote.
 
-Run `pnpm test`, `pnpm lint`, and `pnpm build` before deployment. Database behavior tests are in `supabase/tests/auth_profiles.sql`; run them through an administrative SQL connection. They use temporary test accounts and roll back all changes.
+Generation needs both the user's verified session and a server-only `HUMOR_WRITER_KEY`. The database stores only its SHA-256 hash. This narrowly scoped key authorizes generation RPCs for the signed-in owner's run; it is not a service-role key. Browser clients cannot write captions or traces directly.
 
-The app reads these variables only on the server. The anon key is still a public credential by design; RLS and table grants control access. Never substitute a service role or secret key.
+Each run allows three normal Gemini calls and at most one repair call, with a 90-second pipeline deadline. Quotas: one upload/retry per 30 seconds, ten per rolling 24 hours per account, and 100 claimed generation runs per rolling 24 hours for the project. Failed runs remain visible to their owner; retry creates a new run without rewriting earlier comparisons. Generation is request-bound, so an interrupted request may require an explicit retry.
 
-## Database setup
+## Local development
 
-Create a public Storage bucket named `food-photos` in the Supabase dashboard. Prepare copies of the 12 JPEGs from the course's `food_pic` folder, remove EXIF metadata, and name the copies `food-01.jpg` through `food-12.jpg` in the order recorded by [`data/food_photos.json`](data/food_photos.json). Upload those copies to the bucket. The file lists each card's metadata and storage path for reproducible seeding.
+Use Node.js 22.18+ (production uses Node 24), pnpm, and the exact dependency versions in the lockfile.
 
-Create the metadata table with this SQL in the Supabase SQL editor:
+1. Copy `.env.example` to ignored `.env.local`.
+2. Set `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GEMINI_API_KEY`, and `HUMOR_WRITER_KEY` on the server only.
+3. Install with `pnpm install --frozen-lockfile`; run `pnpm dev`.
+4. Run `pnpm test`, `pnpm lint`, and `pnpm build`.
 
-```sql
-create table public.food_photos (
-  id bigint generated always as identity primary key,
-  title text not null check (char_length(title) > 0),
-  description text not null default '',
-  alt_text text not null check (char_length(alt_text) > 0),
-  storage_path text not null unique,
-  sort_order integer not null unique check (sort_order > 0),
-  created_at timestamptz not null default now()
-);
+The migrations are incremental on the existing course database. Apply `20261016035931_humorllm_comparisons.sql` after earlier migrations. Generate a random 32-byte writer key, set the same secret in Vercel and local environments, then initialize `private.humor_config.writer_key_sha256` to its hex SHA-256 digest through an administrative database connection. Do not commit the key or place it in a `NEXT_PUBLIC_` variable.
 
-alter table public.food_photos enable row level security;
-revoke all on public.food_photos from anon, authenticated;
-grant usage on schema public to anon;
-grant select on public.food_photos to anon;
+`supabase/tests/humorllm.sql` tests owner access, anonymous/nonvoter restrictions, two independent voters, duplicate submissions, generation claims, and immutable publication. Run through an administrative SQL connection; its synthetic accounts, configuration, and data roll back.
 
-create policy "Public gallery read" on public.food_photos
-  for select to anon using (true);
-```
+## Deployment and review
 
-For new Supabase projects, a table created with SQL may not be automatically exposed to the Data API. The explicit `GRANT SELECT` above is required; verify exposure under Integrations → Data API if the REST query returns a permission error.
+The existing Vercel project deploys `main`. Production requires all four environment variables above. Google OAuth remains configured through Supabase, using the existing `/auth/callback` redirect. Login returns users to their intended comparison or upload page; upload requires a completed profile. Public galleries remain available after logout.
 
-The deployed page queries `food_photos` with `order=sort_order.asc`. It shows a clear message if the database is unavailable and an empty state if no rows exist.
+Verify in production: upload → both generated captions → no counts before voting → persisted choice and counts after voting → reload → logout → protected-route redirect → login → saved choice restored. Also check mobile layout and anonymous API denial. Example images and credits are recorded in `data/humor_examples.json`; example captions must be generated by the real app, never manually fabricated.
 
-## Deploy
-
-Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` to the Vercel project's Production environment. Push this repository to GitHub; the connected Vercel project should create a production deployment from `main`. In Settings → Deployment Protection, turn off Vercel Authentication for public access. Verify the new deployment's unique URL and image loading in an Incognito window before submission.
-
-## Week 3 setup in the existing projects
-
-1. Apply `supabase/migrations/20261002021930_food_gallery_auth.sql` once to the existing Homework 2 database. It creates profiles, private trigger functions, a backfill, grants/RLS, and the private avatar bucket/policies. It depends on the Homework 2 `food_photos` table. This repository contains the incremental migration, not a complete bootstrap of the preexisting database.
-2. In Google Cloud, create a Web application OAuth client. Its authorized redirect URI is `https://<supabase-project-ref>.supabase.co/auth/v1/callback`. Google returns to Supabase first. Configure only basic sign-in scopes: openid, email, and profile.
-3. Put the Google client ID and secret in Supabase → Authentication → Sign In / Providers → Google and enable the provider. Keep the secret out of Git and application/browser environment variables.
-4. In Supabase → Authentication → URL Configuration, set the Site URL to the production app and add each allowed app URL ending in `/auth/callback`, including localhost and the exact deployment URL submitted for grading. The app starts OAuth using exactly that path, without a custom next query parameter. Provider response parameters such as code are expected.
-5. Ensure the Google consent app audience permits the reviewer to sign in. Testing mode requires explicit test users; an external app using only basic identity scopes can be published when ready.
-
-Auth runs on the server using `@supabase/ssr` and the existing environment variables, so no browser client or extra public environment variables are needed. `proxy.ts` refreshes session cookies; pages and actions validate identity independently. Auth responses are private and uncached. RLS stays on even though the assignment permits disabling it.
-
-Photo updates accept JPEG/PNG/WebP up to 2 MiB and verify MIME signatures. Each upload uses a new random key, then conditionally updates the profile based on its previous `updated_at` value. Failed saves attempt to remove the new object; successful saves attempt to remove the old object. Cleanup is best effort: crashes or failed deletes can leave unused objects. A durable cleanup job and full image decoding/re-encoding are future hardening, not implemented guarantees. Account deletion is not exposed by this app.
-
-Before submission verify: first Google signup creates a profile; missing names prompt onboarding; names save and persist; a photo uploads and remains visible after refresh; name/photo replacement works; My table renders only after login/onboarding; sign-out restores the public UI; a fresh Incognito visitor can view the public gallery but cannot view member/profile content. Course-portal submission is a separate action.
-
-## Public gallery uploads
-
-Apply `supabase/migrations/20261002141153_public_gallery_uploads.sql` after the Auth migration. It adds nullable `owner_id` for compatibility with the original photos, defaults new ownership to `auth.uid()`, and uses a PostgreSQL sequence for distinct display order under concurrent uploads. Clients can insert only title, caption, alt text, and path; they cannot choose the owner/order or edit existing records. Row policies require an existing object in the uploader's UUID directory. The existing JPEG-only, 2 MiB public bucket is reused.
-
-Members with completed profiles can visit `/upload` or choose **Share a photo**. The form requests a still JPEG/PNG/WebP up to 2 MiB and 20 megapixels, a title, optional caption, screen-reader description, and an explicit public-visibility confirmation. The server validates the session and fields, decodes with Sharp, applies orientation, resizes to at most 2000 pixels per side, strips metadata, converts to JPEG, uploads under a random key, and inserts its metadata. The gallery refreshes and links to the new card.
-
-If inserting metadata fails, the action attempts to remove its unpublished object. Storage policies allow that cleanup but prohibit overwriting objects and deleting published gallery files. This is an upload feature; public post editing/deletion, moderation, application-level rate limiting, and durable orphan cleanup are not implemented. Removal requests use the contact on the form/privacy page. Direct calls to Supabase are governed by grants/RLS and bucket limits; application decoding and the UI confirmation apply to submissions through this app.
-
-Verify with `pnpm test`, `pnpm lint`, `pnpm build`, and `supabase/tests/gallery_uploads.sql` on an administrative SQL connection. Both SQL regression scripts roll back their synthetic rows; sequences can retain gaps after rollback. Browser verification should cover anonymous `/upload` gating, public-visibility confirmation, a signed-in upload, the resulting public card/image after reload, and visibility in Incognito. Supabase's security advisor currently reports a preexisting leaked-password-protection warning; this app offers Google sign-in, not a password signup form.
-
-## Week 4: AI descriptions and accuracy votes
-
-The gallery helps a college student exploring new food cultures take a second look at a plate. It keeps the original visual style and pairs each photo with two short AI sentences: visible ingredients and likely flavors, then a qualified cultural-region classification. A single introduction explains accuracy voting above the cards. It treats taste and origin as guesses, rather than verified recipe facts.
-
-Photo titles are fixed metadata. `20261009042201_concise_food_photo_titles.sql` corrects ten headings in the original collection, matching their seed paths and previous titles; `data/food_photos.json` contains the corrected seed titles. New uploads keep the user's submitted title. Gemini generation only adds descriptions and never changes a photo title.
-
-The initial 14 descriptions were authored by the Codex assistant after visual inspection, without web research; their reproducible source and exact prompt are in `data/ai_captions.json`. Original photos and user-written text are preserved. Logged-in users can generate a fresh description for any public photo, including their own uploads, using Gemini 3.1 Flash-Lite. The server reads `GEMINI_API_KEY`; store it as a Production Secret in the existing Vercel project. Keep it out of browser variables and source control. Generation sends only the public photo and a fixed prompt to Google, with no search tools. Free-tier inputs may be used to improve Google products.
-
-Apply `supabase/migrations/20261009033205_ai_food_captions_and_votes.sql` after the earlier migrations. `food_captions` stores the two output sentences, exact prompt, model, photo, creator, and generation request. Outputs are immutable. The security-invoker `latest_food_captions` view exposes each photo's newest description while preserving previous versions and their votes. Public reads exclude creator identifiers and private request records.
-
-`caption_votes` stores one rating per user and caption. The first vote inserts a row; changing direction updates only that user's value. RLS prevents anonymous voting and cross-user reads or writes. The app verifies the session in each Server Action. New `caption_generation_requests` have owner-only access and cannot be edited or deleted by clients. A transaction-locked quota permits at most one attempt per 30 seconds and ten per rolling 24 hours per account, including failed attempts. The reservation prevents concurrent requests from bypassing this limit. There is no automatic provider retry or paid fallback. This is an application limit, not a guarantee of zero provider charges or protection against many separate accounts.
-
-Validation: run `pnpm test`, `pnpm lint`, `pnpm build`, and the three SQL regression files under `supabase/tests` through an administrative connection. They roll back synthetic accounts and rows. Browser checks must cover signed-out access, both vote directions and persistence, generation followed by a vote on the new caption, saved prompts, provider errors, and mobile layout. Deployment and course-portal submission remain separate actions.
+The previous food project documentation is preserved in [docs/at-the-table-history.md](docs/at-the-table-history.md). Its records are retained in Supabase, while HumorLLM is the active product. Public post deletion/moderation and durable background jobs are outside this course MVP.

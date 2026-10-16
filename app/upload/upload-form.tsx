@@ -1,35 +1,30 @@
 "use client";
-
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { useActionState, useState } from "react";
-import { uploadFoodPhoto, type UploadState } from "@/app/upload/actions";
-import { GALLERY_IMAGE_TYPES, MAX_GALLERY_BYTES } from "@/lib/gallery-validation";
-
+import { useRouter } from "next/navigation";
+import { uploadHumor } from "@/app/humor/actions";
+import { startGeneration } from "@/app/humor/run-progress";
 export function UploadForm() {
-  const [fields, setFields] = useState({ title: "", description: "", alt_text: "" });
-  const [state, action, pending] = useActionState(async (previous: UploadState, form: FormData) => {
-    const result = await uploadFoodPhoto(previous, form);
-    if (result.photoId) setFields({ title: "", description: "", alt_text: "" });
-    return result;
-  }, {});
-  const [clientError, setClientError] = useState<string | null>(null);
-  return <form action={action} className="profile-form upload-form" onSubmit={(event) => {
-    const photo = new FormData(event.currentTarget).get("photo");
-    if (!(photo instanceof File) || photo.size === 0 || photo.size > MAX_GALLERY_BYTES || !GALLERY_IMAGE_TYPES.includes(photo.type)) {
-      event.preventDefault();
-      setClientError("Choose a JPEG, PNG, or WebP photo up to 2 MB.");
-    } else setClientError(null);
-  }}>
-    <label>Food photo<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required aria-describedby="upload-photo-help" /></label>
-    <p id="upload-photo-help" className="fine-print">Still JPEG, PNG, or WebP, up to 2 MB and 20 megapixels. We resize large photos and remove embedded camera metadata.</p>
-    <label>Title<input name="title" maxLength={120} required placeholder="A meal worth remembering" value={fields.title} onChange={(event) => setFields({ ...fields, title: event.target.value })} /></label>
-    <label>Caption (optional)<textarea name="description" maxLength={1000} rows={3} placeholder="The story behind your plate" value={fields.description} onChange={(event) => setFields({ ...fields, description: event.target.value })} /></label>
-    <label>Image description<input name="alt_text" maxLength={300} required aria-describedby="alt-help" placeholder="A bowl of noodles with greens and red broth" value={fields.alt_text} onChange={(event) => setFields({ ...fields, alt_text: event.target.value })} /></label>
-    <p id="alt-help" className="fine-print">Describe what is visible for people using a screen reader.</p>
-    <label className="public-confirmation"><input name="publish_publicly" type="checkbox" required /> <span>I want to publish this photo and its text to the public gallery.</span></label>
-    <p className="fine-print">Anyone can view or download published photos, including people without an account. Upload a photo you have permission to share. For removal, contact <a href="mailto:yihan2588@gmail.com">Yihan Wu</a>.</p>
-    {(clientError || state.error) && <p className="form-message" role="alert">{clientError || state.error}</p>}
-    {state.photoId && <p className="success-message" role="status">Your photo is now in the public gallery. <Link href={`/#photo-${state.photoId}`}>View your photo →</Link></p>}
-    <button className="primary-button" disabled={pending}>{pending ? "Publishing…" : "Publish photo"}</button>
+  const router=useRouter(); const key=useRef(""); const [preview,setPreview]=useState("");
+  const [stage,setStage]=useState(""); const [error,setError]=useState(""); const [runId,setRunId]=useState("");
+  useEffect(()=>()=>{if(preview) URL.revokeObjectURL(preview);},[preview]);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if(stage) return; setError("");
+    const form=new FormData(event.currentTarget); if(!key.current) key.current=crypto.randomUUID(); form.set("request_key",key.current);
+    setStage("Uploading your image…");
+    try { const result=await uploadHumor(form); if(!result.runId) throw new Error(result.error);
+      setRunId(result.runId); setStage("Writing both captions…"); await startGeneration(result.runId); router.push(`/runs/${result.runId}`); router.refresh();
+    } catch(e) { setError(e instanceof Error ? e.message : "The request was interrupted. Please try again."); setStage(""); }
+  }
+  return <form className="profile-form humor-upload" onSubmit={submit}>
+    <label className="image-drop">Your image<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required disabled={Boolean(stage)||Boolean(runId)} onChange={e=>{const file=e.target.files?.[0];setPreview(file?URL.createObjectURL(file):"");key.current="";}} /><span className="fine-print">JPEG, PNG or WebP · up to 2 MB · still images only</span></label>
+    {preview&&<div className="upload-preview"><Image src={preview} alt="Your selected image preview" width={600} height={400} unoptimized /></div>}
+    <label>A short title<input name="title" placeholder="An excellent use of office hours" maxLength={100} required disabled={Boolean(stage)||Boolean(runId)} /></label>
+    <label>Describe what’s visible<textarea name="alt_text" placeholder="A cat asleep across an open laptop." maxLength={300} rows={2} required disabled={Boolean(stage)||Boolean(runId)} /><span className="fine-print">Used as accessible image text. The AI looks at the image itself.</span></label>
+    <label className="public-confirmation"><input name="public_ack" type="checkbox" required disabled={Boolean(stage)||Boolean(runId)} /><span>I can share this image publicly. It will be sent to Google Gemini, and the completed comparison will appear in the community gallery.</span></label>
+    {error&&<p className="form-message" role="alert">{error}</p>}
+    {runId&&!stage ? <Link className="primary-button" href={`/runs/${runId}`}>Open saved run and retry ↗</Link> : <button className="primary-button" disabled={Boolean(stage)}>{stage||"Generate two captions ↗"}</button>}
+    <p className="fine-print" role="status">{stage ? "Keep this page open while we finish. Your saved run is also available in My runs." : "One image, two different approaches. You choose what lands."}</p>
   </form>;
 }

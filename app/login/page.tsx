@@ -2,22 +2,9 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { SiteHeader } from "@/app/site-header";
 import { signInWithGoogle } from "@/app/auth/actions";
-
-export const dynamic = "force-dynamic";
-
-export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  if (await getUser()) redirect("/members");
-  const { error } = await searchParams;
-  return <div className="site-shell"><SiteHeader /><main id="main-content" className="account-main">
-    <p className="eyebrow">A SEAT AT THE TABLE</p>
-    <h1 className="account-title">Welcome<br /><em>to the table.</em></h1>
-    <p className="account-copy">Sign in to make this little food journal feel like yours. Set up your profile and visit your member space.</p>
-    <div className="account-card">
-      <h2>Come on in</h2>
-      <p>Use your Google account to sign up or sign in.</p>
-      {error && <p className="form-message" role="alert">{error === "callback" ? "Sign-in could not be completed. Please start again in this browser." : "Google sign-in is temporarily unavailable. Please try again."}</p>}
-      <form action={signInWithGoogle}><button className="primary-button">Continue with Google <span aria-hidden="true">↗</span></button></form>
-      <p className="fine-print">We use your Google account to sign you in. You choose the name and photo on your profile.</p>
-    </div>
-  </main></div>;
+import { safeReturn } from "@/lib/humor/schemas";
+export const dynamic="force-dynamic";
+export default async function Login({searchParams}:{searchParams:Promise<{error?:string;next?:string}>}) {
+  const {error,next}=await searchParams; const destination=safeReturn(next); if(await getUser()) redirect(destination);
+  return <div className="site-shell humor-shell"><SiteHeader/><main id="main-content" className="account-main"><p className="eyebrow">YOUR TAKE MATTERS</p><h1 className="account-title">Join the<br/><em>conversation.</em></h1><p className="account-copy">Sign in to pick your favorite captions, reveal the polls, and turn your own images into comparisons.</p><div className="account-card"><h2>One account. Your own point of view.</h2>{error&&<p className="form-message" role="alert">Sign-in could not be completed. Please try again.</p>}<form action={signInWithGoogle}><input type="hidden" name="next" value={destination}/><button className="primary-button">Continue with Google ↗</button></form><p className="fine-print">Your individual votes stay private. Only poll totals are shared.</p></div></main></div>;
 }

@@ -3,6 +3,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isProfileComplete } from "@/lib/profile-validation";
+import { safeReturn } from "@/lib/humor/schemas";
 
 export type Profile = {
   id: string;
@@ -19,9 +20,9 @@ export const getUser = cache(async () => {
   return error ? null : data.user;
 });
 
-export async function requireUser() {
+export async function requireUser(next = "/members") {
   const user = await getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect(`/login?next=${encodeURIComponent(safeReturn(next))}`);
   return user;
 }
 
@@ -34,8 +35,8 @@ export async function getProfile(userId: string): Promise<Profile> {
 }
 
 export async function requireCompleteProfile() {
-  const user = await requireUser();
+  const user = await requireUser("/upload");
   const profile = await getProfile(user.id);
-  if (!isProfileComplete(profile)) redirect("/profile");
+  if (!isProfileComplete(profile)) redirect("/profile?next=/upload");
   return { user, profile };
 }

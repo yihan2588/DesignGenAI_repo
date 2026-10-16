@@ -4,9 +4,10 @@ import { useActionState } from "react";
 import { saveProfile } from "@/app/profile/actions";
 import type { Profile } from "@/lib/auth";
 
-export function ProfileForm({ profile }: { profile: Profile }) {
+export function ProfileForm({ profile, next }: { profile: Profile; next?: string }) {
   const [state, action, pending] = useActionState(saveProfile, {});
   return <form action={action} className="profile-form">
+    {next && <input type="hidden" name="next" value={next} />}
     <div className="name-fields">
       <label>First name<input name="first_name" autoComplete="given-name" defaultValue={profile.first_name ?? ""} maxLength={80} required /></label>
       <label>Last name<input name="last_name" autoComplete="family-name" defaultValue={profile.last_name ?? ""} maxLength={80} required /></label>

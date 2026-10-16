@@ -2,6 +2,8 @@
 
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { safeReturn } from "@/lib/humor/schemas";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser, getProfile } from "@/lib/auth";
 import { avatarExtension, MAX_AVATAR_BYTES, validateNames } from "@/lib/profile-validation";
@@ -41,5 +43,6 @@ export async function saveProfile(_previous: ProfileState, formData: FormData): 
   revalidatePath("/profile");
   revalidatePath("/members");
   revalidatePath("/");
-  return { success: "Profile saved. Your seat at the table is ready." };
+  if (formData.get("next")) redirect(safeReturn(formData.get("next")));
+  return { success: "Profile saved. You’re ready to compare." };
 }

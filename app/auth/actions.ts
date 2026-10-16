@@ -1,13 +1,15 @@
 "use server";
 
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requestOrigin } from "@/lib/request-origin";
+import { safeReturn } from "@/lib/humor/schemas";
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(form: FormData) {
   const requestHeaders = await headers();
   const origin = requestOrigin(requestHeaders);
+  (await cookies()).set("humor_return",safeReturn(form.get("next")),{httpOnly:true,secure:origin.startsWith("https:"),sameSite:"lax",path:"/",maxAge:600});
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

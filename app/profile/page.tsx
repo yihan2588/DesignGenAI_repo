@@ -5,13 +5,14 @@ import { isProfileComplete } from "@/lib/profile-validation";
 import { createClient } from "@/lib/supabase/server";
 import { SiteHeader } from "@/app/site-header";
 import { ProfileForm } from "./profile-form";
+import { safeReturn } from "@/lib/humor/schemas";
 
 export const dynamic = "force-dynamic";
 
-export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const user = await requireUser();
   const profile = await getProfile(user.id);
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
   const supabase = await createClient();
   const { data: avatar } = profile.avatar_path
     ? await supabase.storage.from("avatars").createSignedUrl(profile.avatar_path, 300)
@@ -26,8 +27,8 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
         {avatar ? <Image src={avatar.signedUrl} alt="Your profile photo" width={88} height={88} className="avatar" unoptimized /> : <span className="avatar avatar-placeholder" aria-label="No profile photo">{profile.first_name?.slice(0, 1).toUpperCase() || "?"}</span>}
         <div><h2>Your profile</h2><p className="account-email">{user.email}</p></div>
       </div>
-      <ProfileForm profile={profile} />
+      <ProfileForm profile={profile} next={next ? safeReturn(next) : undefined} />
     </section>
-    {isProfileComplete(profile) && <Link className="member-link" href="/members">Visit my table →</Link>}
+    {isProfileComplete(profile) && <Link className="member-link" href="/members">View my runs →</Link>}
   </main></div>;
 }
