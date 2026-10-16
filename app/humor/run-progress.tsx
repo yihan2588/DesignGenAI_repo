@@ -12,11 +12,11 @@ export async function startGeneration(id: string) {
 export function RunProgress({ id, status, expired, message }: { id: string; status: string; expired: boolean; message: string | null }) {
   const router = useRouter(); const [pending, start] = useTransition(); const [error, setError] = useState("");
   function run() { setError(""); start(async () => {
+    let target = id;
     try {
-      let target = id;
       if (status === "failed" || expired) { const result = await retryHumor(id); if (!result.runId) throw new Error(result.error); target = result.runId; }
       await startGeneration(target); router.push(`/runs/${target}`); router.refresh();
-    } catch (e) { setError(e instanceof Error ? e.message : "Please retry."); router.refresh(); }
+    } catch (e) { setError(e instanceof Error ? e.message : "Please retry."); if (target !== id) router.replace(`/runs/${target}`); router.refresh(); }
   }); }
   return <section className="account-card progress-card"><p className="eyebrow">{pending ? "WRITING CAPTIONS" : status === "failed" || expired ? "LET’S TRY THAT AGAIN" : "YOUR COMPARISON"}</p><h2>{pending ? "Two takes are on the way." : status === "pending" ? "Your image is ready." : status === "failed" || expired ? "This run didn’t finish." : "Captions are being written."}</h2>
     <p role="status">{pending ? "We’re creating a simple caption and a second take from visual planning. You can keep this page open." : message ?? (expired ? "The previous request was interrupted. Your image is saved." : "Your image is safely saved. Both captions will appear together.")}</p>

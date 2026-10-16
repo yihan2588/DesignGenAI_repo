@@ -11,7 +11,7 @@ export function VotePanel({ runId, signedIn, initialPoll }: { runId: string; sig
     catch { setError("Your connection was interrupted. Please try again."); }
   }); }
   if (!signedIn) return <div className="vote-gate"><p>Your first instinct counts.</p><Link href={`/login?next=${encodeURIComponent(`/runs/${runId}`)}`} className="outline-button">Sign in to choose and reveal results <span aria-hidden="true">↗</span></Link></div>;
-  return <div className="vote-panel" aria-label="Choose your preferred caption">
+  return <div className="vote-panel" aria-label="Choose your preferred caption" aria-live="polite">
     {poll ? <section className="poll" aria-label="Public opinion">
       <div className="poll-heading"><h3>Public opinion</h3><span>You chose {poll.choice}</span></div>
       {(["A", "B"] as const).map(choice => { const count = choice === "A" ? poll.a : poll.b; const pct = poll.total ? Math.round(count / poll.total * 100) : 0;
