@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (run.status === "ready") return reply({ status: "ready", runId: id });
   const key = process.env.HUMOR_WRITER_KEY;
   let mode: "mvp" | "worker";
-  try { mode = pipelineMode(process.env.HUMOR_PIPELINE_MODE); }
+  try { mode = pipelineMode(process.env.HUMOR_PIPELINE_MODE, process.env.VERCEL_ENV); }
   catch { return reply({ error: "Caption generation is temporarily unavailable. Please try again later." }, 503); }
   if (mode === "worker") {
     if (!key) return reply({ error: "Caption generation is temporarily unavailable. Please try again later." }, 503);

@@ -1,4 +1,6 @@
-export function pipelineMode(value: string | undefined): "mvp" | "worker" {
+export function pipelineMode(value: string | undefined, environment?: string): "mvp" | "worker" {
+  // A release preview must never silently substitute the production MVP.
+  if (environment === "preview" && value !== "worker") throw new Error("Preview requires the new pipeline.");
   if (value === undefined || value === "" || value === "mvp") return "mvp";
   if (value === "worker") return "worker";
   throw new Error("Invalid HUMOR_PIPELINE_MODE.");

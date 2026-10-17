@@ -7,3 +7,8 @@ test('worker mode is opt-in and configuration errors fail closed',()=>{
  assert.equal(enqueueReply(null,'run').status,202);
  const failed=enqueueReply({message:'internal database data'},'run');assert.equal(failed.status,503);assert.ok(!JSON.stringify(failed).includes('internal'));
 });
+test('a hosted preview requires the new pipeline instead of silently falling back to MVP',()=>{
+ assert.equal(pipelineMode('worker','preview'),'worker');
+ for(const value of [undefined,'','mvp','unknown']) assert.throws(()=>pipelineMode(value,'preview'),/Preview requires/);
+ assert.equal(pipelineMode(undefined,'production'),'mvp');
+});

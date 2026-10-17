@@ -28,4 +28,29 @@ Private tables have RLS with no client policies by design and are accessed throu
 - 28 JavaScript tests pass, including isolated PostgreSQL publication, wrong-owner denial, stale tokens, per-run attempts, spend reservations and persisted vote gating.
 - Lint and the Next.js production build pass.
 - Local build-time export, identity verification, pinned encoder download and production index load pass for all 828 sources.
-- Hosted build and authenticated browser verification are in progress. Production is not switched based on these local checks.
+- Vercel preview `dpl_JAVWAZavYs1BESXR2y7cLBEmcSke` is READY at commit `2a2c3ed`. The hosted Linux build validates all 828 source identities, packages the pinned encoder and uses the large-function beta.
+- Preview homepage returns 200; anonymous run status and generation return 401; public `/work`, `/health` and the queue callback return 404. Runtime logs show no errors for those checks.
+- The database permits only the operator’s two existing accounts during canary verification. Production web routing remains on MVP commit `13edf43`.
+- Authenticated upload-to-vote verification is pending university SSO authorization. Selecting the existing Columbia Google account redirects to Columbia CAS; automatic approval review blocks observing that additional origin until the user authorizes it. No university credentials were read or submitted. The release is not yet approved for public activation.
+
+
+## Image delivery correction
+
+The first preview's public homepage returned 200 while its generated `/_next/image` requests returned the Next.js 404 HTML page. Browser checks confirmed `complete=true` with `naturalWidth=0`; the original Supabase asset returned 200 JPEG, and the production MVP optimizer returned 200 JPEG for the same source. The initial access checks did not verify image decoding and missed this regression.
+
+Commit `b09868c` configures Next Image to serve already resized/re-encoded Supabase assets directly. This avoids the failing optimizer endpoint, at the cost of serving the prepared original instead of a viewport-specific transformed image. Vercel deployment `dpl_HeBpKxK4wG2BFSnMVi7s5NznFJtE` is READY. Use the branch URL `https://design-gen-ai-repo-git-humorllm-8c2fcb-yihan2588-5788s-projects.vercel.app`; the earlier immutable deployment URL still contains the old code.
+
+The production build, lint and all 28 JavaScript tests pass. Real browser verification of the fixed local build and hosted branch found all twelve gallery images decoded after scrolling, no broken images, and no horizontal overflow. The hosted wooden-stocks detail page decoded both images at natural width 700; anonymous method/poll gating remained visible. The hosted browser error log was empty for these checks. Private receipts and screenshots are in `.local/humorllm/launch-20261016/image-*`.
+
+This does not complete authenticated upload, queue execution, fallback publication or voting verification. Automatic approval review also rejected a fresh Google OAuth attempt because it might reach the previously unapproved Columbia CAS origin. No sign-in protection was bypassed. Production has not been switched.
+
+
+## Preview authentication routing audit
+
+The two candle runs (`41ddf52d-5b76-4e11-b172-b2ee04f4efeb` and `8783c757-b2e9-4262-9c0d-8024be088829`) store `humor-mvp-3`, Flash-Lite and only baseline/planning/candidates stages. Neither has a worker job. The preview branch environment is confirmed `HUMOR_PIPELINE_MODE=worker`.
+
+Supabase edge logs at 2026-10-17 02:29 UTC show both the incoming browser referrer and requested `redirect_to` host were the preview branch hostname. The corresponding Auth logs selected the production hostname as the effective referrer. Supabase Auth's redirect validation falls back to Site URL when the requested callback is not allowed. This explains how preview sign-in led to production generation and why those results appeared in the shared feed. The dashboard allowlist still needs inspection and correction; the expired dashboard session prevented reading it.
+
+The intended callback addition is exactly `https://design-gen-ai-repo-git-humorllm-8c2fcb-yihan2588-5788s-projects.vercel.app/auth/callback`, preserving the production Site URL and every existing entry. Do not add a broad wildcard or change the global Site URL. Browser approval review rejected the existing GitHub sign-in to the Supabase dashboard; authorization is required before that sign-in and the callback edit. The prior Google/Columbia CAS sign-in gate also remains unresolved.
+
+The generation route now refuses MVP configuration in Vercel preview environments. Twenty-nine JavaScript tests, lint and the production build pass. This guard prevents a missing variable from silently replacing the new pipeline, but does not itself repair the login redirect or establish hosted generation success.
