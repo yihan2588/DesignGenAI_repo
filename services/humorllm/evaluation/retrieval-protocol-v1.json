@@ -1,0 +1,27 @@
+{
+  "queries": 50,
+  "query_sha256": "19c3d55e26e2eab5f3ca77f60e59da33fb84d517a4e6f506041d85b78926240c",
+  "frozen_before_retrieval": true,
+  "judge": "Gemini 3.1 Flash-Lite; method-hidden pooled labels followed by coordinator spot audit; no human gold",
+  "rubric": {
+    "2": "A concrete relation or lexical turn can be adapted to visible evidence without inventing its central premise.",
+    "1": "Topical or weak inspiration; adapting it requires substantial new context or unsupported premises.",
+    "0": "Unrelated, unsafe, malformed, or no defensible adaptation to the scenario."
+  },
+  "usable_threshold": 2,
+  "methods": [
+    "release_lexical",
+    "full_dense",
+    "hybrid"
+  ],
+  "pool": "Union of each method top5; shuffled by deterministic hash; method/rank/sourceID hidden from grading packet",
+  "limits": [
+    "Synthetic text scenes, not measured vision extraction or actual image grounding.",
+    "The query author/coordinator knows the corpus from annotation; Gemini graded fresh method-hidden packets.",
+    "Single AI judge; no human labels or caption-humor preference evidence.",
+    "Development selection only; do not tune and reuse as untouched held-out evaluation."
+  ],
+  "target_hit_at_5": 0.8,
+  "hnsw": "not used; exact scans only",
+  "pre_judging_amendment": "Use the now-available approved Gemini credential for bounded relevance triage. Query text, rubric, ranking and pool are unchanged; no labels existed at amendment."
+}

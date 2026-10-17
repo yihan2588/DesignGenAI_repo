@@ -43,3 +43,14 @@ next-env.d.ts
 
 # Supabase CLI cache
 supabase/.temp/
+
+# Local research data, private annotations, caches, and Python environments
+/.local/
+__pycache__/
+*.pyc
+services/humorllm/.venv/
+
+# Private hosted-worker build inputs (uploaded only to Vercel)
+/services/humorllm/hosted/private_index/
+/services/humorllm/hosted/humorllm/
+/services/humorllm/hosted/encoder/

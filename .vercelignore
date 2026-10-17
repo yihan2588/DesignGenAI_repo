@@ -1,0 +1,9 @@
+.git
+.next
+node_modules
+.local
+.env*
+services/humorllm/.venv
+**/__pycache__
+**/*.pyc
+notes

@@ -1,0 +1,246 @@
+{
+  "version": "cleancomedy-en-annotations-v2",
+  "unique_records": 1000,
+  "source_sha256": "af11bbfa818b9b0ac28584c75ff3ad8500b824ec2b7388cc9ba25faae327d594",
+  "decisions": {
+    "exclude": 235,
+    "include": 528,
+    "review": 237
+  },
+  "mechanisms": {
+    "misdirection": 83,
+    "wordplay": 466,
+    "none": 78,
+    "literal_interpretation": 57,
+    "role_reversal": 4,
+    "incongruity": 135,
+    "other": 62,
+    "absurdity": 30,
+    "irony": 68,
+    "exaggeration": 17
+  },
+  "transferability": {
+    "low": 103,
+    "wordplay_only": 442,
+    "uncertain": 156,
+    "situational": 299
+  },
+  "pilot": {
+    "unique_records": 200,
+    "submitted_annotations": 260,
+    "raw_agreement": {
+      "shared_records": 30,
+      "decision_unanimous": 17,
+      "mechanism_unanimous": 16,
+      "transferability_unanimous": 18,
+      "risk_flags_unanimous": 17,
+      "decision_pairwise_agreement": 0.7,
+      "disagreement_ids": [
+        "cc-en-03495",
+        "cc-en-04736",
+        "cc-en-12556",
+        "cc-en-18774",
+        "cc-en-18945",
+        "cc-en-19365",
+        "cc-en-20618",
+        "cc-en-25419",
+        "cc-en-25606",
+        "cc-en-25797",
+        "cc-en-26368",
+        "cc-en-26919",
+        "cc-en-29632",
+        "cc-en-29945",
+        "cc-en-30382",
+        "cc-en-34636",
+        "cc-en-37336",
+        "cc-en-39382",
+        "cc-en-43549",
+        "cc-en-44030",
+        "cc-en-44408"
+      ]
+    },
+    "revised_records": 76,
+    "coordinator_reviewed": 200,
+    "workers": {
+      "worker-1": {
+        "review": 24,
+        "exclude": 14,
+        "include": 49
+      },
+      "worker-2": {
+        "include": 51,
+        "exclude": 22,
+        "review": 14
+      },
+      "worker-3": {
+        "include": 45,
+        "review": 27,
+        "exclude": 14
+      }
+    }
+  },
+  "scale": {
+    "unique_records": 800,
+    "submitted_annotations": 860,
+    "raw_agreement": {
+      "shared_records": 30,
+      "decision_unanimous": 26,
+      "mechanism_unanimous": 16,
+      "transferability_unanimous": 16,
+      "risk_flags_unanimous": 20,
+      "decision_pairwise_agreement": 0.9111111111111111,
+      "disagreement_ids": [
+        "cc-en-02695",
+        "cc-en-07433",
+        "cc-en-07751",
+        "cc-en-12011",
+        "cc-en-14075",
+        "cc-en-14271",
+        "cc-en-15824",
+        "cc-en-16252",
+        "cc-en-18240",
+        "cc-en-18802",
+        "cc-en-20513",
+        "cc-en-21364",
+        "cc-en-30296",
+        "cc-en-30789",
+        "cc-en-30949",
+        "cc-en-34654",
+        "cc-en-35919",
+        "cc-en-39123",
+        "cc-en-39544",
+        "cc-en-42019",
+        "cc-en-42426",
+        "cc-en-42803"
+      ]
+    },
+    "coordinator_reviewed": 488,
+    "coordinator_correction_records": 136,
+    "workers": {
+      "worker-1": {
+        "exclude": 59,
+        "include": 152,
+        "review": 76
+      },
+      "worker-2": {
+        "exclude": 63,
+        "include": 165,
+        "review": 59
+      },
+      "worker-3": {
+        "include": 172,
+        "exclude": 62,
+        "review": 52
+      }
+    }
+  },
+  "total_submitted_annotations": 1120,
+  "review_scope_description": "The AI coordinator checked source/core fields for all 200 pilot records and 488 expansion records, including every final inclusion candidate. Remaining non-included expansion records retain worker-only semantic review status.",
+  "review_selection": "All pilot entries; all expansion overlap entries; inclusion spot checks followed by all remaining worker inclusion candidates. The expansion review is selected by label and is not an accuracy sample.",
+  "all_final_include_candidates_coordinator_checked": true,
+  "agreement_limitations": [
+    "Agreement is consistency, not correctness; no human gold labels exist.",
+    "Pilot and expansion use different samples, instructions, and reasoning effort, so changes are not a causal accuracy estimate.",
+    "Expansion submissions include coordinator feedback on shared IDs cc-en-00544 and cc-en-07433 before final submission; expansion agreement is not completely blind."
+  ],
+  "near_duplicate_pairs_detected": 1,
+  "near_duplicate_method": "Token Jaccard >=0.8 with at least 5 unique tokens and token-count ratio >=0.8; candidate pairs manually checked; not exhaustive semantic deduplication.",
+  "source_sampling": "250 per source-label × length-band stratum; not representative prevalence estimates.",
+  "human_reviewed_records": 0,
+  "production_eligible": false,
+  "heldout_caption_overlap_audit": "not performed",
+  "retrieval_usefulness_evaluation": "not performed",
+  "gemini_api_calls": 0,
+  "gemini_budget_spent_usd": 0,
+  "codex_usage": "Sub-agents consume Codex account capacity; per-agent billed cost not established.",
+  "include_transferability": {
+    "wordplay_only": 314,
+    "situational": 210,
+    "low": 4
+  },
+  "worker_alignment_audit": {
+    "submitted_pairs_checked": 860,
+    "unique_expansion_records": 800,
+    "scope": "Workers reread their own source/output pairs for semantic alignment and unsupported entities. This is self-audit, not independent gold review. Coordinator adjudicated all reported findings; raw submissions remained unchanged.",
+    "receipts": [
+      "worker-1-alignment-audit.json",
+      "worker-2-alignment-audit.json",
+      "worker-3-alignment-audit.json"
+    ]
+  },
+  "verification": {
+    "checked_at_utc": "2026-10-16T17:27:57.988039+00:00",
+    "focused_unit_tests": {
+      "status": "passed",
+      "count": 5,
+      "pattern": "test_annotations.py"
+    },
+    "integrity": {
+      "status": "passed",
+      "records": 1000,
+      "source_sha256": "af11bbfa818b9b0ac28584c75ff3ad8500b824ec2b7388cc9ba25faae327d594",
+      "partitions": {
+        "include": 528,
+        "review": 237,
+        "exclude": 235
+      },
+      "source_coverage": {
+        "pilot": {
+          "unique": 200,
+          "submitted": 260
+        },
+        "scale": {
+          "unique": 800,
+          "submitted": 860
+        }
+      },
+      "checks": [
+        "deterministic sampling reproduced",
+        "pilot/expansion disjoint union",
+        "exact source fields and normalized SHA-256 match",
+        "1000 unique IDs and normalized hashes",
+        "schema/enums/length/risk constraints",
+        "disjoint exhaustive disposition files",
+        "every include has AI coordinator check",
+        "no human/production qualification flags",
+        "worker coverage including both 30-record overlaps",
+        "nonempty per-record worker provenance",
+        "near-duplicate held out"
+      ],
+      "raw_submission_sha256": {
+        "pilot/worker-1-output.jsonl": "adba68e076bd0a388a52dd18a288c4a9ae948474deafbc77d1e0efa9a6b5b17c",
+        "pilot/worker-2-output.jsonl": "8f290801bff541aa678a9d97262c535b82a95d075b63f6b08de6eedd17852e41",
+        "pilot/worker-3-output.jsonl": "85992391e8521a8b0d95ff630171c3d71831e47e6f04f400418dca53db338a75",
+        "scale/worker-1-output.jsonl": "b6965b427ce44486de15fa5783a597e6e7a4bd5d6c447d4ebdde9906ddf6164c",
+        "scale/worker-2-output.jsonl": "28583e387a8ffdf63f242192a2ff50839ff72fc53f9be338b826e23b65741446",
+        "scale/worker-3-output.jsonl": "b17f06b0bf7da73e929c30ca77dd3c3d16c5c4bf281558838e722ad1a63b2ac6"
+      }
+    },
+    "offline_browser": {
+      "status": "passed",
+      "checks": [
+        "1000 embedded records",
+        "default held queue",
+        "25-row paging",
+        "ID search and corrected semantic alignment",
+        "all includes coordinator-checked",
+        "reset/count consistency",
+        "375px mobile overflow",
+        "offline/no external requests",
+        "no runtime errors",
+        "no-JS summary and links"
+      ],
+      "viewports": [
+        1440,
+        375
+      ],
+      "pageErrors": [],
+      "externalRequests": []
+    },
+    "full_pipeline_suite": "Not run in this annotation task; separate unfinished pipeline contracts remain.",
+    "artifact_sha256": {
+      "annotated-1000.jsonl": "fafe51160e36e87e5f4f8d10c9bdb6f22d99d2c59cf10287366efbe7c825fbf1",
+      "report.html": "b204fc3ff19ef812ab9cf7bb890257a1de9d626f3f193c0d866d80b1993fbf33"
+    }
+  }
+}

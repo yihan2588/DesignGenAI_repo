@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-16",
+  "corpus": {
+    "annotated": 1000,
+    "included": 528,
+    "production_eligible": 0
+  },
+  "retrieval": {
+    "queries": 50,
+    "pooled_items": 598,
+    "metrics": {
+      "release_lexical": {
+        "hit_at_5": 0.48,
+        "precision_at_5": 0.11600000000000002,
+        "pooled_ndcg_at_5": 0.38895204398049343,
+        "returned": 5.0,
+        "search_ms_excluding_encoding": 8.057879148982465
+      },
+      "full_dense": {
+        "hit_at_5": 0.72,
+        "precision_at_5": 0.21600000000000003,
+        "pooled_ndcg_at_5": 0.5668530925601525,
+        "returned": 5.0,
+        "search_ms_excluding_encoding": 0.1264709560200572
+      },
+      "hybrid": {
+        "hit_at_5": 0.72,
+        "precision_at_5": 0.23600000000000002,
+        "pooled_ndcg_at_5": 0.6328034757350578,
+        "returned": 5.0,
+        "search_ms_excluding_encoding": 0.5807008687406778
+      }
+    },
+    "development_choice": "hybrid",
+    "target_hit_at_5": 0.8,
+    "ai_triage_target_met": false,
+    "human_quality_gate_passed": false,
+    "hnsw_used": false,
+    "true_recall_measured": false,
+    "judging": "Gemini 3.1 Flash-Lite; methods/ranks hidden. Query author knew the corpus; separate coordinator audit.",
+    "limitations": [
+      "Synthetic text queries, not actual image-grounding or humor judgments.",
+      "Labels are AI triage, not human gold or independent ratings.",
+      "Pooled nDCG uses only the union of retrieved top-five lists, not exhaustive corpus relevance.",
+      "Search timings exclude encoding and initial loading; not end-to-end latency.",
+      "Do not expand to 10000 or enable production solely from these scores."
+    ],
+    "labels_sha256": "2e85a65fc9b9a44d6bc1fafa5362917953489849b07d772f1ca9cb6abbb23bda"
+  },
+  "coordinator_audit": {
+    "audited_pairs": 30,
+    "selection": "10 per Gemini grade, deterministic ID hash; not a representative accuracy sample",
+    "agree": 27,
+    "revised": 3,
+    "finding": "Some grade-2 labels overstate transfer from generic phrases. All three revisions lower 2 to 1.",
+    "main_metrics": "Preserve the original Gemini labels; this audit is separate and does not silently revise scores.",
+    "human_quality_gate_passed": false
+  },
+  "supabase": {
+    "migration_applied": true,
+    "ingested": 528,
+    "dense_queries": 50,
+    "dense_ordered_matches": 50,
+    "generation_enabled": false,
+    "ingestion_enabled": false,
+    "production_approved": false,
+    "preserved": {
+      "runs": {
+        "count": 24,
+        "hash": "4d832ad6b17ad6b700c00db86e838bff"
+      },
+      "images": {
+        "count": 14,
+        "hash": "c76c1e42dfc847002c7f0c971493bbbb"
+      },
+      "votes": {
+        "count": 12,
+        "hash": "7a2fd8c2e81f8c6f622d6c7e09a858f7"
+      }
+    }
+  },
+  "experiments": [
+    {
+      "id": "homer-dev-v2",
+      "cases": 10,
+      "states": {
+        "degraded": 6,
+        "failed": 1,
+        "ready": 3
+      },
+      "model_attempts": 82,
+      "median_elapsed_ms": 17465.5,
+      "max_elapsed_ms": 20082,
+      "outputs_sha256": "65f1704c102d08db4da3bd04db27850d0a437e237f346753899495b09effdbde",
+      "note": "Training-image development, model judging; no human humor preference or controlled component ablation."
+    },
+    {
+      "id": "homer-hybrid-dev-v3",
+      "cases": 10,
+      "states": {
+        "ready": 9,
+        "degraded": 1
+      },
+      "model_attempts": 80,
+      "median_elapsed_ms": 16147.0,
+      "max_elapsed_ms": 17666,
+      "outputs_sha256": "e0cd7ea9f4768a5d8128364d8f127fd4048707d98f79785b27b561bbade28556",
+      "note": "Training-image development, model judging; no human humor preference or controlled component ablation."
+    },
+    {
+      "id": "homer-supabase-dev-v4",
+      "cases": 10,
+      "states": {
+        "degraded": 3,
+        "ready": 7
+      },
+      "model_attempts": 81,
+      "median_elapsed_ms": 18135.5,
+      "max_elapsed_ms": 26071,
+      "outputs_sha256": "d1de207b261d8830f9d9be79b3123f7e10d8142e59ff374fd2efaf64cdc91470",
+      "note": "Training-image development, model judging; no human humor preference or controlled component ablation."
+    }
+  ],
+  "estimated_committed_or_reserved_usd": 0.27039475,
+  "authorized_usd": 25,
+  "verification": {
+    "python_tests": 22,
+    "node_tests": 28,
+    "isolated_sql_jobs": 20,
+    "logical_workers": 5,
+    "sql_connections_serialized": true,
+    "lint": "passed",
+    "typecheck": "passed",
+    "production_build": "passed",
+    "anonymous_browser": {
+      "views": [
+        {
+          "width": 1440,
+          "http": 200,
+          "overflow": false
+        },
+        {
+          "width": 375,
+          "http": 200,
+          "overflow": false
+        }
+      ],
+      "anonymous_get": 401,
+      "anonymous_generate": 401,
+      "page_errors": [],
+      "scope": "Anonymous local build only. No authenticated upload/worker publication or deployed flow tested."
+    },
+    "authenticated_worker_publication": "not tested; research release gate remains closed",
+    "deployed_changes": false
+  },
+  "remaining": [
+    "Source-use and human quality qualification",
+    "Improve retrieval before 10000-entry expansion",
+    "Actual concurrent workers and deployed recovery",
+    "Authenticated browser queue-to-publication flow after qualification"
+  ]
+}

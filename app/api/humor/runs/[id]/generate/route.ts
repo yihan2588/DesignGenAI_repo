@@ -1,4 +1,6 @@
 import sharp from "sharp";
+import { publishGeneration } from "@/lib/humor/queue";
+import { pipelineMode, enqueueReply } from "@/lib/humor/dispatch";
 import { getUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { requestOrigin } from "@/lib/request-origin";
@@ -15,7 +17,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   const { data: run } = await client.from("humor_runs").select("id,status,humor_images(storage_path)").eq("id", id).eq("owner_id", user.id).maybeSingle();
   if (!run) return reply({ error: "Comparison not found." }, 404);
   if (run.status === "ready") return reply({ status: "ready", runId: id });
-  const key = process.env.HUMOR_WRITER_KEY; const apiKey = process.env.GEMINI_API_KEY;
+  const key = process.env.HUMOR_WRITER_KEY;
+  let mode: "mvp" | "worker";
+  try { mode = pipelineMode(process.env.HUMOR_PIPELINE_MODE); }
+  catch { return reply({ error: "Caption generation is temporarily unavailable. Please try again later." }, 503); }
+  if (mode === "worker") {
+    if (!key) return reply({ error: "Caption generation is temporarily unavailable. Please try again later." }, 503);
+    const { error } = await client.rpc("humor_enqueue", { p_run: id, p_key: key });
+    if (!error) {
+      try { await publishGeneration(id); }
+      catch { return reply({ error: "Generation could not be scheduled. Your image is saved; please retry." }, 503); }
+    }
+    const result = enqueueReply(error, id);
+    return reply(result.body, result.status);
+  }
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!key || !apiKey) return reply({ error: "Caption generation is temporarily unavailable. Please try again later." }, 503);
   const { data: token, error: claimError } = await client.rpc("humor_claim", { p_run: id, p_key: key });
   if (claimError) return reply({ error: claimError.message.startsWith("The demo has reached") ? claimError.message : "Generation could not be started. Please try again." }, 429);

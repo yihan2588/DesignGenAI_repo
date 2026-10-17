@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { retryHumor } from "./actions";
@@ -11,6 +11,26 @@ export async function startGeneration(id: string) {
 }
 export function RunProgress({ id, status, expired, message }: { id: string; status: string; expired: boolean; message: string | null }) {
   const router = useRouter(); const [pending, start] = useTransition(); const [error, setError] = useState("");
+  useEffect(() => {
+    if (status !== "generating" || expired) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const controller = new AbortController();
+    async function poll() {
+      try {
+        const response = await fetch(`/api/humor/runs/${id}`, { cache: "no-store", signal: controller.signal });
+        if (!response.ok) return;
+        const run = await response.json();
+        if (cancelled) return;
+        if (run.status !== "generating" || (run.deadline_at && Date.parse(run.deadline_at) < Date.now())) {
+          router.refresh(); return;
+        }
+      } catch { if (cancelled) return; }
+      if (!cancelled) timer = setTimeout(poll, 2500);
+    }
+    timer = setTimeout(poll, 2500);
+    return () => { cancelled = true; clearTimeout(timer); controller.abort(); };
+  }, [id, status, expired, router]);
   function run() { setError(""); start(async () => {
     let target = id;
     try {

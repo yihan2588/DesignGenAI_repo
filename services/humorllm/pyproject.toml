@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "humorllm"
+version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = ["pydantic==2.14.1", "numpy==2.5.4", "pillow==12.3.0"]
+
+[project.optional-dependencies]
+embeddings = ["sentence-transformers==6.1.0", "torch==2.14.1", "scikit-learn==1.9.1"]
+
+[project.scripts]
+humorllm = "humorllm.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

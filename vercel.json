@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "fluid": true,
+  "services": {
+    "web": {
+      "root": ".",
+      "framework": "nextjs",
+      "bindings": [{ "type": "service", "service": "worker", "format": "url", "env": "HUMOR_WORKER_INTERNAL_URL" }],
+      "functions": { "app/api/queues/humor/route.ts": { "maxDuration": 300, "experimentalTriggers": [{ "type": "queue/v2beta", "topic": "humor-generation" }] } }
+    },
+    "worker": {
+      "root": "services/humorllm/hosted",
+      "framework": "fastapi",
+      "buildCommand": "python3 build_assets.py",
+      "functions": { "index.py": { "maxDuration": 300, "includeFiles": "{humorllm/**,private_index/**,encoder/**}" } }
+    }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": { "service": "web" } }]
+}
