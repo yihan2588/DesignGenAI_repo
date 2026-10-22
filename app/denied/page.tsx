@@ -1,0 +1,2 @@
+import { signOut } from "@/app/auth/actions";
+export default function Denied(){return <main className="admin-login"><p className="eyebrow">HUMORLLM / ACCESS</p><h1>This account is not an administrator.</h1><p>Sign in with the Google account whose profile has superadmin access. Access is granted through trusted database administration.</p><form action={signOut}><button>Sign out and switch accounts</button></form></main>}
