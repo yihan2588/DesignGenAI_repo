@@ -1,7 +1,7 @@
 export type Choice = "A" | "B";
 export type Plan = { title: string; description: string; details: { id: string; observation: string }[]; conflicts: string[]; angles: { idea: string; detail_ids: string[] }[] };
 export type Candidates = { candidates: { id: string; caption: string; detail_ids: string[] }[]; selected_id: string };
-export type Poll = { choice: Choice; a: number; b: number; total: number; baseline_slot: Choice };
+export type Poll = { choice: Choice; a: number; b: number; total: number; labels?: Record<Choice,string>; baseline_slot: Choice };
 export function captionMethod(slot: Choice, baselineSlot?: Choice) {
   if (!baselineSlot) return null;
   return slot === baselineSlot ? "Baseline" : "HOMER-inspired";
