@@ -34,8 +34,8 @@ export function Editor({
         };
         try {
           const result = await mutate(action, data);
-          setMessage(result.error ?? (action === "save_prompt" ? "Configuration created. Select the new revision in the live A/B test when ready." : "Saved successfully."));
-          if (result.ok && action === "save_prompt" && result.id) setCreatedId(result.id);
+          setMessage(result.error ?? (action === "save_prompt" ? (initial.id ? "Configuration updated. The A/B selection is unchanged; new uploads use the saved settings." : "Configuration created. Select it in the live A/B test when ready.") : "Saved successfully."));
+          if (result.ok && action === "save_prompt" && !initial.id && result.id) setCreatedId(result.id);
           if (result.ok) router.refresh();
         } catch {
           setMessage("The request failed. Please refresh and retry.");

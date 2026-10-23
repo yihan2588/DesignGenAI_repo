@@ -44,8 +44,8 @@ export default async function Overview({searchParams}: {searchParams: Promise<{v
             <Link href="/admin?view=history" aria-current={history ? "page" : undefined}>All historical results</Link>
           </nav>
           <p>{history
-            ? "Past votes stay attached to the exact configuration that generated each caption. Retired configurations are preserved in Prompt Lab’s history. Select a name to inspect it or create a new version."
-            : "Only comparisons between the two currently selected configurations are shown here. Select a name to view or edit its prompt in Prompt Lab."}</p>
+            ? "Votes stay attached to their configurations across edits. Saved comparisons retain their original generation instructions and names. Manually retired configurations are preserved in Prompt Lab’s history. Select a name to view or edit the configuration."
+            : "Only comparisons between the two currently selected configurations are shown here. Votes accumulate across edits to each configuration. Select a name to view or edit its prompt in Prompt Lab."}</p>
           {!view.matchups.length && <p className="empty-note">No votes for this pair yet. Votes from previous experiments are under <Link href="/admin?view=history">All historical results</Link>.</p>}
           <div className="table-scroll">
             <table>

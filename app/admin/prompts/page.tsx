@@ -18,6 +18,7 @@ function Fields({ p }: { p?: Revision }) {
           defaultValue={p?.name ?? ""}
         />
       </label>
+      <p className="footnote">Use a unique name, including retired configurations. Capitalization and extra spaces do not make a name different.</p>
       <div className="form-row">
         <label>
           Gemini model
@@ -100,8 +101,8 @@ function Configuration({p, selected, active}: {p: Revision; selected: boolean; a
     </details>}
     <details open={selected}>
       <summary>{p.archived ? "Reuse as a new configuration" : "View / edit configuration"}</summary>
-      {!p.archived && <p>Saving creates a new revision. Select it in the live A/B test when ready.</p>}
-      <Editor action="save_prompt" initial={{parent_id:p.id}} label={p.archived ? "Create reusable configuration" : "Save new revision"}>
+      {!p.archived && <p>Saving overwrites this configuration. If selected in the live A/B test, new uploads use the changes immediately. Only manual retirement moves it to history.</p>}
+      <Editor action="save_prompt" initial={p.archived ? {parent_id:p.id} : {id:p.id}} label={p.archived ? "Create reusable configuration" : "Save changes"}>
         <Fields p={{...p, name:p.archived ? `${p.name} · new`.slice(0,80) : p.name, prompt:clonePrompt}} />
       </Editor>
     </details>
@@ -122,7 +123,7 @@ export default async function Prompts({searchParams}: {searchParams: Promise<{re
     <header className="page-heading"><div><p className="eyebrow">PROMPT LAB</p><h1>Find your funny.</h1><p>View, edit and compare your caption configurations.</p></div><Link href="/admin">View comparison results ↗</Link></header>
     {selected && !selectedPrompt && <section className="panel">This configuration could not be found. Choose one from the library below.</section>}
     <section className="panel experiment"><h2>Live A/B test</h2>
-      <p>Choose exactly two configurations for new uploads. Existing captions keep their original configurations.
+      <p>Choose exactly two configurations for new uploads. Existing captions keep the instructions and names used when they were generated. Votes accumulate per configuration across edits.
         Candidate 1 and 2 are randomized to left/right A/B positions. Names are revealed after voting.
         <a href="https://design-gen-ai-repo.vercel.app/upload"> Test a new upload ↗</a></p>
       <Editor action="activate" label="Activate this pair"><div className="form-row">

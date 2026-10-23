@@ -14,7 +14,7 @@ export async function mutate(
   if (error) console.error("Admin mutation failed", action, error.code, error.message);
   if (error)
     return {
-      error: /Choose two|Replace this|Type DELETE|not found/.test(error.message)
+      error: /Choose two|Replace this|Type DELETE|not found|Retired configurations|A configuration with this name already exists/.test(error.message)
         ? error.message
         : "The change could not be saved. Check the fields and try again.",
     };

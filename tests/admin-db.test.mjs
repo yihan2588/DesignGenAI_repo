@@ -1,11 +1,11 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {PGlite} from '@electric-sql/pglite';import {pgcrypto} from '@electric-sql/pglite/contrib/pgcrypto';
-test('admin DB access, immutable revisions, activation, claims, and entry cascade',async()=>{const db=new PGlite({extensions:{pgcrypto}});try{await db.exec(`create role anon;create role authenticated;create schema auth;create schema private;create schema storage;create schema extensions;create extension pgcrypto with schema extensions;
+test('admin DB access, in-place configurations, unique names, captured prompts, and entry cascade',async()=>{const db=new PGlite({extensions:{pgcrypto}});try{await db.exec(`create role anon;create role authenticated;create schema auth;create schema private;create schema storage;create schema extensions;create extension pgcrypto with schema extensions;
 create table auth.users(id uuid primary key,email text);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
 create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb$$;
 grant usage on schema auth to anon,authenticated;
 create table public.profiles(id uuid primary key,first_name text,last_name text,created_at timestamptz default now());alter table public.profiles enable row level security;grant select on public.profiles to authenticated;grant update(first_name,last_name) on public.profiles to authenticated;create policy own_profile on public.profiles to authenticated using(id=auth.uid()) with check(id=auth.uid());
 create table storage.buckets(id text,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(bucket_id text,name text);create function storage.foldername(text) returns text[] language sql immutable as $$select string_to_array($1,'/')$$;`);
-for(const name of ['20261016035931_humorllm_comparisons.sql','20261016043001_exempt_humor_examples_from_member_quota.sql','20261016044150_reveal_caption_methods_and_generate_metadata.sql','20261022234353_admin_experiments.sql','20261022235407_admin_private_api.sql','20261022235710_admin_activation_safeupdate.sql','20261023005334_editable_caption_prompts.sql'])await db.exec(await readFile(new URL('../supabase/migrations/'+name,import.meta.url),'utf8'));
+for(const name of ['20261016035931_humorllm_comparisons.sql','20261016043001_exempt_humor_examples_from_member_quota.sql','20261016044150_reveal_caption_methods_and_generate_metadata.sql','20261022234353_admin_experiments.sql','20261022235407_admin_private_api.sql','20261022235710_admin_activation_safeupdate.sql','20261023005334_editable_caption_prompts.sql','20261023042219_save_configurations_in_place.sql'])await db.exec(await readFile(new URL('../supabase/migrations/'+name,import.meta.url),'utf8'));
 const admin='00000000-0000-4000-8000-000000000001',member='00000000-0000-4000-8000-000000000002';const q=async(s,a=[])=>(await db.query(s,a)).rows;
 await q(`insert into auth.users values($1,'operator@example.test'),($2,'member@example.test')`,[admin,member]);await q(`insert into public.profiles(id,first_name,last_name,is_superadmin) values($1,'Op','Erator',true),($2,'Mem','Ber',false)`,[admin,member]);
 await db.exec('set role anon');await assert.rejects(q('select public.admin_snapshot(1)'),/permission denied/);await db.exec('reset role;set role authenticated');await q("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claims','{\"app_metadata\":{\"provider\":\"google\"}}',false)",[member]);
@@ -15,7 +15,30 @@ let snap=(await q('select public.admin_snapshot(1) d'))[0].d;const first=snap.ac
 await assert.rejects(q("select public.admin_mutate('activate',$1)",[JSON.stringify({first_id:first,second_id:first})]),/two different/);await assert.rejects(q("select public.admin_mutate('delete_prompt',$1)",[JSON.stringify({id:first})]),/Replace this/);
 const config={name:'Test config',prompt:'Caption this.',system_prompt:'Be funny.',model:'gemini-3.1-flash-lite',temperature:0.5,parent_id:first};const revision=(await q("select public.admin_mutate('save_prompt',$1) d",[JSON.stringify(config)]))[0].d.id;
 await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,model:'other-provider'})]),/check constraint/);await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,engine:'planned'})]),/editable prompt instructions/);
+// Saving an available configuration overwrites its row without inserting or retiring anything.
+const countsBefore=(await q('select public.admin_snapshot(1) d'))[0].d;
+const edited={...config,id:revision,prompt:'Updated caption instructions.',system_prompt:'Updated system.',model:'gemini-2.5-flash',temperature:1.2};
+assert.equal((await q("select public.admin_mutate('save_prompt',$1) d",[JSON.stringify(edited)]))[0].d.id,revision);
+let saved=(await q('select public.admin_snapshot(1) d'))[0].d;
+assert.equal(saved.prompts.length,countsBefore.prompts.length);
+assert.equal(saved.prompts.filter(p=>p.archived).length,countsBefore.prompts.filter(p=>p.archived).length);
+assert.deepEqual(saved.active,countsBefore.active);
+assert.equal(saved.prompts.find(p=>p.id===revision).prompt,edited.prompt);
+assert.equal(saved.prompts.find(p=>p.id===revision).system_prompt,edited.system_prompt);
+assert.equal(Number(saved.prompts.find(p=>p.id===revision).temperature),1.2);
+assert.equal(saved.prompts.find(p=>p.id===revision).model,'gemini-2.5-flash');
+for(const name of ['Test config',' test CONFIG ','Test\tconfig']) {
+ await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,name})]),/already exists/);
+ await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,id:second,name})]),/already exists/);
+}
+await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,id:'00000000-0000-4000-8000-999999999999'})]),/not found/);
 await q("select public.admin_mutate('activate',$1)",[JSON.stringify({first_id:revision,second_id:second})]);await q("select public.admin_mutate('delete_prompt',$1)",[JSON.stringify({id:first})]);await assert.rejects(q("select public.admin_mutate('activate',$1)",[JSON.stringify({first_id:first,second_id:second})]),/two different/);
+// Active saves keep the exact selected IDs; retirement is explicit and history stays read-only.
+const activeBefore=(await q('select public.admin_snapshot(1) d'))[0].d.active;
+await q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify(edited)]);
+assert.deepEqual((await q('select public.admin_snapshot(1) d'))[0].d.active,activeBefore);
+await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,id:first})]),/retired/i);
+await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,name:' BASELINE '})]),/already exists/);
 await db.exec('reset role');await q("insert into private.humor_config(writer_key_sha256) values(encode(extensions.digest('test-writer','sha256'),'hex'))");
 const image='00000000-0000-4000-8000-000000000011',run='00000000-0000-4000-8000-000000000012';await q("insert into public.humor_images(id,owner_id,title,alt_text,storage_path) values($1,$2,'Test','Test',$3)",[image,admin,admin+'/'+image+'.jpg']);await q('insert into public.humor_runs(id,image_id,owner_id,request_key) values($1,$2,$3,gen_random_uuid())',[run,image,admin]);await q('insert into private.humor_run_details(run_id) values($1)',[run]);
 await db.exec('set role authenticated');const claimed=(await q("select public.humor_experiment_claim($1,'test-writer') d",[run]))[0].d;assert.equal(claimed.first.id,revision);assert.equal(claimed.first.engine,'direct');assert.equal((await q("select public.humor_experiment_claim($1,'test-writer') d",[run]))[0].d,null);
@@ -29,6 +52,13 @@ await q("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
 await assert.rejects(q("select public.humor_finish($1,gen_random_uuid(),'test-writer','{}')",[run]),/expired/);
 await q("select public.admin_mutate('activate',$1)",[JSON.stringify({first_id:second,second_id:revision})]);await assert.rejects(q('select public.humor_poll($1)',[run]),/Choose a caption/);
 await q("select public.humor_finish($1,$2,'test-writer',$3)",[run,claimed.token,JSON.stringify({baseline:'Alpha joke',guided:'Beta joke',metadata:{title:'Test image',description:'A visible thing.'}})]);
+// A later edit must not relabel an already generated comparison or replace its captured prompts.
+await q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...edited,name:'Renamed config',prompt:'New instructions for future uploads.'})]);
+await db.exec('reset role');
+const captured=(await q('select first_snapshot,second_snapshot from private.experiment_run_configs where run_id=$1',[run]))[0];
+assert.equal(captured.first_snapshot.name,'Test config');
+assert.equal(captured.first_snapshot.prompt,edited.prompt);
+await db.exec('set role authenticated');
 const poll=(await q("select public.humor_vote($1,'A') d",[run]))[0].d;assert.ok(Object.values(poll.labels).includes('Test config'));assert.equal(poll.total,1);
 const repeated=(await q("select public.humor_vote($1,'B') d",[run]))[0].d;assert.equal(repeated.choice,'A');assert.equal(repeated.total,1);
 for(const choice of ['C','',null])await assert.rejects(q("select public.humor_vote($1,$2)",[run,choice]),/Choose A or B/);
@@ -37,11 +67,25 @@ await q("select set_config('request.jwt.claim.sub',$1,false)",[member]);assert.e
 const memberPoll=(await q("select public.humor_vote($1,'B') d",[run]))[0].d;assert.equal(memberPoll.total,2);assert.equal((await q('select * from public.humor_votes where run_id=$1',[run])).length,1);
 await q("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
 
+// Subsequent uploads receive the new saved settings while old polls retain their original labels.
+await db.exec('reset role');
+const nextRun=(await q("insert into public.humor_runs(image_id,owner_id,request_key) values($1,$2,gen_random_uuid()) returning id",[image,admin]))[0].id;
+await q('insert into private.humor_run_details(run_id) values($1)',[nextRun]);
+await db.exec('set role authenticated');
+const nextClaim=(await q("select public.humor_experiment_claim($1,'test-writer') d",[nextRun]))[0].d;
+assert.equal(nextClaim.second.id,revision);
+assert.equal(nextClaim.second.name,'Renamed config');
+assert.equal(nextClaim.second.prompt,'New instructions for future uploads.');
+assert.equal(nextClaim.second.model,edited.model);
+assert.equal(Number(nextClaim.second.temperature),edited.temperature);
+await q("select set_config('request.jwt.claim.sub',$1,false)",[member]);
+await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify(edited)]),/superadmin/);
+await q("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
 await assert.rejects(q("select public.humor_retry($1,gen_random_uuid())",[run]),/still running or already complete/);
 for(const invalid of [{name:' '},{prompt:''},{temperature:3},{system_prompt:'x'.repeat(12001)}])await assert.rejects(q("select public.admin_mutate('save_prompt',$1)",[JSON.stringify({...config,...invalid})]),/check constraint/);
 await assert.rejects(q("select public.admin_mutate('update_media',$1)",[JSON.stringify({id:image,title:' ',alt_text:'description'})]),/check constraint/);
 await db.exec('reset role');await assert.rejects(q("update public.humor_runs set status='generating' where id=$1",[run]),/immutable/);
-await q("update public.humor_runs set created_at=now()-interval '2 minutes' where id=$1",[run]);
+await q("update public.humor_runs set created_at=now()-interval '2 minutes' where id in ($1,$2)",[run,nextRun]);
 const expiredRun=(await q("insert into public.humor_runs(image_id,owner_id,request_key,status,deadline_at,created_at) values($1,$2,gen_random_uuid(),'generating',now()-interval '20 seconds',now()-interval '1 minute') returning id",[image,admin]))[0].id;
 await q('insert into private.humor_run_details(run_id) values($1)',[expiredRun]);await db.exec('set role authenticated');
 const retried=(await q('select public.humor_retry($1,gen_random_uuid()) d',[expiredRun]))[0].d;assert.notEqual(retried,expiredRun);
