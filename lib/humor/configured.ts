@@ -24,12 +24,13 @@ export const MODELS = [
 export function validateConfig(c: PromptConfig) {
   if (
     !MODELS.includes(c.model as (typeof MODELS)[number]) ||
+    (typeof c.temperature !== "number" && (typeof c.temperature !== "string" || !String(c.temperature).trim())) ||
     !Number.isFinite(Number(c.temperature)) ||
     Number(c.temperature) < 0 ||
     Number(c.temperature) > 2 ||
-    !c.prompt?.trim() ||
+    typeof c.prompt !== "string" || !c.prompt.trim() ||
     c.prompt.length > 12000 ||
-    c.system_prompt.length > 12000
+    typeof c.system_prompt !== "string" || c.system_prompt.length > 12000
   )
     throw new Error("Invalid prompt configuration.");
 }
@@ -46,6 +47,7 @@ export async function generateConfiguredPair(
   validateConfig(first);
   validateConfig(second);
   const request = options.request ?? fetch;
+  const cancellation = new AbortController();
   const deadline = Date.now() + 90000;
   let attempts = 0;
   async function call<T>(
@@ -63,9 +65,10 @@ export async function generateConfiguredPair(
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-        signal: AbortSignal.timeout(
-          Math.max(1, Math.min(45000, deadline - start)),
-        ),
+        signal: AbortSignal.any([
+          cancellation.signal,
+          AbortSignal.timeout(Math.max(1, Math.min(45000, deadline - start))),
+        ]),
         body: JSON.stringify({
           model: c.model,
           store: false,
@@ -119,10 +122,7 @@ export async function generateConfiguredPair(
     return parsed;
   }
   // This descriptive call never feeds either caption request.
-  const metadata = await call(
-    "metadata", METADATA_PROMPT, METADATA_SCHEMA, parseMetadata,
-    { ...first, model: MODEL, temperature: 1, system_prompt: "" },
-  );
+
   async function caption(c: PromptConfig, stage: string, avoid?: string) {
     // All creative instructions come from the immutable editable configuration.
     // The only retry suffix prevents publishing an identical pair and is disclosed in Prompt Lab.
@@ -131,8 +131,23 @@ export async function generateConfiguredPair(
       : `${c.prompt}\nDo not repeat this caption: ${JSON.stringify(avoid)}`;
     return call(stage, prompt, CAPTION_SCHEMA, parseCaption, c);
   }
-  const a = await caption(first, "candidate_1");
-  let b = await caption(second, "candidate_2");
+  // All three requests are independent. Settle sibling requests before the caller
+  // marks a failed run finished, so no progress writes race with completion.
+  const tasks = [
+    call("metadata", METADATA_PROMPT, METADATA_SCHEMA, parseMetadata,
+      {...first, model: MODEL, temperature: 1, system_prompt: ""}),
+    caption(first, "candidate_1"),
+    caption(second, "candidate_2"),
+  ] as const;
+  let failure: unknown;
+  const results = await Promise.allSettled(tasks.map(task => task.catch(error => {
+    if (failure === undefined) failure = error;
+    cancellation.abort();
+    throw error;
+  })));
+  if (results.some(result => result.status === "rejected")) throw failure;
+  const [metadata, a, initialB] = await Promise.all(tasks);
+  let b = initialB;
   if (normalizeCaption(a) === normalizeCaption(b))
     b = await caption(second, "replacement", a);
   if (normalizeCaption(a) === normalizeCaption(b))
