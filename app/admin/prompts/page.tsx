@@ -1,4 +1,5 @@
 import { snapshot } from "@/lib/admin";
+import { METADATA_PROMPT } from "@/lib/humor/metadata";
 import { MODELS } from "@/lib/humor/configured";
 import { Editor } from "../editor";
 import type { Revision } from "@/lib/admin-types";
@@ -35,13 +36,6 @@ function Fields({ p }: { p?: Revision }) {
             defaultValue={p?.temperature ?? 1}
           />
         </label>
-        <label>
-          Caption approach
-          <select name="engine" defaultValue={p?.engine ?? "direct"}>
-            <option value="direct">Direct caption</option>
-            <option value="planned">Visual plan + candidates</option>
-          </select>
-        </label>
       </div>
       <p className="footnote">
         Gemini 3.6+ models ignore custom temperatures; use 3.1 Flash-Lite or 2.5
@@ -62,7 +56,7 @@ function Fields({ p }: { p?: Revision }) {
         <textarea
           name="prompt"
           maxLength={12000}
-          rows={5}
+          rows={12}
           required
           defaultValue={
             p?.prompt ?? "Write a funny, grounded caption for this image."
@@ -70,9 +64,11 @@ function Fields({ p }: { p?: Revision }) {
         />
       </label>
       <p className="footnote">
-        The app enforces JSON output, grounding and length rules. Planned mode
-        adds the fixed visual plan and candidate-selection instructions. No
-        retrieval is used.
+        These two fields are the complete caption instructions sent to Gemini.
+        Put any visual analysis, audience, topic, or candidate-selection directions here.
+        Both candidates use the same generation path; no retrieval or hidden creative prompt is added.
+        The app requires one JSON caption string and validates the 240-character limit.
+        If captions are identical, candidate 2 is retried once with “Do not repeat this caption” and candidate 1’s text.
       </p>
     </>
   );
@@ -94,6 +90,10 @@ export default async function Prompts() {
         <p>
           Choose exactly two configurations. This applies to new generation
           claims; completed and in-flight pairs keep their original revisions.
+          Candidate 1 and 2 are configuration slots, not the left and right voting
+          positions: those are randomized and names are revealed after voting.
+          Test new uploads in the <a href="https://design-gen-ai-repo.vercel.app/upload">current media app</a>;
+          older commit-specific deployments keep their original generation code.
         </p>
         <Editor action="activate" label="Activate this pair">
           <div className="form-row">
@@ -114,6 +114,19 @@ export default async function Prompts() {
             ))}
           </div>
         </Editor>
+      </section>
+      <section className="panel">
+        <h2>How requests are assembled</h2>
+        <p>The system prompt and caption prompt below are sent as written, alongside the image.
+          “Baseline” is the simple humor prompt; “HOMER-inspired” includes editable visual analysis
+          and joke-selection instructions. You can rename or replace either configuration.</p>
+        <details>
+          <summary>Shared image metadata request</summary>
+          <p>This separate request only supplies the image title and description.
+            Its output is never passed to either caption candidate.</p>
+          <p>{METADATA_PROMPT}</p>
+          <p>Metadata model: gemini-3.1-flash-lite; temperature: 1; system prompt: empty.</p>
+        </details>
       </section>
       <section className="panel">
         <h2>Create a configuration</h2>

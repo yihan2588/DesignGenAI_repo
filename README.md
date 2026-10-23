@@ -24,3 +24,6 @@ Historical `humor-mvp-3` pairs with matching model provenance have separate read
 ## Deployment
 
 Use the same Supabase project as the media app and configure `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GEMINI_API_KEY`, `HUMOR_WRITER_KEY` as server environment variables. Allow exact admin OAuth callbacks in Supabase. Vercel deployment protection is disabled; application authorization remains mandatory. Never publish `.env*`, `.vercel`, session files or private user data.
+
+
+Prompt configuration correction (2026-10-22): the configured generator uses a single caption request per revision. The editable system prompt and caption prompt are sent verbatim with the image. There is no engine selector, injected visual plan, or audience instruction. The shared neutral metadata request never feeds caption generation; its full text is displayed in Prompt Lab. JSON response validation and a single disclosed duplicate-avoidance retry remain fixed. New Baseline and HOMER-inspired revisions replace the untouched starter pair; old revisions and votes remain intact. Use the current configured media deployment, not a frozen humor-mvp-3 URL, when testing admin prompt changes.
