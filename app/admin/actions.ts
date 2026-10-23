@@ -1,10 +1,11 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { isUuid } from "@/lib/humor/schemas";
 import { requireAdmin } from "@/lib/admin";
 export async function mutate(
   action: string,
   data: Record<string, unknown>,
-): Promise<{ error?: string; ok?: boolean }> {
+): Promise<{ error?: string; ok?: boolean; id?: string }> {
   const { client } = await requireAdmin();
   const { data: result, error } = await client.rpc("admin_mutate", {
     p_action: action,
@@ -28,5 +29,5 @@ export async function mutate(
       };
   }
   revalidatePath("/admin", "layout");
-  return { ok: true };
+  return { ok: true, id: isUuid(result?.id) ? result.id : undefined };
 }

@@ -1,3 +1,4 @@
+import { safeReturn } from "@/lib/humor/schemas";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -19,7 +20,7 @@ export async function proxy(request: NextRequest) {
   });
   const {data:{user}}=await supabase.auth.getUser();
   if(!["/login","/auth/callback","/denied"].includes(request.nextUrl.pathname)){
-    if(!user)return NextResponse.redirect(new URL("/login?next=/admin",request.url));
+    if(!user)return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(safeReturn(request.nextUrl.pathname + request.nextUrl.search))}`,request.url));
     const {data,error}=await supabase.rpc("admin_access");
     if(error||data!==true)return NextResponse.redirect(new URL("/denied",request.url));
   }

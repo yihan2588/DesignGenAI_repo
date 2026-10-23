@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { snapshot } from "@/lib/admin";
-import { leaderboard } from "@/lib/arena";
-export default async function Overview() {
-  const d = await snapshot(),
-    m = d.metrics;
-  const rankings = leaderboard(
-    d.prompts.filter((p) => !p.archived || d.matchups.some((m) => m.first_id === p.id || m.second_id === p.id)).map((p) => p.id),
-    d.matchups,
-  );
+import { arenaView, promptLink } from "@/lib/arena-view";
+import { combineMatchups, leaderboard } from "@/lib/arena";
+export default async function Overview({searchParams}: {searchParams: Promise<{view?: string}>}) {
+  const history = (await searchParams).view === "history";
+  const d = await snapshot(), m = d.metrics;
+  const view = arenaView(d.prompts, d.active, d.matchups, history);
+  const rankings = leaderboard(view.ids, view.matchups);
+  const headToHead = combineMatchups(view.matchups);
   const max = Math.max(1, ...d.daily.map((x) => x.votes));
   return (
     <>
@@ -38,10 +38,15 @@ export default async function Overview() {
       <div className="overview-grid">
         <section className="panel arena">
           <p className="eyebrow">THE CAPTION ARENA</p>
-          <h2>Which approach gets the laugh?</h2>
-          <p>
-            Each row is an immutable prompt revision. Ranks apply within the same opponent group (G), where candidates are connected by saved comparisons.
-          </p>
+          <h2>{history ? "Configuration history" : "Your active A/B test"}</h2>
+          <nav className="view-tabs" aria-label="Results scope">
+            <Link href="/admin" aria-current={!history ? "page" : undefined}>Active pair</Link>
+            <Link href="/admin?view=history" aria-current={history ? "page" : undefined}>All historical results</Link>
+          </nav>
+          <p>{history
+            ? "Past votes stay attached to the exact configuration that generated each caption. Retired configurations are preserved in Prompt Lab’s history. Select a name to inspect it or create a new version."
+            : "Only comparisons between the two currently selected configurations are shown here. Select a name to view or edit its prompt in Prompt Lab."}</p>
+          {!view.matchups.length && <p className="empty-note">No votes for this pair yet. Votes from previous experiments are under <Link href="/admin?view=history">All historical results</Link>.</p>}
           <div className="table-scroll">
             <table>
               <thead>
@@ -59,10 +64,10 @@ export default async function Overview() {
                     <tr key={r.id}>
                       <td>
                         <span className="rank">{r.n ? `G${r.group} · #${r.rank}` : "—"}</span>
-                        <b>{p.name}</b>
+                        <Link className="configuration-link" href={promptLink(p.id)}>{p.name}</Link>
                         <small>
                           {p.id.slice(0, 8)} · {p.model}
-                          {p.archived ? " · retired" : ""}
+                          {p.archived ? " · retired — view in history" : " · available in Prompt Lab"}
                         </small>
                       </td>
                       <td>{r.n ? r.rating : "Unrated"}</td>
@@ -97,14 +102,14 @@ export default async function Overview() {
               </tbody>
             </table>
           </div>
-          <p className="footnote">
+          <details><summary>How scores are calculated</summary><p className="footnote">
             Regularized Bradley–Terry scores, centered near 1000; no-vote
             candidates are unrated. Intervals describe raw win rates, assuming
             independent votes. Repeated voters/images and unequal matchups limit
             certainty. Scores across disconnected opponent groups are not
             comparable. {m.unmapped_votes} legacy votes lack verified revision
             provenance and are excluded.
-          </p>
+          </p></details>
         </section>
         <section className="panel activity">
           <p className="eyebrow">PULSE / LAST 14 DAYS</p>
@@ -135,12 +140,12 @@ export default async function Overview() {
           </div>
           <p className="footnote">UTC dates · days with votes shown</p>
           <hr />
-          <h3>The active matchup</h3>
+          <h3>Selected for new uploads</h3>
           {[d.active.first_id, d.active.second_id].map((id, i) => (
             <div className="active-slot" key={id}>
               <span>{i + 1}</span>
               <div>
-                <b>{d.prompts.find((p) => p.id === id)?.name}</b>
+                <Link className="configuration-link" href={promptLink(id)}>{d.prompts.find((p) => p.id === id)?.name}</Link>
                 <small>
                   {id.slice(0, 8)} · randomized to A/B for each image
                 </small>
@@ -150,8 +155,8 @@ export default async function Overview() {
         </section>
       </div>
       <section className="panel">
-        <h2>Head-to-head results</h2>
-        {d.matchups.length ? (
+        <h2>{history ? "Historical head-to-head results" : "Active pair · head-to-head"}</h2>
+        {view.matchups.length ? (
           <div className="table-scroll">
             <table>
               <thead>
@@ -159,31 +164,31 @@ export default async function Overview() {
                   <th>Candidate 1</th>
                   <th>Candidate 2</th>
                   <th>Wins 1 : 2</th>
-                  <th>Voters</th>
+                  <th>Votes</th>
                 </tr>
               </thead>
               <tbody>
-                {d.matchups.map((x) => (
+                {headToHead.map((x) => (
                   <tr key={x.first_id + x.second_id}>
                     <td>
-                      {d.prompts.find((p) => p.id === x.first_id)?.name}{" "}
+                      <Link href={promptLink(x.first_id)}>{d.prompts.find((p) => p.id === x.first_id)?.name}</Link>{" "}
                       <small>{x.first_id.slice(0, 8)}</small>
                     </td>
                     <td>
-                      {d.prompts.find((p) => p.id === x.second_id)?.name}{" "}
+                      <Link href={promptLink(x.second_id)}>{d.prompts.find((p) => p.id === x.second_id)?.name}</Link>{" "}
                       <small>{x.second_id.slice(0, 8)}</small>
                     </td>
                     <td>
                       {x.first_wins} : {x.n - x.first_wins}
                     </td>
-                    <td>{x.voters}</td>
+                    <td>{x.n}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         ) : (
-          <p>The first saved votes will appear here.</p>
+          <p>No saved votes for the selected configurations yet.</p>
         )}
       </section>
     </>

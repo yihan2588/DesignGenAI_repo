@@ -9,6 +9,9 @@ export function captionMethod(slot: Choice, baselineSlot?: Choice, labels?: Reco
 export const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 export function safeReturn(value: unknown): string {
   if (typeof value !== "string") return "/members";
+  const revision = value.match(/^\/admin\/prompts\?revision=([0-9a-f-]{36})$/i)?.[1];
+  if (revision && isUuid(revision)) return `/admin/prompts?revision=${revision}`;
+  if (value === "/admin?view=history") return value;
   if (value === "/admin" || /^\/admin\/(media|media\/new|prompts|people)$/.test(value)) return value;
   if (value === "/" || value === "/upload" || value === "/members" || /^\/runs\/[0-9a-f-]{36}$/.test(value)) return value;
   return "/members";

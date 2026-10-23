@@ -3,3 +3,7 @@ test('arena fit is independent of event order and symmetric under swapping sides
 test('no votes and all wins have finite scores and bounded intervals',()=>{assert.deepEqual(wilson(0,0),[0,1]);const r=leaderboard(['a','b'],[{first_id:'a',second_id:'b',n:10,first_wins:10,voters:1}]);assert.ok(r.every(x=>Number.isFinite(x.rating)));assert.ok(wilson(10,10)[1]<=1);assert.equal(leaderboard(['a'],[])[0].n,0);});
 
 test('disconnected opponent groups receive separate ranks',()=>{const r=leaderboard(['a','b','c','d','empty'],[{first_id:'a',second_id:'b',n:10,first_wins:7,voters:3},{first_id:'c',second_id:'d',n:10,first_wins:8,voters:3}]);assert.equal(r.find(x=>x.id==='a').rank,1);assert.equal(r.find(x=>x.id==='c').rank,1);assert.notEqual(r.find(x=>x.id==='a').group,r.find(x=>x.id==='c').group);assert.equal(r.find(x=>x.id==='empty').rank,0);});
+
+test('splitting votes across reversed activation slots does not change the arena fit',()=>{const split=[{first_id:'a',second_id:'b',n:10,first_wins:8,voters:3},{first_id:'b',second_id:'a',n:10,first_wins:2,voters:3}];const combined=[{first_id:'a',second_id:'b',n:20,first_wins:16,voters:3}];assert.deepEqual(leaderboard(['a','b'],split),leaderboard(['a','b'],combined));});
+
+test('equal displayed scores share a rank within their opponent group',()=>{const rows=leaderboard(['a','b'],[{first_id:'a',second_id:'b',n:10,first_wins:5,voters:2}]);assert.equal(rows[0].rank,1);assert.equal(rows[1].rank,1);});

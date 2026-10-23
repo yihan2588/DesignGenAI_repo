@@ -1,6 +1,7 @@
 import type { PromptConfig } from "./humor/configured";
 import type { Matchup } from "./arena";
 export type Revision = PromptConfig & {
+  engine?: "direct" | "planned"; // Historical provenance only; generation uses editable text.
   archived: boolean;
   created_at: string;
   parent_id: string | null;
@@ -27,6 +28,7 @@ export type Snapshot = {
   }[];
   media: {
     id: string;
+    owner_id: string;
     title: string;
     alt_text: string;
     storage_path: string;

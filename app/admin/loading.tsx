@@ -1,0 +1,1 @@
+export default function Loading() {return <section className="panel" role="status" aria-live="polite"><p className="eyebrow">CONTROL ROOM</p><h2>Loading your data…</h2><p>Your changes and saved results are being retrieved.</p></section>;}

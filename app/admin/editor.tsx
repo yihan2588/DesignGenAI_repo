@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import { promptLink } from "@/lib/arena-view";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { mutate } from "./actions";
@@ -15,6 +17,7 @@ export function Editor({
 }) {
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
+  const [createdId, setCreatedId] = useState("");
   const router = useRouter();
   return (
     <form
@@ -24,13 +27,15 @@ export function Editor({
         if (busy) return;
         setBusy(true);
         setMessage("");
+        setCreatedId("");
         const data = {
           ...initial,
           ...Object.fromEntries(new FormData(e.currentTarget)),
         };
         try {
           const result = await mutate(action, data);
-          setMessage(result.error ?? "Saved successfully.");
+          setMessage(result.error ?? (action === "save_prompt" ? "Configuration created. Select the new revision in the live A/B test when ready." : "Saved successfully."));
+          if (result.ok && action === "save_prompt" && result.id) setCreatedId(result.id);
           if (result.ok) router.refresh();
         } catch {
           setMessage("The request failed. Please refresh and retry.");
@@ -41,7 +46,7 @@ export function Editor({
     >
       {children}
       <button disabled={busy}>{busy ? "Saving…" : label}</button>
-      {message && <p role="status">{message}</p>}
+      {message && <p role="status">{message}{createdId && <> <Link href={promptLink(createdId)}>View the new configuration →</Link></>}</p>}
     </form>
   );
 }

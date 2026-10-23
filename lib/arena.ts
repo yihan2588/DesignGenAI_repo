@@ -14,8 +14,25 @@ export function wilson(w: number, n: number) {
     h = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / d;
   return [Math.max(0, c - h), Math.min(1, c + h)];
 }
+export type PairTotal = Omit<Matchup, "voters">;
+export function combineMatchups(matchups: PairTotal[]): PairTotal[] {
+  // Activating the same pair in reverse order must not add a second prior.
+  const pairs = new Map<string, PairTotal>();
+  for (const m of matchups) {
+    const reversed = m.first_id > m.second_id;
+    const first_id = reversed ? m.second_id : m.first_id;
+    const second_id = reversed ? m.first_id : m.second_id;
+    const key = JSON.stringify([first_id, second_id]);
+    const row = pairs.get(key) ?? {first_id, second_id, n:0, first_wins:0};
+    row.n += m.n;
+    row.first_wins += reversed ? m.n-m.first_wins : m.first_wins;
+    pairs.set(key,row);
+  }
+  return [...pairs.values()].sort((a,b) => a.first_id.localeCompare(b.first_id) || a.second_id.localeCompare(b.second_id));
+}
 // Regularized Bradley–Terry: order-independent fit, one symmetric prior win per direction.
-export function leaderboard(ids: string[], matchups: Matchup[]) {
+export function leaderboard(ids: string[], matchups: PairTotal[]) {
+  matchups = combineMatchups(matchups);
   const played = new Map(ids.map((id) => [id, { wins: 0, n: 0 }]));
   for (const m of matchups) {
     const a = played.get(m.first_id),
@@ -53,7 +70,7 @@ export function leaderboard(ids: string[], matchups: Matchup[]) {
     nextGroup++; const queue=[id]; groups.set(id,nextGroup);
     for(let i=0;i<queue.length;i++) for(const other of neighbors.get(queue[i])!) if(!groups.has(other)) {groups.set(other,nextGroup);queue.push(other);}
   }
-  const ranks=new Map<number,number>();
+  const ranks=new Map<number,{count:number; rating:number; rank:number}>();
   return ids
     .map((id) => {
       const p = played.get(id)!;
@@ -71,5 +88,12 @@ export function leaderboard(ids: string[], matchups: Matchup[]) {
         a.group - b.group ||
         b.rating - a.rating ||
         a.id.localeCompare(b.id),
-    ).map(row=>{const rank=row.n?(ranks.get(row.group)??0)+1:0;if(row.n)ranks.set(row.group,rank);return {...row,rank};});
+    ).map(row=>{
+      if(!row.n) return {...row,rank:0};
+      const previous=ranks.get(row.group);
+      const count=(previous?.count??0)+1;
+      const rank=previous?.rating===row.rating ? previous.rank : count;
+      ranks.set(row.group,{count,rating:row.rating,rank});
+      return {...row,rank};
+    });
 }

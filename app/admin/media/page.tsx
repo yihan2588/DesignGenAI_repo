@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { snapshot } from "@/lib/admin";
+import { requireAdmin, snapshot } from "@/lib/admin";
 import { imageUrl } from "@/lib/humor/data";
 import { Editor } from "../editor";
 export default async function Media({
@@ -11,6 +11,7 @@ export default async function Media({
   const params = await searchParams,
     page = Math.max(1, Math.min(100000, Math.floor(Number(params.page)) || 1)),
     d = await snapshot(page);
+  const {user} = await requireAdmin();
   return (
     <>
       <header className="page-heading">
@@ -51,7 +52,7 @@ export default async function Media({
                       <b>B</b> {r.caption_b}
                     </p>
                   )}
-                  {r.status !== "ready" && (
+                  {r.status !== "ready" && i.owner_id === user.id && (
                     <Link href={`/runs/${r.id}`}>Open saved run ↗</Link>
                   )}
                 </div>
@@ -106,7 +107,7 @@ export default async function Media({
         ))}
       </div>
       {!d.media.length && (
-        <section className="panel">No entries on this page.</section>
+        <section className="panel">No entries on this page. <Link href="/admin/media">Back to the first page →</Link></section>
       )}
       <div className="pagination">
         {page > 1 && <Link href={`?page=${page - 1}`}>← Previous</Link>}

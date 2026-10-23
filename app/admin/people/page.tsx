@@ -20,6 +20,7 @@ export default async function People({
         <h2>
           Profiles <span className="badge">{d.metrics.profiles}</span>
         </h2>
+        {!d.profiles.length && <p>No profiles on this page. <Link href="/admin/people">Back to the first page →</Link></p>}
         <div className="table-scroll">
           <table>
             <thead>
@@ -56,6 +57,7 @@ export default async function People({
         <h2>
           Vote ledger <span className="badge">{d.metrics.votes}</span>
         </h2>
+        {!d.votes.length && <p>No votes on this page. <Link href="/admin/people">Back to the first page →</Link></p>}
         <div className="table-scroll">
           <table>
             <thead>
