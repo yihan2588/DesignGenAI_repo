@@ -5,7 +5,7 @@ export default async function Overview() {
   const d = await snapshot(),
     m = d.metrics;
   const rankings = leaderboard(
-    d.prompts.map((p) => p.id),
+    d.prompts.filter((p) => !p.archived || d.matchups.some((m) => m.first_id === p.id || m.second_id === p.id)).map((p) => p.id),
     d.matchups,
   );
   const max = Math.max(1, ...d.daily.map((x) => x.votes));
@@ -40,8 +40,7 @@ export default async function Overview() {
           <p className="eyebrow">THE CAPTION ARENA</p>
           <h2>Which approach gets the laugh?</h2>
           <p>
-            Each row is an immutable prompt revision. Higher scores indicate
-            stronger pairwise preference.
+            Each row is an immutable prompt revision. Ranks apply within the same opponent group (G), where candidates are connected by saved comparisons.
           </p>
           <div className="table-scroll">
             <table>
@@ -54,12 +53,12 @@ export default async function Overview() {
                 </tr>
               </thead>
               <tbody>
-                {rankings.map((r, i) => {
+                {rankings.map((r) => {
                   const p = d.prompts.find((p) => p.id === r.id)!;
                   return (
                     <tr key={r.id}>
                       <td>
-                        <span className="rank">{r.n ? i + 1 : "—"}</span>
+                        <span className="rank">{r.n ? `G${r.group} · #${r.rank}` : "—"}</span>
                         <b>{p.name}</b>
                         <small>
                           {p.id.slice(0, 8)} · {p.model}

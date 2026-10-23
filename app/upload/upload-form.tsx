@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { prepareUploadImage, validateUploadSource } from "@/lib/humor/upload-image";
 import { uploadHumor } from "@/app/humor/actions";
 import { startGeneration } from "@/app/humor/run-progress";
-export function UploadForm() {
+export function UploadForm({ adminMode = false }: { adminMode?: boolean }) {
   const router=useRouter(); const key=useRef(""); const [preview,setPreview]=useState("");
   const [stage,setStage]=useState(""); const [error,setError]=useState(""); const [runId,setRunId]=useState("");
   useEffect(()=>()=>{if(preview) URL.revokeObjectURL(preview);},[preview]);
@@ -19,7 +19,7 @@ export function UploadForm() {
     if (invalid) { setError(invalid); return; }
     setStage("Preparing your image…");
     try { form.set("photo", await prepareUploadImage(file)); setStage("Uploading your image…"); const result=await uploadHumor(form); if(!result.runId) throw new Error(result.error);
-      setRunId(result.runId); setStage("Reading your image and writing captions…"); await startGeneration(result.runId); router.push(`/runs/${result.runId}`); router.refresh();
+      setRunId(result.runId); setStage("Reading your image and writing captions…"); await startGeneration(result.runId); router.push(adminMode ? "/admin/media" : `/runs/${result.runId}`); router.refresh();
     } catch(e) { setError(e instanceof Error && !/Minified React|Server Components render|digest|Body exceeded/.test(e.message) ? e.message : "The upload was interrupted. Please refresh and try again with a smaller image."); setStage(""); }
   }
   return <form className="profile-form humor-upload" onSubmit={submit}>

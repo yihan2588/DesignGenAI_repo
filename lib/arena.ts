@@ -43,11 +43,23 @@ export function leaderboard(ids: string[], matchups: Matchup[]) {
     for (const id of ids)
       scores.set(id, scores.get(id)! + scale * grad.get(id)!);
   }
+  const neighbors = new Map(ids.map(id => [id, new Set<string>()]));
+  for (const m of matchups) if(m.n>0 && neighbors.has(m.first_id) && neighbors.has(m.second_id)) {
+    neighbors.get(m.first_id)!.add(m.second_id); neighbors.get(m.second_id)!.add(m.first_id);
+  }
+  const groups = new Map<string,number>(); let nextGroup=0;
+  for (const id of [...ids].sort()) {
+    if(groups.has(id) || !played.get(id)!.n) continue;
+    nextGroup++; const queue=[id]; groups.set(id,nextGroup);
+    for(let i=0;i<queue.length;i++) for(const other of neighbors.get(queue[i])!) if(!groups.has(other)) {groups.set(other,nextGroup);queue.push(other);}
+  }
+  const ranks=new Map<number,number>();
   return ids
     .map((id) => {
       const p = played.get(id)!;
       return {
         id,
+        group: groups.get(id) ?? 0,
         ...p,
         rating: Math.round(1000 + (400 / Math.log(10)) * scores.get(id)!),
         interval: wilson(p.wins, p.n),
@@ -56,7 +68,8 @@ export function leaderboard(ids: string[], matchups: Matchup[]) {
     .sort(
       (a, b) =>
         Number(b.n > 0) - Number(a.n > 0) ||
+        a.group - b.group ||
         b.rating - a.rating ||
         a.id.localeCompare(b.id),
-    );
+    ).map(row=>{const rank=row.n?(ranks.get(row.group)??0)+1:0;if(row.n)ranks.set(row.group,rank);return {...row,rank};});
 }

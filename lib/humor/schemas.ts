@@ -2,9 +2,9 @@ export type Choice = "A" | "B";
 export type Plan = { title: string; description: string; details: { id: string; observation: string }[]; conflicts: string[]; angles: { idea: string; detail_ids: string[] }[] };
 export type Candidates = { candidates: { id: string; caption: string; detail_ids: string[] }[]; selected_id: string };
 export type Poll = { choice: Choice; a: number; b: number; total: number; labels?: Record<Choice,string>; baseline_slot: Choice };
-export function captionMethod(slot: Choice, baselineSlot?: Choice) {
+export function captionMethod(slot: Choice, baselineSlot?: Choice, labels?: Record<Choice,string>) {
   if (!baselineSlot) return null;
-  return slot === baselineSlot ? "Baseline" : "HOMER-inspired";
+  return labels?.[slot] ?? (slot === baselineSlot ? "Baseline" : "HOMER-inspired");
 }
 export const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 export function safeReturn(value: unknown): string {

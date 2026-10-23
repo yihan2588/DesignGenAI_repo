@@ -11,7 +11,7 @@ export default async function New() {
         Complete your profile first if prompted.
       </p>
       <section className="panel">
-        <UploadForm />
+        <UploadForm adminMode />
       </section>
     </>
   );
