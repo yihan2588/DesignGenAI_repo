@@ -69,19 +69,19 @@ a {
   font-size: 30px;
   line-height: 1;
 }
-.control-room nav {
+.control-room aside nav {
   display: grid;
   gap: 10px;
   margin-top: 64px;
 }
-.control-room nav a {
+.control-room aside nav a {
   padding: 13px 10px;
   text-decoration: none;
   border-radius: 8px;
   font-size: 14px;
 }
-.control-room nav a:hover,
-.control-room nav a:focus-visible {
+.control-room aside nav a:hover,
+.control-room aside nav a:focus-visible {
   background: #d7dfca;
 }
 .sidebar-bottom {
@@ -440,13 +440,13 @@ code {
     height: auto;
     padding: 18px;
   }
-  .control-room nav {
+  .control-room aside nav {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     margin-top: 18px;
   }
-  .control-room nav a {
+  .control-room aside nav a {
     font-size: 12px;
     padding: 10px;
   }
