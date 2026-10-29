@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getUser } from "@/lib/auth";
-import { isUuid } from "@/lib/humor/schemas";
+import { isUuid } from "@/lib/navigation";
 import { SiteHeader, SiteFooter } from "@/app/site-header";
 import { galleryFeed } from "@/app/gallery/feed-data";
 import { PostCard } from "@/app/gallery/post-card";

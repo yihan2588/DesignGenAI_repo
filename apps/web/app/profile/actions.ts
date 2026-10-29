@@ -3,7 +3,7 @@
 import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { safeReturn } from "@/lib/humor/schemas";
+import { safeReturn } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser, getProfile } from "@/lib/auth";
 import { prepareAvatarImage } from "@/lib/avatar-image";

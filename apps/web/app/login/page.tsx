@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { SiteHeader, SiteFooter } from "@/app/site-header";
 import { signInWithGoogle } from "@/app/auth/actions";
-import { safeReturn } from "@/lib/humor/schemas";
+import { safeReturn } from "@/lib/navigation";
 export const dynamic = "force-dynamic";
 export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const { error, next } = await searchParams, destination = safeReturn(next); if (await getUser()) redirect(destination);

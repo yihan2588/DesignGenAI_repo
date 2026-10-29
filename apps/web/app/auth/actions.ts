@@ -4,7 +4,7 @@ import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requestOrigin } from "@/lib/request-origin";
-import { safeReturn } from "@/lib/humor/schemas";
+import { safeReturn } from "@/lib/navigation";
 
 export async function signInWithGoogle(form: FormData) {
   const requestHeaders = await headers();

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { captionSchema,wordCount,MAX_WORDS,MAX_CHARS,type State,type Option,type Edit } from "@/lib/cowriter/contracts";
 import { MemePreview } from "@/app/meme-preview";
-import { prepareUploadImage } from "@/lib/humor/upload-image";
+import { prepareUploadImage } from "@/lib/upload-image";
 
 type DraftSummary={id:string;revision:number;input:{mode:string;text:string};updated_at:string};
 const controls=[{label:'Length',less:'shorter',lessLabel:'Shorter',more:'longer',moreLabel:'Longer'},{label:'Clarity',less:'less_obvious',lessLabel:'Less obvious',more:'more_obvious',moreLabel:'More obvious'},{label:'Bite',less:'less_mean',lessLabel:'Less mean',more:'more_mean',moreLabel:'More mean'}] as const;

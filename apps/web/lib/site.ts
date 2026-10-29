@@ -1,3 +1,4 @@
+export const adminOrigin = "https://funnyllm-admin.vercel.app";
 export const siteOrigin = "https://funnyllm.vercel.app";
 const legacyOrigin = "https://design-gen-ai-repo.vercel.app";
 

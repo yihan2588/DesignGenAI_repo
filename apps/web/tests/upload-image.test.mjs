@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { MAX_UPLOAD_BYTES, MAX_SOURCE_BYTES, validateUploadSource, prepareUploadImage } from '../lib/humor/upload-image.ts';
+import { MAX_UPLOAD_BYTES, MAX_SOURCE_BYTES, validateUploadSource, prepareUploadImage } from '../lib/upload-image.ts';
 
 test('source validation rejects empty, unsupported and over-limit files before transport', () => {
  for (const file of [{size:0,type:'image/jpeg'},{size:MAX_SOURCE_BYTES+1,type:'image/jpeg'},{size:100,type:'image/heic'}]) assert.ok(validateUploadSource(file));

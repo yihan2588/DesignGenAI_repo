@@ -4,7 +4,7 @@ import { requireUser, getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { SiteHeader, SiteFooter } from "@/app/site-header";
 import { ProfileForm } from "./profile-form";
-import { safeReturn } from "@/lib/humor/schemas";
+import { safeReturn } from "@/lib/navigation";
 export const dynamic = "force-dynamic";
 export default async function ProfilePage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const user = await requireUser("/profile"), profile = await getProfile(user.id), { error, next } = await searchParams, supabase = await createClient();

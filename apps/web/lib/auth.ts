@@ -2,8 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isProfileComplete } from "@/lib/profile-validation";
-import { safeReturn } from "@/lib/humor/schemas";
+import { safeReturn } from "@/lib/navigation";
 
 export type Profile = {
   id: string;
@@ -32,11 +31,4 @@ export async function getProfile(userId: string): Promise<Profile> {
     .select("id,first_name,last_name,avatar_path,updated_at").eq("id", userId).single();
   if (error || !data) throw new Error("Your profile could not be loaded. Please try again.");
   return data as Profile;
-}
-
-export async function requireCompleteProfile() {
-  const user = await requireUser("/upload");
-  const profile = await getProfile(user.id);
-  if (!isProfileComplete(profile)) redirect("/profile?next=/upload");
-  return { user, profile };
 }

@@ -81,11 +81,6 @@
 .funny-reading-page h2 { font-size: 25px; }
 .funny-reading-page p { margin-top: var(--space-md); line-height: 1.7; }
 .funny-reading-page>.cw-link { margin-top: var(--space-lg); }
-.funny-archive-item { border-top: 1px solid var(--color-rule); padding-block: var(--space-xl); }
-.funny-archive-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-lg); margin-top: var(--space-lg); }
-.funny-archive-pair h3 { font-size: 18px; margin-bottom: var(--space-sm); }
-.funny-archive-pair img { width: 100%; height: 320px; object-fit: contain; background: var(--color-paper-2); border-radius: 16px; }
-.funny-archive-caption { margin-top: var(--space-md) !important; font-size: 20px; }
 .funny-loading { padding: var(--space-2xl) max(24px,calc((100% - 1180px)/2)); }
 .funny-loading>p { margin-bottom: var(--space-lg); }
 .cw-funny-controls { flex-basis: 100%; display: grid; gap: var(--space-sm); }
@@ -119,7 +114,7 @@
  .funny-draft-list a { align-items: start; flex-direction: column; gap: var(--space-xs); }
  .cw-app main:is(.funny-account-page,.funny-meme-page,.funny-reading-page) { width: calc(100% - 32px); }
  .funny-account-page h1,.funny-reading-page h1 { font-size: 34px; }
- .cw-app .name-fields,.funny-archive-pair { grid-template-columns: minmax(0,1fr); }
+ .cw-app .name-fields { grid-template-columns: minmax(0,1fr); }
  .funny-footer>div { gap: var(--space-sm); flex-direction: column; }
  .cw-control-row { gap: var(--space-xs); }
  .cw-control-row>div { width: 246px; max-width: calc(100% - 62px); }
@@ -140,3 +135,6 @@
 .funny-gallery-grid .funny-post { display:flex; flex-direction:column; }
 .funny-gallery-grid .funny-post-body { flex:1; }
 .funny-gallery-grid .funny-byline { min-height:40px; }
+
+.cw-app .profile-form input { min-width:0; max-width:100%; }
+.cw-app .profile-form input[type=file] { border:1px solid var(--color-rule); padding:12px; background:var(--color-card); color:var(--color-ink); }

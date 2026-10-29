@@ -86,7 +86,7 @@ The [29 October release record](apps/web/docs/gallery/system.md) reports 59 user
 
 The [evaluation harness](apps/web/docs/co-writer.md#evaluation-protocol) compares literal versus relationship-based retrieval and direct versus interpreted picture writing. It produces blinded HTML reviews and task-level analysis. The six committed fixtures are **development smoke cases**. Human preference evaluation is pending: this project does **not yet claim a measured improvement in joke quality**.
 
-Current tradeoffs include one Gemini provider, English/Latin caption rendering, exact search over a small catalog, and database-native traces. Automated retention cleanup and external tracing are deferred. The old A/B interface is a read-only archive at `/compare`; historical data is retained and legacy writes are disabled.
+Current tradeoffs include one Gemini provider, English/Latin caption rendering, exact search over a small catalog, and database-native traces. Automated retention cleanup and external tracing are deferred. The app focuses on the gallery and Funny Lab. Retired A/B routes and APIs are removed; historical database records and migrations are retained. Signed-in users can open the separate admin app from Account → Admin; its existing admin allowlist still controls access.
 
 ## Repository guide
 

@@ -1,32 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import sharp from "sharp";
-import { validateGalleryFields, MAX_GALLERY_BYTES } from "../lib/gallery-validation.ts";
+const MAX_GALLERY_BYTES = 2 * 1024 * 1024;
 import { prepareGalleryImage } from "../lib/gallery-image.ts";
 
 const prepare = (file) => prepareGalleryImage(file, MAX_GALLERY_BYTES);
 
-test("publishing requires explicit public visibility and bounded, nonblank text", () => {
-  const form = new FormData();
-  form.set("title", " Noodles ");
-  form.set("description", " Lunch ");
-  form.set("alt_text", " Bowl of noodles ");
-  assert.equal(validateGalleryFields(form), null);
-  form.set("publish_publicly", "on");
-  assert.deepEqual(validateGalleryFields(form), { title: "Noodles", description: "Lunch", alt_text: "Bowl of noodles" });
-  form.set("title", " ");
-  assert.equal(validateGalleryFields(form), null);
-  form.set("title", "x".repeat(121));
-  assert.equal(validateGalleryFields(form), null);
-  form.set("title", "Noodles");
-  form.set("alt_text", "x".repeat(301));
-  assert.equal(validateGalleryFields(form), null);
-  form.set("alt_text", "Noodles");
-  form.set("description", "x".repeat(1001));
-  assert.equal(validateGalleryFields(form), null);
-});
-
-test("public uploads are decoded, resized, converted to JPEG and stripped of EXIF", async () => {
+test("image uploads are decoded, resized, converted to JPEG and stripped of EXIF", async () => {
   const source = await sharp({ create: { width: 2400, height: 1200, channels: 3, background: "#b45135" } })
     .withExif({ IFD0: { Artist: "Private camera owner" } }).png().toBuffer();
   const output = await prepare(new File([source], "meal.png", {type: "image/png"}));

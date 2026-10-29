@@ -32,4 +32,4 @@ Preserved for provenance; these do not describe the current main product:
 - [Early gallery history](at-the-table-history.md)
 - [Original personal-page plan](superpowers/plans/2026-09-18-personal-page.md)
 
-Applied SQL history and old data snapshots remain in place because they are referenced by migrations and the read-only archive. The source-controlled workflow is the current generation definition; earlier plans are not runtime configuration.
+Applied SQL history and old data snapshots remain in place for migration reproducibility and provenance; the old comparison UI and APIs have been removed. The source-controlled workflow is the current generation definition; earlier plans are not runtime configuration.

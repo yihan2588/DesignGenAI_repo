@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { prepareUploadImage } from "@/lib/humor/upload-image";
+import { prepareUploadImage } from "@/lib/upload-image";
 import { saveProfile, type ProfileState } from "@/app/profile/actions";
 import type { Profile } from "@/lib/auth";
 

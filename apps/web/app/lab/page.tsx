@@ -1,7 +1,7 @@
 import { getUser } from "@/lib/auth";
 import { Cowriter } from "@/app/cowriter/cowriter";
 import { SiteHeader, SiteFooter } from "@/app/site-header";
-import { isUuid } from "@/lib/humor/schemas";
+import { isUuid } from "@/lib/navigation";
 export const metadata = { title: "Funny Lab — FunnyLLM" };
 export const dynamic = "force-dynamic";
 export default async function Lab({ searchParams }: { searchParams: Promise<{ mode?: string; draft?: string }> }) {
