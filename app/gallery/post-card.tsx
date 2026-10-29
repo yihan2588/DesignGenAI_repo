@@ -48,7 +48,7 @@ export function PostCard({ post, signedIn, detail = false }: { post: GalleryPost
     finally { setBusy(false); }
   }
   return <article className={`funny-post${detail ? " funny-post-detail" : ""}`} aria-label={`Meme by ${post.author_name}`} aria-busy={disabled}>
-    {detail ? <MemePreview option={option} url={`/api/gallery/image?id=${post.id}`} /> : <Link className="funny-post-image" href={returnTo} aria-label={`Open meme: ${post.caption}`}><MemePreview option={option} url={`/api/gallery/image?id=${post.id}`} /></Link>}
+    {detail || post.status !== "published" ? <MemePreview option={option} url={`/api/gallery/image?id=${post.id}`} /> : <Link className="funny-post-image" href={returnTo} aria-label={`Open meme: ${post.caption}`}><MemePreview option={option} url={`/api/gallery/image?id=${post.id}`} /></Link>}
     <div className="funny-post-body"><div className="funny-byline"><span>By {post.author_name}</span>{post.featured && <span className="funny-featured">Featured</span>}{post.status !== "published" && <span className="funny-status-label">{post.status === "removed" ? "Removed by admin" : "Private"}</span>}</div>
     <div className="funny-post-actions">
       {post.status === "published" && <><button className="cw-link" disabled={disabled} onClick={() => act("like", !post.liked)} aria-pressed={post.liked} aria-label={`${post.liked ? "Unlike" : "Like"} meme`}>{post.liked ? "Liked" : "Like"} <span>{post.like_count}</span></button><button className="cw-link" disabled={disabled} onClick={() => act("save", !post.saved)} aria-pressed={post.saved}>{post.saved ? "Saved" : "Save"}</button><button className="cw-link" disabled={disabled} onClick={remix}>Remix</button></>}
