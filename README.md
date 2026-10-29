@@ -1,39 +1,96 @@
 # FunnyLLM
 
-A public meme gallery and two-mode co-writer built with Next.js, Gemini and Supabase. The gallery is the home page; Funny Lab is the creation workspace.
+**A picture. A thought. A meme you can make your own.**
 
-- **I have a pic:** upload a private image, optionally describe its funny spirit, and get three short captioned takes.
-- **I have a thought:** describe a target or situation and get three complete image–caption options from a trusted teaching catalog.
-- Refine one take with paired length, obviousness and meanness controls. All captions are capped at 20 words and 200 characters. Edit, undo, swap an image and export a PNG.
-- Publish an explicit snapshot to the gallery, like/save/remix public memes, report content, or unpublish your own work. Private drafts stay private.
+FunnyLLM is a meme creation app with a public gallery and an AI co-writer. Start with your own image or an idea, choose from three complete memes, and steer the result before exporting or sharing it.
 
-The previous blind comparison is a read-only archive at `/compare`. Historical votes and prompt configurations remain; legacy generation and voting writes are disabled.
+[Try the gallery](https://design-gen-ai-repo.vercel.app) · [Open Funny Lab](https://design-gen-ai-repo.vercel.app/lab) · [Engineering study guide](docs/study-guide/README.md) · [Admin repository](https://github.com/yihan2588/humorllm-admin)
 
-Production: https://design-gen-ai-repo.vercel.app
-Admin: https://humorllm-admin.vercel.app/admin
+![FunnyLLM gallery with curated studio memes and a link to Funny Lab](docs/gallery/released-gallery.jpg)
+
+## Make a meme, then make it yours
+
+| Start with | What happens |
+|---|---|
+| **I have a pic** | Upload an image and optionally describe its funny spirit. Get three short captions using different comic angles. |
+| **I have a thought** | Describe a person, situation, or contradiction. Retrieval finds visual analogies in the teaching catalog; the writer returns three complete image-caption pairs. |
+
+The editor offers **Shorter / Longer**, **Less / More obvious**, and **Less / More mean**, plus a different angle, image swaps in thought mode, manual editing, and undo. Captions stop at **20 words and 200 characters**. A failed edit preserves the last result.
+
+Private drafts stay in **My creations**. Export a captioned PNG, or explicitly publish a snapshot to the gallery. Others can like, save, remix, or report it. Owners can unpublish; admins can feature or remove content. Editing a private draft never silently changes an existing public post.
+
+<details>
+<summary>See Funny Lab and its editing controls</summary>
+
+![An actual Funny Lab thought request, three generated image-caption pairs, and paired refinement controls](docs/screenshots/funny-lab.jpg)
+
+Local release-check capture using the live backend, 29 October 2026. Example output illustrates the flow; it is not evidence of improved humor.
+
+</details>
+
+Anyone can browse the gallery. Any Google account can sign in to create. Admin access is restricted and enforced in the database.
+
+## How it works
+
+```mermaid
+flowchart LR
+  Pic[Picture + optional spirit] --> Interpret[Interpret creative intent]
+  Thought[Thought] --> Interpret
+  Interpret -->|Picture: keep image| Compose[Compose three complete options]
+  Interpret -->|Thought: three query views| Search[Vector + full-text retrieval]
+  Search -->|Eight image families| Compose
+  Compose --> Validate[Validate IDs, length, locks]
+  Validate --> Draft[Private versioned draft]
+  Draft --> Edit[Targeted edit / undo / PNG]
+  Draft --> Publish[Explicit public snapshot]
+  Publish --> Gallery[Gallery + reporting]
+```
+
+- **Retrieve for the joke’s relationship.** Original intent, abstract tension, and visual analogy each contribute vector and lexical results. Reciprocal rank fusion and image-family diversity form a bounded shortlist. The writer chooses image and caption together.
+- **Keep the workflow bounded.** Two generation calls; thought mode adds one embedding batch and a database search. No automatic critic loop or self-evolving prompt promotion.
+- **Make interaction reliable.** Structured output validation, idempotent request claims, revision checks, frozen model/example snapshots, and saved history protect the user’s work.
+- **Operate the whole product.** The companion admin app handles moderation, image upload/re-indexing, request traces, model compatibility checks, few-shot examples, and access.
+
+**Stack:** Next.js 16, React 19, TypeScript, Gemini Interactions API, Zod, Supabase Auth/Postgres/Storage, pgvector + full-text search, Fontkit + Sharp, and Vercel. Dependency versions are pinned in the manifest and lockfile. [Decisions and tradeoffs](docs/co-writer.md).
 
 ## Run locally
 
-Use Node 24 and pnpm. Copy `.env.example` to ignored `.env.local`, then configure the existing server-only `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `GEMINI_API_KEY` and `HUMOR_WRITER_KEY`.
+Use Node.js 24 and the pnpm version declared in `package.json`.
 
 ```sh
 pnpm install --frozen-lockfile
+cp .env.example .env.local
+# Configure the four server-side values described in docs/setup.md.
 pnpm dev --webpack
+```
+
+The application requires a provisioned Supabase database, Google OAuth, Gemini access, and the server writer key. **The migrations extend an earlier course database; cloning this repo is not a complete fresh-database restore.** Read [setup and deployment](docs/setup.md) before applying SQL or connecting a different project. Neither application uses a service-role key.
+
+```sh
 pnpm test
 pnpm lint
 pnpm build
 ```
 
-The webpack flag also supports this workspace’s shared dependency symlink. No new API key or service-role key is required. The migrations build on the existing course database; see the release mapping before applying to an existing project.
+## Evidence and limitations
 
-## Engineering evidence
+The [29 October release record](docs/gallery/system.md) reports 59 user-app tests and 51 admin tests, passing lint/type checks/builds, and authenticated browser checks against the live backend. SQL tests execute access, revision, publication, moderation, and runtime contracts in PGlite with pgvector.
 
-- [Gallery, operations, access and release verification](docs/gallery/system.md)
+The [evaluation harness](docs/co-writer.md#evaluation-protocol) compares literal versus relationship-based retrieval and direct versus interpreted picture writing. It produces blinded HTML reviews and task-level analysis. The six committed fixtures are **development smoke cases**. Human preference evaluation is pending: this project does **not yet claim a measured improvement in joke quality**.
 
-- [Implementation, decisions, data preparation and evaluation protocol](docs/co-writer.md)
-- [Verification and release record](docs/co-writer-verification.md)
-- [Catalog preparation report](docs/catalog-import-report.json)
-- [Development blind review](docs/evaluation/development-smoke/review.html)
-- [Legacy comparison documentation](docs/legacy-comparison.md)
+Current tradeoffs include one Gemini provider, English/Latin caption rendering, exact search over a small catalog, and database-native traces. Automated retention cleanup and external tracing are deferred. The old A/B interface is a read-only archive at `/compare`; historical data is retained and legacy writes are disabled.
 
-Run `pnpm eval:cowriter` after preparing the catalog to create a fresh blinded review. Automated completion checks and example captions do not establish a human humor improvement. No automatic prompt evolution or promotion is enabled.
+## Repository guide
+
+| Path | Purpose |
+|---|---|
+| `app/` | Gallery, Funny Lab, My creations, sign-in, and API routes |
+| `lib/cowriter/` | Workflow, prompt contracts, provider calls, layout, and export |
+| `lib/gallery/` | Publication, gallery access, reactions, and moderation integration |
+| `supabase/migrations/` | Versioned schema, functions, and access policies |
+| `tests/` | Deterministic contracts and executable SQL checks |
+| `scripts/` | Catalog preparation, controlled evaluations, and analysis |
+| `public/catalog/` | 722 sanitized, content-addressed teaching images used at runtime |
+| `docs/` | Setup, implementation, release evidence, study guide, and historical records |
+
+[Browse the documentation index](docs/README.md). Historical snapshots remain labeled and separate from current product guidance. Raw course exports, local credentials, build output, and preparation caches are not part of the published source. Teaching assets retain their original rights; repository inclusion does not grant a new blanket license.

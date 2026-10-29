@@ -63,7 +63,7 @@ Each account gets 50 AI operations per rolling 24 hours; the project guard is 50
 
 All personal sessions and revisions are private. SQL checks verified identity and the existing narrow server writer key; no service-role secret enters the browser. Same-origin mutation checks, bounded request bodies, decoded image validation, strict media paths and pinned provider endpoints limit unintended input paths. Catalog images remain public teaching assets. The empty, unused `cowriter-catalog` bucket remains with no upload policies; personal uploads use `cowriter-uploads`.
 
-Admin traces omit user text and images. Stored `elapsed_ms` measures generation work before the final database save; it excludes upload, client rendering and the final commit. The successful-draft p95 is conditional on successful runs and must be read alongside failures. It is not end-to-end perceived latency.
+Admin activity lists omit large trace bodies. Authorized details contain bounded sent prompts and parsed responses, which may include private input text; secrets and image bytes are excluded. Stored `elapsed_ms` measures generation work before the final database save; it excludes upload, client rendering and the final commit. The successful-draft p95 is conditional on successful runs and must be read alongside failures. It is not end-to-end perceived latency.
 
 ## Evaluation protocol
 
@@ -95,7 +95,7 @@ Recall practice: Why might a semantically closer image produce a worse joke? Wha
 
 Both applications share one Supabase project. The media-app repository owns the additive co-writer migrations. The live core migration is `20261029063715_funnyllm_cowriter_core`; the local source is `20261029063133_funnyllm_cowriter.sql`. A preceding live placeholder migration contains no DDL. Do not replay the core migration into an existing database or rewrite applied history. The subsequent operational-guards migration removes unused catalog import endpoints and installs upload limits.
 
-Deploy the user app and admin from their `codex/funnyllm-cowriter` branches after checks. The admin can pause AI writing while saved drafts, manual edits and exports remain available. Rollback re-promotes the previous deployment; the additive schema and private drafts can remain. Do not run destructive down migrations as part of an app rollback.
+Both repositories publish the current source on `main` after checks. The original release was built from `codex/funnyllm-cowriter`; the release record preserves that provenance. The admin can pause AI writing while saved drafts, manual edits and exports remain available. Rollback re-promotes the previous deployment; the additive schema and private drafts can remain. Do not run destructive down migrations as part of an app rollback.
 
 ## Gallery and operations integration
 

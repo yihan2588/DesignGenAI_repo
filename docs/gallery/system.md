@@ -57,7 +57,7 @@ The initial release used user build `dpl_2qk56ayPjBes275xxMXxzCKtcjww` at `22ac2
 | User | `09426f3` | `dpl_8gX4i5LjyiXNGvwL2MDVSSQZMQ4r` | https://design-gen-ai-repo.vercel.app |
 | Admin | `95db108` | `dpl_5hFASp1RPDyYDHEjR96TuJp3yZAT` | https://humorllm-admin.vercel.app/admin |
 
-The source commits were pushed to `codex/funnyllm-cowriter`; neither repository's main branch was merged. The user CLI deployment has no Git metadata attached, so its source mapping is the verified application files at upload time (release documentation is excluded from deployment). The admin deployment explicitly records its Git SHA. Later documentation-only commits do not change the deployed build.
+At deployment time the source commits were pushed to `codex/funnyllm-cowriter`. A subsequent documentation/publication pass fast-forwards both repositories' `main` branches to include the completed product. The user CLI deployment has no Git metadata attached, so its source mapping is the verified application files at upload time (release documentation is excluded from deployment). The admin deployment explicitly records its Git SHA. Later documentation-only commits do not change the deployed build.
 
 Staged and canonical HTTP checks passed: gallery and feed 200, eight public studio posts, JPEG and PNG decoded, anonymous private-session request 401, removed-post image 404, legacy-generation POST 410. The staged admin login rendered and an anonymous admin request redirected to sign-in (307).
 
