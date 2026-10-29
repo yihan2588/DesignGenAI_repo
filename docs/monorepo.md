@@ -10,7 +10,7 @@ The user and admin apps share one Git repository and one existing Supabase proje
 
 Each app has its own lockfile and install/build/test commands. From the repository root, `pnpm install:apps`, `pnpm test`, `pnpm lint`, and `pnpm build` operate on both. Dev commands are `pnpm dev:web` and `pnpm dev:admin`. Configure separate ignored `.env.local` files in the app folders.
 
-The shared SQL copies under admin are retained for historical SQL tests; do not apply both copies. This consolidation does not change SQL, Auth policies, storage, provider keys, or the database URL. Existing app domains remain valid to preserve Google OAuth callbacks and bookmarks.
+The shared SQL copies under admin are retained for historical SQL tests; do not apply both copies. This consolidation does not change SQL, Auth policies, storage, provider keys, or the database URL. Canonical domains are `funnyllm.vercel.app` and `funnyllm-admin.vercel.app`. Old domains redirect page navigation, while in-flight auth callbacks and API requests retain their original host. See [OAuth setup](../apps/web/docs/setup.md#production-urls-and-google-login).
 
 Both original Git histories are reachable from the consolidation merge commit. The former admin GitHub repository is retained as a read-only archive, with current development in FunnyLLM. Never delete or rewrite the old history as part of this migration.
 

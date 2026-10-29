@@ -6,6 +6,6 @@ export async function adminData<T>(area: string, page = 1, query = "", id: strin
   if (error || !data) throw new Error("This admin view could not be loaded. Please retry.");
   return data as T;
 }
-export const appOrigin = "https://design-gen-ai-repo.vercel.app";
+export const appOrigin = "https://funnyllm.vercel.app";
 export const timestamp = (value: string) => new Date(value).toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" });
 export const duration = (ms: number | undefined | null) => ms == null ? "Not recorded" : `${(ms / 1000).toFixed(1)}s`;

@@ -1,7 +1,11 @@
+import { legacyPageRedirect } from "@/lib/site";
+import { requestOrigin } from "@/lib/request-origin";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  const destination = legacyPageRedirect(requestOrigin(request.headers), request.nextUrl.pathname, request.nextUrl.search, request.method);
+  if (destination) return NextResponse.redirect(destination, 308);
   let response = NextResponse.next({ request });
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_ANON_KEY;
@@ -23,5 +27,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/lab", "/creations", "/meme/:path*", "/api/gallery/:path*", "/login", "/profile/:path*", "/members/:path*", "/upload/:path*", "/auth/:path*", "/runs/:path*", "/api/humor/:path*", "/api/cowriter/:path*", "/compare"],
+  matcher: ["/", "/privacy", "/lab", "/creations", "/meme/:path*", "/api/gallery/:path*", "/login", "/profile/:path*", "/members/:path*", "/upload/:path*", "/auth/:path*", "/runs/:path*", "/api/humor/:path*", "/api/cowriter/:path*", "/compare"],
 };

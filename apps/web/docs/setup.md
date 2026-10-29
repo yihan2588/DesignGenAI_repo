@@ -31,6 +31,17 @@ The PGlite fixtures are isolated tests, not a production restore script. A porta
 
 `pnpm test`, `pnpm lint`, and `pnpm build` are deterministic code checks. A real flow additionally needs sign-in, generation, refinement, export, publish/unpublish, moderation, and an anonymous media-access check. Keep paid provider evaluations separate from normal tests.
 
-Both repositories publish their current source on `main`. Configure each Vercel project with the same appropriate server-side environment values and its own URL. Keep root-scoped deployment exclusions: `/supabase` must not accidentally exclude `lib/supabase/`.
+Both apps publish from the FunnyLLM monorepo on `main`, with Vercel roots `apps/web` and `apps/admin`. Configure each Vercel project with the same appropriate server-side environment values and its own URL. Keep root-scoped deployment exclusions: `/supabase` must not accidentally exclude `lib/supabase/`.
 
 Use the admin's writing pause during an incident; saved drafts, manual edits, and exports remain available. Do not run destructive down migrations during an application rollback. The retired A/B write privileges do not return simply because older code is promoted.
+
+## Production URLs and Google login
+
+- User app: https://funnyllm.vercel.app
+- Admin: https://funnyllm-admin.vercel.app/admin
+- Supabase Site URL: `https://funnyllm.vercel.app`
+- Supabase allowed redirects: `https://funnyllm.vercel.app/auth/callback` and `https://funnyllm-admin.vercel.app/auth/callback`.
+
+The Google provider's authorized redirect URI remains `https://nqmwkajkucwfipdowvzh.supabase.co/auth/v1/callback`. This is distinct from each application's callback. App OAuth actions derive their redirect from the current public host; no new URL environment variable or credential is needed.
+
+Old production domains remain attached. Page GET/HEAD requests redirect to the corresponding new host while preserving path and query. Old callbacks, API requests, and POST actions stay on their original host so in-flight PKCE exchanges and writes retain their cookies. Keep old exact callback allowlist entries during this compatibility period. Because cookies are scoped to a hostname, users sign in once on each new domain.

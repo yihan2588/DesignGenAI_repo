@@ -4,7 +4,7 @@
 
 This is the companion operations app for [FunnyLLM](https://github.com/yihan2588/FunnyLLM). It brings moderation, retrieval assets, generation traces, and model controls into a task-based interface.
 
-[Open the admin app](https://humorllm-admin.vercel.app/admin) · [Try the public gallery](https://design-gen-ai-repo.vercel.app) · [System and release evidence](docs/gallery-system.md)
+[Open the admin app](https://funnyllm-admin.vercel.app/admin) · [Try the public gallery](https://funnyllm.vercel.app) · [System and release evidence](docs/gallery-system.md)
 
 ![FunnyLLM admin overview with writing controls, request activity, and catalog readiness](docs/screenshots/admin-overview.jpg)
 
