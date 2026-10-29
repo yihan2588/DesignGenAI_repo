@@ -43,3 +43,7 @@ next-env.d.ts
 
 # Supabase CLI cache
 supabase/.temp/
+
+# Local teaching media cache and verification credentials
+.cowriter-cache/
+.hallmark/shots/

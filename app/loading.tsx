@@ -1,0 +1,1 @@
+export default function Loading() { return <div className="cw-app funny-loading" role="status"><p>Loading FunnyLLM…</p><div className="funny-gallery-grid" aria-hidden="true">{[0,1,2].map(i => <div className="cw-skeleton" key={i}/>)}</div></div>; }

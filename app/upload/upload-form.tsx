@@ -29,6 +29,6 @@ export function UploadForm() {
     <label className="public-confirmation"><input name="public_ack" type="checkbox" required disabled={Boolean(stage)||Boolean(runId)} /><span>I can share this image publicly. It will be sent to Google Gemini, and the completed comparison will appear in the community gallery.</span></label>
     {error&&<p className="form-message" role="alert">{error}</p>}
     {runId&&!stage ? <Link className="primary-button" href={`/runs/${runId}`}>Open saved run and retry ↗</Link> : <button className="primary-button" disabled={Boolean(stage)}>{stage||"Generate two captions ↗"}</button>}
-    <p className="fine-print" role="status">{stage ? "Keep this page open while we finish. Your saved run is also available in My runs." : "One image, two different approaches. You choose what lands."}</p>
+    <p className="fine-print" role="status">{stage ? "Keep this page open while we finish. Your saved run is also available in My runs." : "One image, two prompt configurations. You choose what lands."}</p>
   </form>;
 }

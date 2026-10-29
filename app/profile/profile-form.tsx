@@ -24,6 +24,6 @@ export function ProfileForm({ profile, next }: { profile: Profile; next?: string
     <p id="photo-help" className="fine-print">JPEG, PNG, or WebP, up to 50 MB. Large photos are automatically resized. Leave this empty to keep your current photo. Your photo is visible only to you.</p>
     {state.error && <p className="form-message" role="alert">{state.error}</p>}
     {state.success && <p className="success-message" role="status">{state.success}</p>}
-    <button className="primary-button" disabled={pending}>{pending ? "Preparing and saving…" : "Save profile"}</button>
+    <button className="cw-primary" disabled={pending}>{pending ? "Preparing and saving…" : "Save profile"}</button>
   </form>;
 }

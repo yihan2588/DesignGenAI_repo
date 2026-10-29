@@ -1,0 +1,46 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {PGlite} from '@electric-sql/pglite';import {vector} from '@electric-sql/pglite-pgvector';
+test('co-writer database enforces owner, writer, idempotency, revision, rollback and catalog contracts',async()=>{
+ const db=new PGlite({extensions:{vector}});const q=async(sql,args=[])=>(await db.query(sql,args)).rows;
+ try{
+ await db.exec(`create role anon;create role authenticated;create schema private;create schema auth;create schema storage;create schema extensions;create extension vector with schema extensions;
+ create table auth.users(id uuid primary key);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+ grant usage on schema private,auth to authenticated;
+ create function private.check_humor_writer(text) returns void language plpgsql as $$begin if auth.uid() is null or $1<>'writer' then raise exception 'writer denied';end if;end$$;
+ create function private.require_superadmin() returns void language plpgsql as $$begin if auth.uid()<>'00000000-0000-4000-8000-000000000001'::uuid then raise exception 'admin denied';end if;end$$;
+ create function private.admin_access() returns boolean language plpgsql as $$begin perform private.require_superadmin();return true;end$$;
+ create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);create table storage.objects(bucket_id text,name text);alter table storage.objects enable row level security;
+ create function storage.foldername(text) returns text[] language sql immutable as $$select string_to_array($1,'/')$$;`);
+ await db.exec(await readFile(new URL('../supabase/migrations/20261029063133_funnyllm_cowriter.sql',import.meta.url),'utf8'));
+ const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002';
+ await q('insert into auth.users values($1),($2)',[a,b]);await db.exec('set role anon');await assert.rejects(q('select public.cowriter_read()'),/permission/);
+ await db.exec('reset role;set role authenticated');await q("select set_config('request.jwt.claim.sub',$1,false)",[a]);
+ const input={mode:'thought',text:'Organizing instead of doing',locks:''};const request='00000000-0000-4000-8000-000000000003';
+ await assert.rejects(q("select public.cowriter_begin('wrong',$1,'draft',$2,null,0,$3)",[request,'a'.repeat(64),input]),/writer/);
+ const claim=(await q("select public.cowriter_begin('writer',$1,'draft',$2,null,0,$3) c",[request,'a'.repeat(64),input]))[0].c;
+ await assert.rejects(q("select public.cowriter_begin('writer',$1,'draft',$2,null,0,$3)",[request,'a'.repeat(64),input]),/already running/);
+ await assert.rejects(q("select public.cowriter_begin('writer',$1,'draft',$2,null,0,$3)",[request,'b'.repeat(64),input]),/different content/);
+ const state={...claim.state,options:[{id:request,image_id:'upload',caption:'Research phase.'}],intent:{spirit:'stalling'}};
+ const saved=(await q("select public.cowriter_finish('writer',$1,$2,$3,'{}',null) s",[request,claim.token,state]))[0].s;assert.equal(saved.revision,1);
+ const cached=(await q("select public.cowriter_begin('writer',$1,'draft',$2,null,0,$3) c",[request,'a'.repeat(64),input]))[0].c;assert.equal(cached.cached,true);
+ await assert.rejects(q("select public.cowriter_begin('writer',gen_random_uuid(),'manual',$1,$2,0,'{}')",['c'.repeat(64),saved.id]),/changed/);
+ const edit=(await q("select public.cowriter_begin('writer',gen_random_uuid(),'manual',$1,$2,1,'{}') c",['c'.repeat(64),saved.id]))[0].c;assert.equal(edit.state.revision,1);
+ await q("select set_config('request.jwt.claim.sub',$1,false)",[b]);await assert.rejects(q('select public.cowriter_read($1)',[saved.id]),/not found/);
+ await assert.rejects(q("select public.cowriter_finish('writer',$1,$2,$3,'{}',null)",[request,claim.token,state]),/not found/);
+ await assert.rejects(q('select public.cowriter_admin()'),/admin/);await assert.rejects(q('select * from private.cowriter_sessions'),/permission/);
+ await q("select set_config('request.jwt.claim.sub',$1,false)",[a]);
+ const v=Array(768).fill(0);v[0]=1;const image={id:'00000000-0000-4000-8000-000000000005',source_url:'https://example.test/a.jpg',source_hash:'hash',description:'A confident person doing nothing',description_origin:'teaching',family:'hash',available:true,storage_path:'a.jpg',width:400,height:300,embedding:v,index_version:'test'};
+ assert.equal((await q("select public.cowriter_import('writer',$1) n",[[image]]))[0].n,1);
+ const hits=(await q("select public.cowriter_search($1,$2,'test') r",[[v,v,v],['confidence','work avoidance','person waiting']]))[0].r;assert.equal(hits[0].id,image.id);assert.ok(hits[0].score>0);
+ const snap=(await q('select public.cowriter_admin(false) r'))[0].r;assert.equal(snap.enabled,false);
+ await assert.rejects(q("select public.cowriter_begin('writer',gen_random_uuid(),'draft',$1,null,0,$2)",['d'.repeat(64),input]),/paused/);
+ await db.exec('reset role');
+ await db.exec(await readFile(new URL('../supabase/migrations/20261029135346_cowriter_operational_guards.sql',import.meta.url),'utf8'));
+ assert.equal((await q("select to_regprocedure('public.cowriter_import(text,jsonb)') f"))[0].f,null);
+ await q("select set_config('request.jwt.claim.sub',$1,false)",[a]);
+ assert.equal((await q('select private.cowriter_upload_allowed() allowed'))[0].allowed,true);
+ await q("insert into storage.objects select 'cowriter-uploads',$1||'/'||n from generate_series(1,100) n",[a]);
+ assert.equal((await q('select private.cowriter_upload_allowed() allowed'))[0].allowed,false);
+ await q("select set_config('request.jwt.claim.sub',$1,false)",[b]);
+ assert.equal((await q('select private.cowriter_upload_allowed() allowed'))[0].allowed,true);
+ } finally{await db.close();}
+});

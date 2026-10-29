@@ -1,0 +1,62 @@
+[
+  {
+    "id": "thought-01",
+    "label": "A",
+    "arm": "baseline"
+  },
+  {
+    "id": "thought-01",
+    "label": "B",
+    "arm": "cowriter"
+  },
+  {
+    "id": "thought-02",
+    "label": "A",
+    "arm": "cowriter"
+  },
+  {
+    "id": "thought-02",
+    "label": "B",
+    "arm": "baseline"
+  },
+  {
+    "id": "thought-03",
+    "label": "A",
+    "arm": "baseline"
+  },
+  {
+    "id": "thought-03",
+    "label": "B",
+    "arm": "cowriter"
+  },
+  {
+    "id": "thought-04",
+    "label": "A",
+    "arm": "baseline"
+  },
+  {
+    "id": "thought-04",
+    "label": "B",
+    "arm": "cowriter"
+  },
+  {
+    "id": "pic-01",
+    "label": "A",
+    "arm": "cowriter"
+  },
+  {
+    "id": "pic-01",
+    "label": "B",
+    "arm": "baseline"
+  },
+  {
+    "id": "pic-02",
+    "label": "A",
+    "arm": "baseline"
+  },
+  {
+    "id": "pic-02",
+    "label": "B",
+    "arm": "cowriter"
+  }
+]

@@ -1,0 +1,28 @@
+[
+ {
+  "shape": "app screen",
+  "scope": "app",
+  "theme": "hum",
+  "axes": "light/rounded-sans/chromatic-yellow",
+  "hero": "two inputs, three takes",
+  "nav": "compact top bar",
+  "footer": "privacy",
+  "imagery": "real teaching images and private uploads",
+  "photos": [],
+  "entry": "home",
+  "fingerprint": "two-mode-composer",
+  "sections": [
+   "composer",
+   "options",
+   "refinement"
+  ],
+  "signature": "spirit-led complete meme options",
+  "waived": [
+   "39b tall upload target"
+  ],
+  "prompt": "FunnyLLM two-mode caption co-writer in Hum style",
+  "verification": "0 FAIL, 0 WARN; fresh-context finish review: texture and headline fixed; desktop and 375px recaptured",
+  "date": "2026-10-29",
+  "mode": "build"
+ }
+]

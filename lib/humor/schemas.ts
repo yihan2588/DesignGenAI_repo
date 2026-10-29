@@ -1,17 +1,24 @@
 export type Choice = "A" | "B";
 export type Plan = { title: string; description: string; details: { id: string; observation: string }[]; conflicts: string[]; angles: { idea: string; detail_ids: string[] }[] };
 export type Candidates = { candidates: { id: string; caption: string; detail_ids: string[] }[]; selected_id: string };
-export type Poll = { choice: Choice; a: number; b: number; total: number; baseline_slot: Choice };
-export function captionMethod(slot: Choice, baselineSlot?: Choice) {
+export type Poll = { choice: Choice; a: number; b: number; total: number; labels?: Record<Choice,string>; baseline_slot: Choice };
+export function captionMethod(slot: Choice, baselineSlot?: Choice, labels?: Record<Choice,string>) {
   if (!baselineSlot) return null;
-  return slot === baselineSlot ? "Baseline" : "HOMER-inspired";
+  return labels?.[slot] ?? (slot === baselineSlot ? "Baseline" : "HOMER-inspired");
 }
 export const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 export function safeReturn(value: unknown): string {
-  if (typeof value !== "string") return "/members";
-  if (value === "/" || value === "/upload" || value === "/members" || /^\/runs\/[0-9a-f-]{36}$/.test(value)) return value;
-  return "/members";
+  if (typeof value !== "string") return "/";
+  if (["/", "/lab", "/creations", "/profile", "/compare"].includes(value)) return value;
+  if (value === "/members") return "/creations";
+  if (value === "/upload") return "/lab";
+  if (/^\/(?:meme|runs)\/[0-9a-f-]{36}$/.test(value)) return value;
+  if (/^\/creations\?tab=(drafts|shared|saved)$/.test(value)) return value;
+  if (/^\/(?:lab)?\?mode=(pic|thought)(?:&draft=[0-9a-f-]{36})?$/.test(value)) return value.startsWith('/?') ? '/lab'+value.slice(1) : value;
+  if (/^\/lab\?draft=[0-9a-f-]{36}(?:&mode=(pic|thought))?$/.test(value)) return value;
+  return "/";
 }
+
 function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Invalid AI response.");
   return value as Record<string, unknown>;
