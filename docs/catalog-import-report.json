@@ -1,0 +1,24 @@
+{
+  "source_rows": 887,
+  "available": 884,
+  "embedded": 885,
+  "backfilled": 142,
+  "derived_relationships": 877,
+  "distinct_media": 722,
+  "failures": [
+    {
+      "id": "4d3fc972-6604-4d45-ba84-36813d53e2ab",
+      "error": "Input buffer has corrupt header: glib: XML parse error: Error domain 1 code 76 on line 126 column 372 of data: Opening and ending tag mismatch: link line 88 and html"
+    },
+    {
+      "id": "959f5a43-5210-48c6-b07d-2fbbdbc33214",
+      "error": "Media HTTP 403"
+    },
+    {
+      "id": "fc058eca-44f0-460d-930e-f6eefb6b081f",
+      "error": "source: bad seek to 1881483\nsource: bad seek to 1881454\nsource: bad seek to 1881452\nheif: Decoder plugin generated an error: Unspecified (7.0)"
+    }
+  ],
+  "index_version": "teaching-1-gemini-001-768",
+  "created_at": "2026-10-29T06:42:00.923Z"
+}

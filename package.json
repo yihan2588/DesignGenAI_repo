@@ -7,7 +7,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "eval:cowriter": "node --experimental-strip-types scripts/evaluate-cowriter.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -15,16 +16,20 @@
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "sharp": "0.35.4"
+    "sharp": "0.35.4",
+    "zod": "4.6.7",
+    "fontkit": "2.0.4"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.10",
+    "@electric-sql/pglite-pgvector": "0.0.11",
+    "@types/fontkit": "2.0.8",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
-    "typescript": "^5",
-    "@electric-sql/pglite": "0.5.10"
+    "typescript": "^5"
   },
   "packageManager": "pnpm@11.19.0"
 }

@@ -1,0 +1,1951 @@
+[
+  {
+    "task_id": "thought-01",
+    "mode": "thought",
+    "arm": "baseline",
+    "input": {
+      "mode": "thought",
+      "text": "Me organizing my to-do list instead of doing anything.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "Me organizing to-do list",
+        "spirit": "The humorous gap between the illusion of productivity through administrative busywork and the actual avoidance of difficult tasks.",
+        "explicit_constraints": [
+          "Subject is self-deprecating",
+          "Focus on task management",
+          "No external characters"
+        ],
+        "visual_anchors": [
+          "Person staring intensely at a screen",
+          "Complex color-coded list",
+          "Messy desk or cluttered environment",
+          "Clock showing passing time"
+        ],
+        "angles": [
+          "The Architect of Procrastination",
+          "The Illusion of Progress",
+          "Panic disguised as planning"
+        ],
+        "search_queries": {
+          "topic": "procrastination through organization",
+          "relationship": "productive avoidance",
+          "visual_analogy": "person meticulously rearranging deck chairs on the Titanic"
+        }
+      },
+      "pool": [
+        {
+          "id": "86e12f60-042b-4bf1-ad0c-29948cad74d8",
+          "score": 0.04918032786885246,
+          "width": 1196,
+          "family": "09d8b8e2c41eec629700d75444baa4030237ee3afcf52b1f5017e79205243a13",
+          "height": 639,
+          "affordances": "Disengagement vs. clutter; The war against chores; Resignation as resistance.",
+          "description": "In the image, a man is seated slouched in a folding chair, surrounded by a chaotic pile of clothes. His expression is one of tired resignation, capturing a moment of deep, unimpressed contemplation. The chaos of the clothes contrasts with his stillness, emphasizing his sense of being overwhelmed or perhaps just disengaged from the clutter around him.\n\nThe background is minimalistic, focusing on the mess rather than providing a distinct setting, which amplifies the feeling of disorder. This scene resonates humorously as it reflects the relatable struggle of facing a never-ending laundry pile, and the man's blank stare almost seems to say, “Not today.” It encapsulates a moment many can empathize with, making it a playful commentary on procrastination and the burden of chores.",
+          "storage_path": "09d8b8e2c41eec629700d75444baa4030237ee3afcf52b1f5017e79205243a13.jpg"
+        },
+        {
+          "id": "b1e5db62-3975-41f7-a946-ea0b48836a0c",
+          "score": 0.04838709677419355,
+          "width": 900,
+          "family": "896a93f953aae2549af3a290366381ffe6a4dd5d6c8772851bae89dfc53bc118",
+          "height": 600,
+          "affordances": "Productivity avoidance; silent abandonment; anticipation of work.",
+          "description": "An empty modern chair is pulled up to a wooden desk where a partially closed silver laptop and a white wireless mouse rest, creating a tidy, minimal workspace; the chair has a black cushion, white shell, and wooden legs.",
+          "storage_path": "896a93f953aae2549af3a290366381ffe6a4dd5d6c8772851bae89dfc53bc118.jpg"
+        },
+        {
+          "id": "0d6a3faf-de0a-45fb-826e-9a0aebc2d236",
+          "score": 0.047619047619047616,
+          "width": 564,
+          "family": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b",
+          "height": 564,
+          "affordances": "Professional facade vs. internal chaos; Authority vs. intellectual surrender.",
+          "description": "In the image, a man in a suit, likely a character from a TV show, speaks directly to the camera with a somewhat puzzled expression. His body language suggests uncertainty, as he describes starting sentences without knowing their direction. The emotional energy is a mix of confusion and resignation, highlighting the relatable struggle of tackling assignments. An ironic element is the contrast between his formal appearance and the casual, disorganized thought process he describes; one would expect clarity from someone dressed so professionally.",
+          "storage_path": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b.jpg"
+        },
+        {
+          "id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "score": 0.046875,
+          "width": 903,
+          "family": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d",
+          "height": 1200,
+          "affordances": "Delusional focus, Ignoring systemic chaos",
+          "description": "In a grand library hall, a person with short dark hair, wearing an orange shirt and plaid pants, is intensely focused on their laptop at a wooden desk. Their bare feet are visible, suggesting a relaxed demeanor. Behind them, a bustling crowd of people, many adorned with keffiyeh-style head coverings, are gathered, some holding a megaphone and banners. The background appears to be a lively protest or demonstration, contrasting sharply with the foreground subject's serene concentration. The humor lies in the individual's complete absorption in their work, seemingly unfazed by the energetic public gathering unfolding just feet away. This creates a comical juxtaposition of studious calm amidst passionate activism within an ornate academic setting.",
+          "storage_path": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d.jpg"
+        },
+        {
+          "id": "e72c300f-3124-464c-b51e-16c425d9d619",
+          "score": 0.045454545454545456,
+          "width": 374,
+          "family": "3b15eedca24bc343cdb3b626483c85e31c7c1e5d958eec5048727954e9e5cdf9",
+          "height": 374,
+          "affordances": "Performative professional burnout, bureaucratic drudgery, demanding relief.",
+          "description": "A woman in a grey blazer sits at a desk with a serious expression, looking down at stacks of paperwork while holding a calculator. The high-contrast image features a clear 'RING the BELL' logo with a bell icon in the bottom right corner.",
+          "storage_path": "3b15eedca24bc343cdb3b626483c85e31c7c1e5d958eec5048727954e9e5cdf9.jpg"
+        },
+        {
+          "id": "67d37c79-9d9c-4605-a9e3-f5e9f43e2685",
+          "score": 0.04477611940298507,
+          "width": 6,
+          "family": "95488eba363914cab8873ab968c599232438ae5779f2d1d50b5e8ee50bdc3bc6",
+          "height": 2,
+          "affordances": "Absurdist void, Meaningless endeavor",
+          "description": "test",
+          "storage_path": "95488eba363914cab8873ab968c599232438ae5779f2d1d50b5e8ee50bdc3bc6.jpg"
+        },
+        {
+          "id": "dd2357f9-1b36-429d-806f-0e9b227b6c34",
+          "score": 0.04411764705882353,
+          "width": 496,
+          "family": "bebf05c122a097712718295048cdca7acfacd96b39ca3c3d5a109c2fcf570183",
+          "height": 398,
+          "affordances": "The absurdity of labor; Authority in a non-human hierarchy.",
+          "description": "In this amusing scene, a fluffy orange cat, sporting a pink bow and a green harness, sits at an office desk, intently positioned in front of a keyboard. Its focused demeanor suggests it’s deeply engaged in “work,” perhaps managing spreadsheets or answering emails. The cat’s expression is both serious and adorable, enhancing the humor of the situation.\n\nSurrounding the feline are stacks of paperwork and two computer monitors, indicating a busy office environment. A pink water bottle adds a playful touch to the scene, emphasizing the cat’s quirky office vibe. The juxtaposition of a cat “pretending” to work in a human setting provides a delightful contrast, inviting laughter at the absurdity of it all. It’s a charming example of pet humor, showcasing how even the most serious workplaces can benefit from a lighthearted touch.",
+          "storage_path": "bebf05c122a097712718295048cdca7acfacd96b39ca3c3d5a109c2fcf570183.jpg"
+        },
+        {
+          "id": "89e9cf7d-1335-47bd-b500-d9f0a5eaa8b0",
+          "score": 0.043478260869565216,
+          "width": 640,
+          "family": "3aa9ead6c44b85b5ce558161ae4b0e83d2289e539c2492532fed3bf7233d1228",
+          "height": 360,
+          "affordances": "Compliance vs. apathy; The heavy burden of bureaucracy.",
+          "description": "An animated man with a neutral expression holds a tall stack of documents toward the camera in an office-like setting. High-contrast lighting emphasizes the pile of papers, while the blue Intuit logo is visible in the bottom right corner.",
+          "storage_path": "3aa9ead6c44b85b5ce558161ae4b0e83d2289e539c2492532fed3bf7233d1228.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "b1e5db62-3975-41f7-a946-ea0b48836a0c",
+          "caption": "I am currently optimizing my color-coding strategy.",
+          "angle": "The Architect of Procrastination",
+          "intent_bridge": "Prioritizing formatting over actual task completion.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "e72c300f-3124-464c-b51e-16c425d9d619",
+          "caption": "Look at all this progress I am not making.",
+          "angle": "The Illusion of Progress",
+          "intent_bridge": "Confusing the sheer volume of paperwork with productivity.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "89e9cf7d-1335-47bd-b500-d9f0a5eaa8b0",
+          "caption": "My entire career is just font selection now.",
+          "angle": "Panic disguised as planning",
+          "intent_bridge": "Using trivial administrative tasks to mask actual work.",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2558,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1992,
+        "usage": {
+          "total_tokens": 392,
+          "total_input_tokens": 179,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 179
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 213,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 504
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 324,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 2233,
+        "usage": {
+          "total_tokens": 2097,
+          "total_input_tokens": 1768,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1768
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 329,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1959
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-01",
+    "mode": "thought",
+    "arm": "cowriter",
+    "input": {
+      "mode": "thought",
+      "text": "Me organizing my to-do list instead of doing anything.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "Me organizing to-do list",
+        "spirit": "The humorous gap between the illusion of productivity through administrative busywork and the actual avoidance of difficult tasks.",
+        "explicit_constraints": [
+          "Subject is self-deprecating",
+          "Focus on task management",
+          "No external characters"
+        ],
+        "visual_anchors": [
+          "Person staring intensely at a screen",
+          "Complex color-coded list",
+          "Messy desk or cluttered environment",
+          "Clock showing passing time"
+        ],
+        "angles": [
+          "The Architect of Procrastination",
+          "The Illusion of Progress",
+          "Panic disguised as planning"
+        ],
+        "search_queries": {
+          "topic": "procrastination through organization",
+          "relationship": "productive avoidance",
+          "visual_analogy": "person meticulously rearranging deck chairs on the Titanic"
+        }
+      },
+      "pool": [
+        {
+          "id": "b1e5db62-3975-41f7-a946-ea0b48836a0c",
+          "score": 0.06478893337698202,
+          "width": 900,
+          "family": "896a93f953aae2549af3a290366381ffe6a4dd5d6c8772851bae89dfc53bc118",
+          "height": 600,
+          "affordances": "Productivity avoidance; silent abandonment; anticipation of work.",
+          "description": "An empty modern chair is pulled up to a wooden desk where a partially closed silver laptop and a white wireless mouse rest, creating a tidy, minimal workspace; the chair has a black cushion, white shell, and wooden legs.",
+          "storage_path": "896a93f953aae2549af3a290366381ffe6a4dd5d6c8772851bae89dfc53bc118.jpg"
+        },
+        {
+          "id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "score": 0.04865990111891751,
+          "width": 903,
+          "family": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d",
+          "height": 1200,
+          "affordances": "Delusional focus, Ignoring systemic chaos",
+          "description": "In a grand library hall, a person with short dark hair, wearing an orange shirt and plaid pants, is intensely focused on their laptop at a wooden desk. Their bare feet are visible, suggesting a relaxed demeanor. Behind them, a bustling crowd of people, many adorned with keffiyeh-style head coverings, are gathered, some holding a megaphone and banners. The background appears to be a lively protest or demonstration, contrasting sharply with the foreground subject's serene concentration. The humor lies in the individual's complete absorption in their work, seemingly unfazed by the energetic public gathering unfolding just feet away. This creates a comical juxtaposition of studious calm amidst passionate activism within an ornate academic setting.",
+          "storage_path": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d.jpg"
+        },
+        {
+          "id": "86e12f60-042b-4bf1-ad0c-29948cad74d8",
+          "score": 0.04738666351569577,
+          "width": 1196,
+          "family": "09d8b8e2c41eec629700d75444baa4030237ee3afcf52b1f5017e79205243a13",
+          "height": 639,
+          "affordances": "Disengagement vs. clutter; The war against chores; Resignation as resistance.",
+          "description": "In the image, a man is seated slouched in a folding chair, surrounded by a chaotic pile of clothes. His expression is one of tired resignation, capturing a moment of deep, unimpressed contemplation. The chaos of the clothes contrasts with his stillness, emphasizing his sense of being overwhelmed or perhaps just disengaged from the clutter around him.\n\nThe background is minimalistic, focusing on the mess rather than providing a distinct setting, which amplifies the feeling of disorder. This scene resonates humorously as it reflects the relatable struggle of facing a never-ending laundry pile, and the man's blank stare almost seems to say, “Not today.” It encapsulates a moment many can empathize with, making it a playful commentary on procrastination and the burden of chores.",
+          "storage_path": "09d8b8e2c41eec629700d75444baa4030237ee3afcf52b1f5017e79205243a13.jpg"
+        },
+        {
+          "id": "844bc5ac-5a9a-424c-b7d5-ed976474a2e5",
+          "score": 0.044070512820512824,
+          "width": 160,
+          "family": "e988e1c994d17b92d49c031681c11066bac5b75ff78787375192c24b1307db22",
+          "height": 290,
+          "affordances": "Preparation replacing action; Stoic observer vs. chaotic world; Existential waiting.",
+          "description": "A silhouetted figure in a hooded jacket sits on a folding chair facing a foggy, overcast landscape. The high-contrast composition shows no readable text, while the person maintains a neutral, observant expression and stationary posture.",
+          "storage_path": "e988e1c994d17b92d49c031681c11066bac5b75ff78787375192c24b1307db22.jpg"
+        },
+        {
+          "id": "e72c300f-3124-464c-b51e-16c425d9d619",
+          "score": 0.029411764705882353,
+          "width": 374,
+          "family": "3b15eedca24bc343cdb3b626483c85e31c7c1e5d958eec5048727954e9e5cdf9",
+          "height": 374,
+          "affordances": "Performative professional burnout, bureaucratic drudgery, demanding relief.",
+          "description": "A woman in a grey blazer sits at a desk with a serious expression, looking down at stacks of paperwork while holding a calculator. The high-contrast image features a clear 'RING the BELL' logo with a bell icon in the bottom right corner.",
+          "storage_path": "3b15eedca24bc343cdb3b626483c85e31c7c1e5d958eec5048727954e9e5cdf9.jpg"
+        },
+        {
+          "id": "6fd0e4b7-a867-4a4c-9929-d796171d732c",
+          "score": 0.02923602219376867,
+          "width": 828,
+          "family": "4c31cbecfba39cc4cddd2249526e49fa4caf988f10ca9b9f69b9fb07900696c5",
+          "height": 466,
+          "affordances": "Mechanical precision vs. human error; Futile repetition; Assembly line existentialism",
+          "description": "A person's hand reaches out to place a plain white card onto a stack of identical cards on a mint green mechanical surface. The scene features a sharp contrast between the light-colored cards and the dark, industrial components of the machine, with no text visible.",
+          "storage_path": "4c31cbecfba39cc4cddd2249526e49fa4caf988f10ca9b9f69b9fb07900696c5.jpg"
+        },
+        {
+          "id": "6424e9e5-caa6-4c00-9315-f54bbc19094d",
+          "score": 0.02900988017658188,
+          "width": 1164,
+          "family": "87198a135f8b008796289dd87a762a2799ce3c42d0df4e7a7e23ff709fecee94",
+          "height": 1200,
+          "affordances": "Pensive paralysis, Overthinking the void",
+          "description": "A man in white clothes sits on a padded floor in the corner of a padded room with a pensive expression while biting his finger. The high contrast of the white textures highlights his figure against the corners of the enclosed space.",
+          "storage_path": "87198a135f8b008796289dd87a762a2799ce3c42d0df4e7a7e23ff709fecee94.jpg"
+        },
+        {
+          "id": "67d37c79-9d9c-4605-a9e3-f5e9f43e2685",
+          "score": 0.028381642512077296,
+          "width": 6,
+          "family": "95488eba363914cab8873ab968c599232438ae5779f2d1d50b5e8ee50bdc3bc6",
+          "height": 2,
+          "affordances": "Absurdist void, Meaningless endeavor",
+          "description": "test",
+          "storage_path": "95488eba363914cab8873ab968c599232438ae5779f2d1d50b5e8ee50bdc3bc6.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "e72c300f-3124-464c-b51e-16c425d9d619",
+          "caption": "My priority is perfecting the font size.",
+          "angle": "The Architect of Procrastination",
+          "intent_bridge": "Prioritizing aesthetic admin over actual task completion",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "6fd0e4b7-a867-4a4c-9929-d796171d732c",
+          "caption": "I am color-coding my way to unemployment.",
+          "angle": "The Illusion of Progress",
+          "intent_bridge": "The irony of being productive at the wrong things",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "6424e9e5-caa6-4c00-9315-f54bbc19094d",
+          "caption": "I have successfully scheduled my existential crisis.",
+          "angle": "Panic disguised as planning",
+          "intent_bridge": "Using formal scheduling to manage internal avoidance",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2220,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1992,
+        "usage": {
+          "total_tokens": 392,
+          "total_input_tokens": 179,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 179
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 213,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 504
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 294,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1925,
+        "usage": {
+          "total_tokens": 1933,
+          "total_input_tokens": 1606,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1606
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 327,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1797
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-02",
+    "mode": "thought",
+    "arm": "cowriter",
+    "input": {
+      "mode": "thought",
+      "text": "A group project teammate taking all the credit.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "Group project teammate taking all the credit",
+        "spirit": "The absurdity of claiming sole victory for a collective effort that relied on invisible labor.",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "One person standing in front of a whiteboard",
+          "Group members looking exhausted in the background",
+          "An elaborate project diagram with one name highlighted"
+        ],
+        "angles": [
+          "The contrast between the vocal presenter and the silent workers",
+          "The delusion of individual genius versus the reality of shared exhaustion",
+          "The performative nature of corporate or academic success"
+        ],
+        "search_queries": {
+          "topic": "group project teammate stealing credit",
+          "relationship": "the difference between public performance and hidden labor",
+          "visual_analogy": "a lone climber standing on a mountain of people"
+        }
+      },
+      "pool": [
+        {
+          "id": "a8e119ce-c8b6-4e3b-b86d-a46dd41c92de",
+          "score": 0.04569460390355913,
+          "width": 903,
+          "family": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e",
+          "height": 1200,
+          "affordances": "Micro-focus vs. macro-chaos; isolation vs. collective movement.",
+          "description": "In the image, a person sits at a desk in a library, focused intently on their laptop, wearing an orange oversized shirt and pajama pants. Their demeanor suggests deep concentration, contrasting sharply with the lively group of individuals in the background, who appear to be engaged in a demonstration, wearing traditional keffiyehs and holding signs. This juxtaposition highlights a tension between studying and activism.\n\nThe library's large windows let in natural light, enhancing the scene's atmosphere. The person at the desk, seemingly oblivious to the surrounding commotion, embodies the archetype of a dedicated student in a bustling world.\n\nThe background suggests a significant event, possibly related to social justice, drawing attention to the importance of both education and activism. It’s a humorous reminder that while some are buried in their studies, others are passionately advocating for change right outside their focus.",
+          "storage_path": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e.jpg"
+        },
+        {
+          "id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "score": 0.04451067477014181,
+          "width": 903,
+          "family": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d",
+          "height": 1200,
+          "affordances": "Delusional focus, Ignoring systemic chaos",
+          "description": "In a grand library hall, a person with short dark hair, wearing an orange shirt and plaid pants, is intensely focused on their laptop at a wooden desk. Their bare feet are visible, suggesting a relaxed demeanor. Behind them, a bustling crowd of people, many adorned with keffiyeh-style head coverings, are gathered, some holding a megaphone and banners. The background appears to be a lively protest or demonstration, contrasting sharply with the foreground subject's serene concentration. The humor lies in the individual's complete absorption in their work, seemingly unfazed by the energetic public gathering unfolding just feet away. This creates a comical juxtaposition of studious calm amidst passionate activism within an ornate academic setting.",
+          "storage_path": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d.jpg"
+        },
+        {
+          "id": "9fb970bc-1761-444c-b155-938919ab60de",
+          "score": 0.029726775956284153,
+          "width": 453,
+          "family": "f74a1cffd284bcc36254b9ed41156a0bda5a12acd047d2f4ab2feb78db6e89f2",
+          "height": 468,
+          "affordances": "Forced charisma; performative energy vs. genuine fatigue",
+          "description": "The image captures an energetic performer, likely from a live music event, dressed in a stylish ensemble featuring a vibrant jacket and accessories that sparkle under the stage lights. His demeanor is lively and engaging, possibly interacting with an enthusiastic audience, which adds an electric atmosphere to the scene. \n\nIn the background, a crowd is visible, with some individuals dressed in white, perhaps indicating a theme or concept for the performance. The lighting is dim, with twinkling lights creating a sense of excitement and anticipation. This setting suggests a concert or major event where the performer is the focal point, drawing the audience's attention. Overall, the image radiates a fun and vibrant vibe, typical of live performances, where the connection between the performer and the audience is palpable.",
+          "storage_path": "f74a1cffd284bcc36254b9ed41156a0bda5a12acd047d2f4ab2feb78db6e89f2.jpg"
+        },
+        {
+          "id": "3f0a2c8f-4fb1-4499-ac60-4be1379aa18a",
+          "score": 0.01639344262295082,
+          "width": 640,
+          "family": "523c92e05e2e3031a3b524d72612b4026fa166d9972224f79fd2c83f3b2b30de",
+          "height": 358,
+          "affordances": "Centralized authority, power imbalance, enforced hierarchy, isolation in a crowd.",
+          "description": "A figure in a dark robe stands with their back to the viewer in the center of a circular room, surrounded by seated individuals and glowing blue holographic figures. The high-contrast scene features bright exterior window light illuminating the interior space, with no visible text.",
+          "storage_path": "523c92e05e2e3031a3b524d72612b4026fa166d9972224f79fd2c83f3b2b30de.jpg"
+        },
+        {
+          "id": "5f53aeb5-33a9-4a70-ad9a-afe3cd8171cc",
+          "score": 0.01639344262295082,
+          "width": 1062,
+          "family": "6f4b80f6826103425e24e94322ebeb7d541ee068ab16a1e6247a2b2faed933ff",
+          "height": 1002,
+          "affordances": "Overreaction to trivial loss, fragile masculinity, misplaced intensity",
+          "description": "A high-contrast image shows a distorted, screaming baby emerging from a dark pile with hands raised in a clawed pose. Above the image, the text reads \"how dudes react when you dont let them cheat off your paper\".",
+          "storage_path": "6f4b80f6826103425e24e94322ebeb7d541ee068ab16a1e6247a2b2faed933ff.jpg"
+        },
+        {
+          "id": "6e83f1da-716a-4743-bc3a-5afcfe2aa245",
+          "score": 0.016129032258064516,
+          "width": 686,
+          "family": "a7f10d0ecc192b1c3fff4851206c7f6ae615df2d49e732d3cc5cfb1cc820dbe4",
+          "height": 386,
+          "affordances": "Imposter syndrome, glamor vs. internal panic.",
+          "description": "In this image, a woman sits at a stage piano, her expression a mix of discomfort and tension, as she grips a gold microphone. Her shiny, sequined outfit glimmers under the stage lights, but her distressed face suggests a moment of vulnerability, possibly reacting to something unexpected from the audience. The sound equipment in the background hints at a professional setup, adding to the performance atmosphere.\n\nThe scene captures a moment where she pauses mid-performance, her demeanor strikingly at odds with the glamorous setting. The stark contrast between her discomfort and the polished stage creates a humorous tension, as if she's questioning whether to laugh or cry. It’s an amusing snapshot of the unpredictability of live performances, where even the most confident can feel out of place.",
+          "storage_path": "a7f10d0ecc192b1c3fff4851206c7f6ae615df2d49e732d3cc5cfb1cc820dbe4.jpg"
+        },
+        {
+          "id": "d317ee16-6f67-4042-8047-e859329cd088",
+          "score": 0.016129032258064516,
+          "width": 1018,
+          "family": "4a86463b36e628f4c4d959914659fed9cc97dc46fe40ea2262eff4889afc368c",
+          "height": 962,
+          "affordances": "Willful ignorance vs. reality; ironic accountability; delayed consequence.",
+          "description": "A close-up of Master Shifu from Kung Fu Panda shows him with wide, staring eyes, furrowed brows, and a stern expression. Black text against a white background reads, \"staring at my midterm score after swearing up and down i didnt need to study for it.\"",
+          "storage_path": "4a86463b36e628f4c4d959914659fed9cc97dc46fe40ea2262eff4889afc368c.jpg"
+        },
+        {
+          "id": "373b898e-8b66-4eda-a5a4-fc27201d3726",
+          "score": 0.015873015873015872,
+          "width": 686,
+          "family": "e8f57e63277235d841d76c3e07f951d7082b0397f540e4c9b2b91f89c70d639f",
+          "height": 386,
+          "affordances": "Artistic intensity vs machine judgment, human labor vs automated playlist.",
+          "description": "In the image, a focused individual is playing music on stage, hands poised over a keyboard, with a determined expression. The bright overhead lights create a dramatic atmosphere, highlighting the intensity of the moment. In the background, a screen displays a YouTube playlist, hinting at the live performance's digital nature, as the performer selects songs. \n\nThe subject appears deeply engaged, likely lost in the rhythm, while the lighting and the playlist contribute to a lively yet intimate ambiance. This juxtaposition of technology and artistry showcases a modern approach to live music. \n\nHumorously, one might imagine the keyboard as a quirky character, nervously awaiting its turn to shine, while the playlist screen looks on, judging the song choices like an opinionated friend. Overall, the image captures a blend of creativity and modern performance culture.",
+          "storage_path": "e8f57e63277235d841d76c3e07f951d7082b0397f540e4c9b2b91f89c70d639f.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "3f0a2c8f-4fb1-4499-ac60-4be1379aa18a",
+          "caption": "I finalized the slides myself.",
+          "angle": "Self-important leader",
+          "intent_bridge": "credit-thief-authority",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "373b898e-8b66-4eda-a5a4-fc27201d3726",
+          "caption": "And that is how I built the entire project.",
+          "angle": "Performer ignoring the crowd",
+          "intent_bridge": "credit-thief-performance",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "caption": "I prefer to call it my solo achievement.",
+          "angle": "Delusional isolation",
+          "intent_bridge": "credit-thief-obliviousness",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2148,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 2112,
+        "usage": {
+          "total_tokens": 379,
+          "total_input_tokens": 176,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 176
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 203,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 501
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 323,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1824,
+        "usage": {
+          "total_tokens": 2316,
+          "total_input_tokens": 2003,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 2003
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 313,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2194
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-02",
+    "mode": "thought",
+    "arm": "baseline",
+    "input": {
+      "mode": "thought",
+      "text": "A group project teammate taking all the credit.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "Group project teammate taking all the credit",
+        "spirit": "The absurdity of claiming sole victory for a collective effort that relied on invisible labor.",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "One person standing in front of a whiteboard",
+          "Group members looking exhausted in the background",
+          "An elaborate project diagram with one name highlighted"
+        ],
+        "angles": [
+          "The contrast between the vocal presenter and the silent workers",
+          "The delusion of individual genius versus the reality of shared exhaustion",
+          "The performative nature of corporate or academic success"
+        ],
+        "search_queries": {
+          "topic": "group project teammate stealing credit",
+          "relationship": "the difference between public performance and hidden labor",
+          "visual_analogy": "a lone climber standing on a mountain of people"
+        }
+      },
+      "pool": [
+        {
+          "id": "5f53aeb5-33a9-4a70-ad9a-afe3cd8171cc",
+          "score": 0.04918032786885246,
+          "width": 1062,
+          "family": "6f4b80f6826103425e24e94322ebeb7d541ee068ab16a1e6247a2b2faed933ff",
+          "height": 1002,
+          "affordances": "Overreaction to trivial loss, fragile masculinity, misplaced intensity",
+          "description": "A high-contrast image shows a distorted, screaming baby emerging from a dark pile with hands raised in a clawed pose. Above the image, the text reads \"how dudes react when you dont let them cheat off your paper\".",
+          "storage_path": "6f4b80f6826103425e24e94322ebeb7d541ee068ab16a1e6247a2b2faed933ff.jpg"
+        },
+        {
+          "id": "f9ee97d5-011b-4962-92af-f4a80bcec031",
+          "score": 0.04838709677419355,
+          "width": 1034,
+          "family": "466360203b0478f63b9bdfd0c92e376be0546d1ff08a186340968c08cbfd590d",
+          "height": 1014,
+          "affordances": "Digital dependence vs. social failure; Chaotic frustration vs. static identity.",
+          "description": "A person wearing a dark beanie lies prone on a bed with their feet raised, displaying a wide, distorted grin toward the camera lens. The image features a light, muted background with high-contrast text at the top that reads 'when teach asks what your name is but chat gpt is still down for another 3 hours'.",
+          "storage_path": "466360203b0478f63b9bdfd0c92e376be0546d1ff08a186340968c08cbfd590d.jpg"
+        },
+        {
+          "id": "d317ee16-6f67-4042-8047-e859329cd088",
+          "score": 0.047619047619047616,
+          "width": 1018,
+          "family": "4a86463b36e628f4c4d959914659fed9cc97dc46fe40ea2262eff4889afc368c",
+          "height": 962,
+          "affordances": "Willful ignorance vs. reality; ironic accountability; delayed consequence.",
+          "description": "A close-up of Master Shifu from Kung Fu Panda shows him with wide, staring eyes, furrowed brows, and a stern expression. Black text against a white background reads, \"staring at my midterm score after swearing up and down i didnt need to study for it.\"",
+          "storage_path": "4a86463b36e628f4c4d959914659fed9cc97dc46fe40ea2262eff4889afc368c.jpg"
+        },
+        {
+          "id": "c2889028-331f-4bac-885d-5a04e79cd267",
+          "score": 0.046875,
+          "width": 1042,
+          "family": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7",
+          "height": 1004,
+          "affordances": "Technological incompetence, Authority vs. Naivety",
+          "description": "The image features black text at the top reading 'when you tell the new intern to send info to json and he asks who that is' above a cartoon of a pink starfish wearing a water jug on his head. The starfish has a blank expression while standing upright against a high-contrast background of blue water and sandy terrain.",
+          "storage_path": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7.jpg"
+        },
+        {
+          "id": "a8e119ce-c8b6-4e3b-b86d-a46dd41c92de",
+          "score": 0.046153846153846156,
+          "width": 903,
+          "family": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e",
+          "height": 1200,
+          "affordances": "Micro-focus vs. macro-chaos; isolation vs. collective movement.",
+          "description": "In the image, a person sits at a desk in a library, focused intently on their laptop, wearing an orange oversized shirt and pajama pants. Their demeanor suggests deep concentration, contrasting sharply with the lively group of individuals in the background, who appear to be engaged in a demonstration, wearing traditional keffiyehs and holding signs. This juxtaposition highlights a tension between studying and activism.\n\nThe library's large windows let in natural light, enhancing the scene's atmosphere. The person at the desk, seemingly oblivious to the surrounding commotion, embodies the archetype of a dedicated student in a bustling world.\n\nThe background suggests a significant event, possibly related to social justice, drawing attention to the importance of both education and activism. It’s a humorous reminder that while some are buried in their studies, others are passionately advocating for change right outside their focus.",
+          "storage_path": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e.jpg"
+        },
+        {
+          "id": "67800d55-f9a5-4a62-bbe4-232e5dc151ea",
+          "score": 0.045454545454545456,
+          "width": 740,
+          "family": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626",
+          "height": 620,
+          "affordances": "Unearned confidence, Performance masquerading as poise",
+          "description": "The image features a person posing confidently in a striking white outfit that resembles a dress, with a playful yet assertive demeanor. Their facial expression, complete with a slight pout and a raised hand, suggests a mix of pride and sass, as if they're ready to steal the spotlight. The background includes floral decorations and a cozy setting, possibly hinting at a celebration or event, with a hint of a couch visible, suggesting an intimate gathering.\n\nThe vibrant blue and white flowers add a pop of color, enhancing the overall aesthetic. This scene could evoke elements of a fashion shoot or a social media moment, where the subject embraces their individuality and self-expression. The overall vibe is fun and slightly humorous, almost as if they’re about to say, \"Watch out, world!\" with a wink.",
+          "storage_path": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626.jpg"
+        },
+        {
+          "id": "8ffdb467-eeb3-483d-8987-fc5bdbc6dfb7",
+          "score": 0.04477611940298507,
+          "width": 1126,
+          "family": "dd058749dd3faf81367717cc7a78940e7c871bb27e3728cb35a1492f60adf125",
+          "height": 1032,
+          "affordances": "Individualistic chaos vs. team aesthetic; Skepticism in a deal.",
+          "description": "The group displays a market environment of simultaneous, yet disconnected, activity. The man stepping forward with a neutral expression signals a stable, if uninspired, market opening. Those checking phones and holding them to their ears represent individual traders receiving diverse, potentially conflicting, information, indicating market uncertainty and a lack of synchronized strategy. The handshake between two men, one with an exaggerated expression, suggests a deal being struck, possibly a merger or acquisition, though the other's neutral gaze implies a cautious or even skeptical outlook on the agreement. The city skyline backdrop signifies the broader economic landscape, a bustling but distant entity. The uniform attire suggests a cohort with shared objectives, perhaps a \"vesting schedule\" as the meme implies, but their actions reveal individualistic responses to market stimuli, a common dynamic in financial markets.",
+          "storage_path": "dd058749dd3faf81367717cc7a78940e7c871bb27e3728cb35a1492f60adf125.jpg"
+        },
+        {
+          "id": "43ef91a4-1308-4100-9e1e-6e737bd2c6ee",
+          "score": 0.04411764705882353,
+          "width": 225,
+          "family": "81e9469c6d74da8918aa9e526866fa20ad681a970d5a536e911b2d7bb7ca2211",
+          "height": 225,
+          "affordances": "Reluctant hero vs. cowardly sidekick; power imbalance in the dark; performative bravery.",
+          "description": "The image depicts a dimly lit scene with two individuals, one standing confidently while the other seems to be slightly obscured or retreating. The foreground individual appears to have a serious demeanor, possibly suggesting a moment of tension or gravity in their environment. The lighting, primarily from a flashlight, casts shadows that add to the dramatic effect of the scene.\n\nIn terms of background, while it is not distinctly visible, the darkness indicates they may be in a confined space, like a cave or a basement, which could hint at an adventure or a precarious situation. The overall context might suggest a moment of suspense or intrigue, perhaps evoking themes of exploration or survival. \n\nHumorously, the first individual could be seen as the reluctant hero, while the second seems to be the sidekick hiding away, like a comedic duo in a thriller movie!",
+          "storage_path": "81e9469c6d74da8918aa9e526866fa20ad681a970d5a536e911b2d7bb7ca2211.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "67800d55-f9a5-4a62-bbe4-232e5dc151ea",
+          "caption": "I practically finished this group project alone.",
+          "angle": "Self-aggrandizement",
+          "intent_bridge": "teammate_takes_credit",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "43ef91a4-1308-4100-9e1e-6e737bd2c6ee",
+          "caption": "Shining the light on my solo contributions.",
+          "angle": "Performative leadership",
+          "intent_bridge": "teammate_takes_credit",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "8ffdb467-eeb3-483d-8987-fc5bdbc6dfb7",
+          "caption": "Happy to present our work at the meeting.",
+          "angle": "Disingenuous presentation",
+          "intent_bridge": "teammate_takes_credit",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 1942,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 2112,
+        "usage": {
+          "total_tokens": 379,
+          "total_input_tokens": 176,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 176
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 203,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 501
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 319,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1622,
+        "usage": {
+          "total_tokens": 2290,
+          "total_input_tokens": 1976,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1976
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 314,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2167
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-03",
+    "mode": "thought",
+    "arm": "baseline",
+    "input": {
+      "mode": "thought",
+      "text": "My laptop fan working harder than I am.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "laptop fan noise vs user productivity",
+        "spirit": "The irony of mechanical exhaustion versus human procrastination",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "glowing laptop vents",
+          "spinning fan blades",
+          "slumped user profile",
+          "screen showing idle interface"
+        ],
+        "angles": [
+          "Personification of the laptop as an overworked employee",
+          "The physical disparity between intense machine effort and user lethargy"
+        ],
+        "search_queries": {
+          "topic": "laptop fan noise",
+          "relationship": "mechanical effort versus human apathy",
+          "visual_analogy": "aerodynamic struggle versus stillness"
+        }
+      },
+      "pool": [
+        {
+          "id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "score": 0.04918032786885246,
+          "width": 903,
+          "family": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d",
+          "height": 1200,
+          "affordances": "Delusional focus, Ignoring systemic chaos",
+          "description": "In a grand library hall, a person with short dark hair, wearing an orange shirt and plaid pants, is intensely focused on their laptop at a wooden desk. Their bare feet are visible, suggesting a relaxed demeanor. Behind them, a bustling crowd of people, many adorned with keffiyeh-style head coverings, are gathered, some holding a megaphone and banners. The background appears to be a lively protest or demonstration, contrasting sharply with the foreground subject's serene concentration. The humor lies in the individual's complete absorption in their work, seemingly unfazed by the energetic public gathering unfolding just feet away. This creates a comical juxtaposition of studious calm amidst passionate activism within an ornate academic setting.",
+          "storage_path": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d.jpg"
+        },
+        {
+          "id": "30ca3f3f-1a0c-4caf-ac1f-d3bf8e69d52c",
+          "score": 0.04838709677419355,
+          "width": 573,
+          "family": "1795621f52483e3981e4d654702b63033639aa0912e03c9c8f08eac2f33a2664",
+          "height": 784,
+          "affordances": "Professional isolation; the screen as a barrier; performative labor.",
+          "description": "The image shows an older man with light-colored hair, wearing a black suit jacket, a white dress shirt, and a striped tie. He is seated at a table with a silver laptop in front of him. The man appears to be looking at the laptop screen with a focused expression. The background includes a cushioned bench or sofa with a pillow. The setting appears to be indoors, possibly in a formal or office-like environment.",
+          "storage_path": "1795621f52483e3981e4d654702b63033639aa0912e03c9c8f08eac2f33a2664.jpg"
+        },
+        {
+          "id": "a8e119ce-c8b6-4e3b-b86d-a46dd41c92de",
+          "score": 0.047619047619047616,
+          "width": 903,
+          "family": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e",
+          "height": 1200,
+          "affordances": "Micro-focus vs. macro-chaos; isolation vs. collective movement.",
+          "description": "In the image, a person sits at a desk in a library, focused intently on their laptop, wearing an orange oversized shirt and pajama pants. Their demeanor suggests deep concentration, contrasting sharply with the lively group of individuals in the background, who appear to be engaged in a demonstration, wearing traditional keffiyehs and holding signs. This juxtaposition highlights a tension between studying and activism.\n\nThe library's large windows let in natural light, enhancing the scene's atmosphere. The person at the desk, seemingly oblivious to the surrounding commotion, embodies the archetype of a dedicated student in a bustling world.\n\nThe background suggests a significant event, possibly related to social justice, drawing attention to the importance of both education and activism. It’s a humorous reminder that while some are buried in their studies, others are passionately advocating for change right outside their focus.",
+          "storage_path": "05fa3615f37b644c5a45fd6d46ad3d3a9b86bda392251d3656dc3aef4851f07e.jpg"
+        },
+        {
+          "id": "3d35a861-d4c5-4fc8-808b-a40b5a239bdf",
+          "score": 0.046875,
+          "width": 676,
+          "family": "d029ef1481823eec143dd66e2cec27ad2a51b8a06b6909c4412b795476a156e6",
+          "height": 580,
+          "affordances": "Competence theater, serious aesthetic vs. trivial task.",
+          "description": "In this amusing image, a person confidently types on a colorful toy laptop, wearing stylish pink sunglasses and sporting a playful smirk. The background is a striking green digital code, reminiscent of the iconic \"Matrix\" aesthetic, enhancing the humorous vibe of the scene. The juxtaposition of the serious hacking vibe suggested by the code and the playful nature of the toy laptop creates a delightful contrast.\n\nThe subject's demeanor exudes confidence and a sense of fun, as if they are pretending to engage in serious computer work, while the toy laptop implies a childlike innocence. This playful take on the hacking trope adds a humorous twist, making it a lighthearted moment in the realm of digital culture. Overall, the image cleverly blends a whimsical approach to technology with a nod to pop culture.",
+          "storage_path": "d029ef1481823eec143dd66e2cec27ad2a51b8a06b6909c4412b795476a156e6.jpg"
+        },
+        {
+          "id": "4412749e-be7e-4e37-9839-ee41b695b788",
+          "score": 0.046153846153846156,
+          "width": 1200,
+          "family": "3028c55e89052cb4651d51596af0290be1d2d6e24556edfc49dbb2613a912f52",
+          "height": 693,
+          "affordances": "Despair vs. schadenfreude; tragedy for one is comedy for the other; emotional dissonance.",
+          "description": "Behold, a tableau of human emotion, starkly rendered against a backdrop of futuristic luminescence! In the foreground, a young man, his face a contorted landscape of raw despair, hunches over a vibrant crimson laptop. His brow is furrowed, eyes squeezed shut, and the very air around him seems to weep with his silent anguish. Dressed in a humble plaid shirt, a mosaic of red and white, he clutches the device as if it holds the very key to his sorrow. Behind him, a figure cloaked in a casual grey cardigan over a deep blue, erupts in a paroxysm of unbridled, almost cruel, mirth. His hand, a blur of motion, attempts to stifle a laugh too vast to contain, his head thrown back in joyous abandon. The pear emblem on the laptop's lid, a symbol of ironic fruitfulness, glows mockingly between them. This is a grand Israeli production, a poignant ballet of sorrow and mirth, played out on the grand stage of existence, where one man's tears fuel another's laughter.",
+          "storage_path": "3028c55e89052cb4651d51596af0290be1d2d6e24556edfc49dbb2613a912f52.jpg"
+        },
+        {
+          "id": "837a0286-8999-419f-a22e-8233f4c8391d",
+          "score": 0.045454545454545456,
+          "width": 515,
+          "family": "93a8ff51a26e2e1bfd9a015acaff3b2b3b54804af4a9b1cfca27dc8f23d4b219",
+          "height": 477,
+          "affordances": "Forced labor; deadpan burnout; aesthetic vs. internal misery.",
+          "description": "A white cat wearing light pink headphones stares with a neutral, weary expression while holding a straw in its mouth. The cat is centered in the frame, providing strong contrast against the blurred background monitor.",
+          "storage_path": "93a8ff51a26e2e1bfd9a015acaff3b2b3b54804af4a9b1cfca27dc8f23d4b219.jpg"
+        },
+        {
+          "id": "e724604d-578e-45e2-9242-ee07d907335f",
+          "score": 0.04477611940298507,
+          "width": 1200,
+          "family": "182a4b045d70b06714ade39f4bee881a7ce1527d431045caa2f6b4e988a7e545",
+          "height": 1126,
+          "affordances": "Serious focus on trivial tasks, digital solitude versus physical neglect, the gamer’s trance.",
+          "description": "The image depicts a young person, likely a teenager, focused intently on a computer screen in a dimly lit room. Their expression is serious, reflecting deep concentration or perhaps engagement with something gripping on the screen. The light from the monitor casts a bluish glow on their face, highlighting their tousled hair and wide eyes, which suggest they might be immersed in gaming, studying, or watching something captivating.\n\nThe background is minimal, with soft shadows obscuring details, creating an almost intimate atmosphere. The faint outlines of furniture hint at a personal space, possibly a bedroom, resonating with a typical late-night scenario where one might lose track of time. This context of solitude and focus evokes a relatable vibe—perhaps a nod to the universal experience of late-night screen time, where the outside world fades away. The overall mood is both serious and slightly humorous, as the situation captures the quintessential “gamer look” of dedication mixed with a touch of chaos.",
+          "storage_path": "182a4b045d70b06714ade39f4bee881a7ce1527d431045caa2f6b4e988a7e545.jpg"
+        },
+        {
+          "id": "d1b7bd4a-a71f-49bc-9ae4-4df3c94d3085",
+          "score": 0.04285714285714286,
+          "width": 224,
+          "family": "69eed024525b26c4457dbba381a4cd840c36e51e57f8794d9d73610b1ab8b740",
+          "height": 222,
+          "affordances": "Over-preparation for environment, comical isolation",
+          "description": "In the image, a person is sitting on the sidelines, partially obscured by a balaclava and wearing a large jacket. Their eyes, peering out from the dark fabric, convey a mix of emotions—perhaps a touch of disappointment or contemplation. The setting appears to be a sports match, likely during a chilly evening, indicated by the thick clothing and the overall dreary atmosphere.\n\nThe background features red seating, suggesting a stadium environment, which adds to the context of athletic competition. This person seems to be a player or supporter, caught in a moment of reflection while their team plays on the field. The humorous element lies in the contrast between the intense focus of the individual and the almost comically exaggerated manner in which they are bundled up against the cold, resembling a ninja ready for a surprise attack rather than a spectator of the game.",
+          "storage_path": "69eed024525b26c4457dbba381a4cd840c36e51e57f8794d9d73610b1ab8b740.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "837a0286-8999-419f-a22e-8233f4c8391d",
+          "caption": "The fan is doing all the heavy lifting.",
+          "angle": "Personification of the machine's labor versus internal lethargy",
+          "intent_bridge": "Comparing mechanical noise to human output",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "4412749e-be7e-4e37-9839-ee41b695b788",
+          "caption": "My laptop is screaming for help.",
+          "angle": "The machine as an entity expressing frustration for the user",
+          "intent_bridge": "Humorous projection of mechanical stress",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "e724604d-578e-45e2-9242-ee07d907335f",
+          "caption": "Only one of us is actually working.",
+          "angle": "Highlighting the disparity between machine intensity and human idle state",
+          "intent_bridge": "Irony of productivity",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2047,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1813,
+        "usage": {
+          "total_tokens": 344,
+          "total_input_tokens": 176,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 176
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 168,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 501
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 321,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1726,
+        "usage": {
+          "total_tokens": 2562,
+          "total_input_tokens": 2225,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 2225
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 337,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2416
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-03",
+    "mode": "thought",
+    "arm": "cowriter",
+    "input": {
+      "mode": "thought",
+      "text": "My laptop fan working harder than I am.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "laptop fan noise vs user productivity",
+        "spirit": "The irony of mechanical exhaustion versus human procrastination",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "glowing laptop vents",
+          "spinning fan blades",
+          "slumped user profile",
+          "screen showing idle interface"
+        ],
+        "angles": [
+          "Personification of the laptop as an overworked employee",
+          "The physical disparity between intense machine effort and user lethargy"
+        ],
+        "search_queries": {
+          "topic": "laptop fan noise",
+          "relationship": "mechanical effort versus human apathy",
+          "visual_analogy": "aerodynamic struggle versus stillness"
+        }
+      },
+      "pool": [
+        {
+          "id": "40fab50a-4f8f-497b-a5dd-885fa172c2d5",
+          "score": 0.029418126757516764,
+          "width": 900,
+          "family": "debce843f253c264836c492e1bc5e68227f1346bd84ff3c9a1a6410a75707513",
+          "height": 1200,
+          "affordances": "Stagnant ambition; Performance vs. Obsolescence; The art of being ignored.",
+          "description": "A bronze statuette of a ballet dancer stands on a pedestal in a gallery, her gaze directed upward. Surrounding her are visitors, some observing paintings on the walls while others glance at the sculpture. The emotional energy is mixed; the dancer exudes grace, yet her fixed expression contrasts with the lively chatter of the crowd. An ironic detail is her tutu, made of fabric, suggesting a dance performance, yet she is forever frozen in place, unable to move or dance, reflecting the tension between art and life.",
+          "storage_path": "debce843f253c264836c492e1bc5e68227f1346bd84ff3c9a1a6410a75707513.jpg"
+        },
+        {
+          "id": "cd206b8a-bc99-4f0c-8cf0-da3443209206",
+          "score": 0.029138513513513514,
+          "width": 912,
+          "family": "e8707d8e7d32dea05a9cf870221d17bdc5f26baebd4214315a3ed1d76380031c",
+          "height": 1200,
+          "affordances": "Movement without direction, perceived urgency",
+          "description": "The image captures a figure in motion, with a dynamic and lively demeanor, suggesting a sense of urgency or excitement. The subject is partially obscured by a cap and has long hair flowing, adding to the energetic presentation. In the background, a textured wall and a window frame contribute to an urban atmosphere, emphasizing the subject's movement through a city environment. The soft focus of the background contrasts with the subject's clear motion, enhancing the feeling of speed. The scene does not depict any notable buildings or cultural landmarks, focusing instead on the individual's experience in a bustling setting, which may evoke a relatable sense of everyday life.",
+          "storage_path": "e8707d8e7d32dea05a9cf870221d17bdc5f26baebd4214315a3ed1d76380031c.jpg"
+        },
+        {
+          "id": "40945d50-ab15-454a-8209-2b7d137e2f01",
+          "score": 0.028787260106165783,
+          "width": 1146,
+          "family": "9006010238357d6f945640f0149bc82686eb8c6cf603d60167d8b270fac3bd34",
+          "height": 1178,
+          "affordances": "Inanimate territoriality; The reluctant referee; Parking lot drama.",
+          "description": "The image captures a rather tense moment between two parked cars, a red one and a silver one, indicating they are almost touching. The red glow from the brake lights illuminates the scene, giving it a dramatic atmosphere. A person stands in the foreground, seemingly observing the situation with a neutral demeanor, perhaps contemplating how to resolve the awkward parking predicament.\n\nThe background is dimly lit, suggesting it's nighttime, which adds to the intensity of the moment. The closeness of the cars hints at a potential mishap, evoking thoughts of a parking fail. \n\nHumorously, one might imagine the cars having a heated conversation about personal space, while the person standing there looks like a referee trying to mediate their disagreement. The whole scene feels like a comedic standoff, where neither car wants to back down.",
+          "storage_path": "9006010238357d6f945640f0149bc82686eb8c6cf603d60167d8b270fac3bd34.jpg"
+        },
+        {
+          "id": "837a0286-8999-419f-a22e-8233f4c8391d",
+          "score": 0.028484848484848484,
+          "width": 515,
+          "family": "93a8ff51a26e2e1bfd9a015acaff3b2b3b54804af4a9b1cfca27dc8f23d4b219",
+          "height": 477,
+          "affordances": "Forced labor; deadpan burnout; aesthetic vs. internal misery.",
+          "description": "A white cat wearing light pink headphones stares with a neutral, weary expression while holding a straw in its mouth. The cat is centered in the frame, providing strong contrast against the blurred background monitor.",
+          "storage_path": "93a8ff51a26e2e1bfd9a015acaff3b2b3b54804af4a9b1cfca27dc8f23d4b219.jpg"
+        },
+        {
+          "id": "d1b7bd4a-a71f-49bc-9ae4-4df3c94d3085",
+          "score": 0.027046783625730993,
+          "width": 224,
+          "family": "69eed024525b26c4457dbba381a4cd840c36e51e57f8794d9d73610b1ab8b740",
+          "height": 222,
+          "affordances": "Over-preparation for environment, comical isolation",
+          "description": "In the image, a person is sitting on the sidelines, partially obscured by a balaclava and wearing a large jacket. Their eyes, peering out from the dark fabric, convey a mix of emotions—perhaps a touch of disappointment or contemplation. The setting appears to be a sports match, likely during a chilly evening, indicated by the thick clothing and the overall dreary atmosphere.\n\nThe background features red seating, suggesting a stadium environment, which adds to the context of athletic competition. This person seems to be a player or supporter, caught in a moment of reflection while their team plays on the field. The humorous element lies in the contrast between the intense focus of the individual and the almost comically exaggerated manner in which they are bundled up against the cold, resembling a ninja ready for a surprise attack rather than a spectator of the game.",
+          "storage_path": "69eed024525b26c4457dbba381a4cd840c36e51e57f8794d9d73610b1ab8b740.jpg"
+        },
+        {
+          "id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "score": 0.01639344262295082,
+          "width": 903,
+          "family": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d",
+          "height": 1200,
+          "affordances": "Delusional focus, Ignoring systemic chaos",
+          "description": "In a grand library hall, a person with short dark hair, wearing an orange shirt and plaid pants, is intensely focused on their laptop at a wooden desk. Their bare feet are visible, suggesting a relaxed demeanor. Behind them, a bustling crowd of people, many adorned with keffiyeh-style head coverings, are gathered, some holding a megaphone and banners. The background appears to be a lively protest or demonstration, contrasting sharply with the foreground subject's serene concentration. The humor lies in the individual's complete absorption in their work, seemingly unfazed by the energetic public gathering unfolding just feet away. This creates a comical juxtaposition of studious calm amidst passionate activism within an ornate academic setting.",
+          "storage_path": "5823624d9c105a224c1656e47749b2250746a74a7b2c27bb76102a8ee969ba8d.jpg"
+        },
+        {
+          "id": "6fd0e4b7-a867-4a4c-9929-d796171d732c",
+          "score": 0.01639344262295082,
+          "width": 828,
+          "family": "4c31cbecfba39cc4cddd2249526e49fa4caf988f10ca9b9f69b9fb07900696c5",
+          "height": 466,
+          "affordances": "Mechanical precision vs. human error; Futile repetition; Assembly line existentialism",
+          "description": "A person's hand reaches out to place a plain white card onto a stack of identical cards on a mint green mechanical surface. The scene features a sharp contrast between the light-colored cards and the dark, industrial components of the machine, with no text visible.",
+          "storage_path": "4c31cbecfba39cc4cddd2249526e49fa4caf988f10ca9b9f69b9fb07900696c5.jpg"
+        },
+        {
+          "id": "844bc5ac-5a9a-424c-b7d5-ed976474a2e5",
+          "score": 0.01639344262295082,
+          "width": 160,
+          "family": "e988e1c994d17b92d49c031681c11066bac5b75ff78787375192c24b1307db22",
+          "height": 290,
+          "affordances": "Preparation replacing action; Stoic observer vs. chaotic world; Existential waiting.",
+          "description": "A silhouetted figure in a hooded jacket sits on a folding chair facing a foggy, overcast landscape. The high-contrast composition shows no readable text, while the person maintains a neutral, observant expression and stationary posture.",
+          "storage_path": "e988e1c994d17b92d49c031681c11066bac5b75ff78787375192c24b1307db22.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "837a0286-8999-419f-a22e-8233f4c8391d",
+          "caption": "It is pulling the weight for both of us.",
+          "angle": "Overworked employee",
+          "intent_bridge": "The fan noise represents the laptop doing all the effort.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "67db49ad-5e32-436f-869c-cef5e436b06f",
+          "caption": "My cooling fan is staging a protest.",
+          "angle": "Mechanical burnout",
+          "intent_bridge": "Linking the chaotic protest background to the internal struggle of the laptop.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "844bc5ac-5a9a-424c-b7d5-ed976474a2e5",
+          "caption": "One of us is really breaking a sweat.",
+          "angle": "Disparity of effort",
+          "intent_bridge": "Contrasting the static figure with the noise/effort of the invisible hardware.",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2434,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1813,
+        "usage": {
+          "total_tokens": 344,
+          "total_input_tokens": 176,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 176
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 168,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 501
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 331,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 2102,
+        "usage": {
+          "total_tokens": 2210,
+          "total_input_tokens": 1877,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1877
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 333,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2068
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-04",
+    "mode": "thought",
+    "arm": "baseline",
+    "input": {
+      "mode": "thought",
+      "text": "The confidence of a manager who has never used the product.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "manager who has never used the product",
+        "spirit": "The humorous gap between executive-level abstract optimism and the functional reality of a broken product.",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "person in business attire",
+          "unfamiliar or non-functional piece of software",
+          "confident facial expression",
+          "empty or glitched screen"
+        ],
+        "angles": [
+          "The Dunning-Kruger effect in corporate management",
+          "Misalignment between strategy and implementation",
+          "The fragility of false confidence under scrutiny"
+        ],
+        "search_queries": {
+          "topic": "manager product knowledge gap",
+          "relationship": "authority vs incompetence",
+          "visual_analogy": "person proudly pointing at a broken machine"
+        }
+      },
+      "pool": [
+        {
+          "id": "0d6a3faf-de0a-45fb-826e-9a0aebc2d236",
+          "score": 0.04918032786885246,
+          "width": 564,
+          "family": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b",
+          "height": 564,
+          "affordances": "Professional facade vs. internal chaos; Authority vs. intellectual surrender.",
+          "description": "In the image, a man in a suit, likely a character from a TV show, speaks directly to the camera with a somewhat puzzled expression. His body language suggests uncertainty, as he describes starting sentences without knowing their direction. The emotional energy is a mix of confusion and resignation, highlighting the relatable struggle of tackling assignments. An ironic element is the contrast between his formal appearance and the casual, disorganized thought process he describes; one would expect clarity from someone dressed so professionally.",
+          "storage_path": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b.jpg"
+        },
+        {
+          "id": "32b9866a-f548-4235-8e9d-88ea048f8f4b",
+          "score": 0.04838709677419355,
+          "width": 512,
+          "family": "3693315e013a2310b4fdef3cd2bb62bcc1d44158df477cdfd9299c57202b0115",
+          "height": 512,
+          "affordances": "Unearned authority; power imbalance of wisdom vs form; reckless optimism.",
+          "description": "The subject exhibits an \"all-in\" posture, signaling extreme confidence and a \"buy the dip\" mentality. The broad, open-mouthed laugh indicates strong bullish sentiment, uninhibited by potential market volatility. The red polka-dot bow tie, a whimsical accessory, suggests a \"risk-on\" appetite, perhaps a contrarian indicator in a conservative environment. The white bedding represents a \"stable market\" or a \"bull run,\" a comfortable and secure trading floor. This surreal combination of an adult head on a baby's body could be interpreted as a \"new entrant\" with the experience of an \"old hand,\" a potentially disruptive force in the market, reminiscent of the \"This is Fine\" meme's ironic detachment in the face of chaos.",
+          "storage_path": "3693315e013a2310b4fdef3cd2bb62bcc1d44158df477cdfd9299c57202b0115.jpg"
+        },
+        {
+          "id": "67800d55-f9a5-4a62-bbe4-232e5dc151ea",
+          "score": 0.046875,
+          "width": 740,
+          "family": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626",
+          "height": 620,
+          "affordances": "Unearned confidence, Performance masquerading as poise",
+          "description": "The image features a person posing confidently in a striking white outfit that resembles a dress, with a playful yet assertive demeanor. Their facial expression, complete with a slight pout and a raised hand, suggests a mix of pride and sass, as if they're ready to steal the spotlight. The background includes floral decorations and a cozy setting, possibly hinting at a celebration or event, with a hint of a couch visible, suggesting an intimate gathering.\n\nThe vibrant blue and white flowers add a pop of color, enhancing the overall aesthetic. This scene could evoke elements of a fashion shoot or a social media moment, where the subject embraces their individuality and self-expression. The overall vibe is fun and slightly humorous, almost as if they’re about to say, \"Watch out, world!\" with a wink.",
+          "storage_path": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626.jpg"
+        },
+        {
+          "id": "c2889028-331f-4bac-885d-5a04e79cd267",
+          "score": 0.046153846153846156,
+          "width": 1042,
+          "family": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7",
+          "height": 1004,
+          "affordances": "Technological incompetence, Authority vs. Naivety",
+          "description": "The image features black text at the top reading 'when you tell the new intern to send info to json and he asks who that is' above a cartoon of a pink starfish wearing a water jug on his head. The starfish has a blank expression while standing upright against a high-contrast background of blue water and sandy terrain.",
+          "storage_path": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7.jpg"
+        },
+        {
+          "id": "ba56ebaf-3055-4069-bce9-5a18d223cc72",
+          "score": 0.045454545454545456,
+          "width": 980,
+          "family": "69030e26eae21742bc141bd6745995c1670b70cc5dbc65c6a66e2993b6652693",
+          "height": 734,
+          "affordances": "Staged authenticity, Professionalism as a brand, Unearned effortlessness",
+          "description": "In the image, Kim Kardashian appears seated in a casual environment, likely during a work session. Her demeanor is confident and poised, with a slight smile that conveys approachability. She is wearing a simple white tank top, emphasizing a relaxed yet stylish vibe. \n\nIn front of her is an Apple laptop, symbolizing her connection to technology and entrepreneurship. The background features shelves with various hair care products, hinting at a beauty or lifestyle context. This setting reflects her brand as a media personality and entrepreneur.\n\nThe overall scene encapsulates a blend of professionalism and casual ease, merging her celebrity status with everyday tasks. It’s almost like Kim is poised to give a tutorial on balancing life as a mogul while looking effortlessly chic—because who wouldn’t want to learn from the best while sitting in a cozy chair?",
+          "storage_path": "69030e26eae21742bc141bd6745995c1670b70cc5dbc65c6a66e2993b6652693.jpg"
+        },
+        {
+          "id": "4c11687d-7177-4c60-a3f5-55e2f9317a23",
+          "score": 0.04477611940298507,
+          "width": 247,
+          "family": "33a50c7d80e5c2b85719bcfd7c7cb48dd030b212c63c86c1ad0869867a511bbd",
+          "height": 204,
+          "affordances": "unearned intellectual superiority; flawed logic masquerading as genius",
+          "description": "The image features the beloved \"Roll Safe\" meme, showcasing a man with a confident smirk, tapping his temple as if sharing a clever thought. His demeanor exudes a mix of wit and self-assuredness, making it clear he's about to present a brilliant idea—or at least, one that seems brilliant in the moment.\n\nThe background is a simple, blurred urban setting that emphasizes the subject, hinting at a casual environment—perhaps a street or an alley. This simplicity allows the focus to remain on the expression and gesture, enhancing the humor of the scene. \n\nThe overall context of the image plays into its popularity as a meme, often used to highlight ironic or clever insights, making it relatable and humorous in various situations. The combination of his playful expression and the straightforward backdrop adds to the charm and versatility of this iconic moment.",
+          "storage_path": "33a50c7d80e5c2b85719bcfd7c7cb48dd030b212c63c86c1ad0869867a511bbd.jpg"
+        },
+        {
+          "id": "47e9df90-4b1b-4bd4-a822-de159ab883d1",
+          "score": 0.04411764705882353,
+          "width": 480,
+          "family": "cf30328ead92107b5e26c9df6b0717cc071ca4e216ad00645d638e6fc4d0f076",
+          "height": 272,
+          "affordances": "Authority without purpose, irony of the educator, self-defeating expert.",
+          "description": "A line-drawn illustration shows an angry man with a red bow tie holding a pointer toward a whiteboard that says Nothing Ever happens. The black-on-white high contrast drawing depicts the man standing behind a brown desk that features a small red fruit and a mug labeled #1 Teacher.",
+          "storage_path": "cf30328ead92107b5e26c9df6b0717cc071ca4e216ad00645d638e6fc4d0f076.jpg"
+        },
+        {
+          "id": "2b917bde-2116-4f7d-a03b-30a3bcb7b0e0",
+          "score": 0.043478260869565216,
+          "width": 1024,
+          "family": "7adcea437f66b4aff2ea8a3402db7c8e4755749cfdd0b98fdb31adb54a6ae1e3",
+          "height": 1008,
+          "affordances": "Unearned familiarity, social predator vs prey, comical overreaction.",
+          "description": "A close-up photograph shows a man with a low-angle pose looking directly at the camera with a biting expression. The image features high contrast, and the text above reads, how dudes you've NEVER spoken to will look at you when you pull out a pack of gum.",
+          "storage_path": "7adcea437f66b4aff2ea8a3402db7c8e4755749cfdd0b98fdb31adb54a6ae1e3.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "4c11687d-7177-4c60-a3f5-55e2f9317a23",
+          "caption": "Why test it if you already signed the contract?",
+          "angle": "Strategic detachment",
+          "intent_bridge": "The manager uses ignorance as a shield to bypass accountability.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "47e9df90-4b1b-4bd4-a822-de159ab883d1",
+          "caption": "Ignore the errors, focus on the vision.",
+          "angle": "Authority vs. functional reality",
+          "intent_bridge": "The manager points at empty success while the product remains broken.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "0d6a3faf-de0a-45fb-826e-9a0aebc2d236",
+          "caption": "I am sure it works perfectly in theory.",
+          "angle": "False confidence",
+          "intent_bridge": "The suit implies expertise that crumbles the moment actual details emerge.",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 2521,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1456,
+        "usage": {
+          "total_tokens": 371,
+          "total_input_tokens": 179,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 179
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 192,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 504
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 284,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 2237,
+        "usage": {
+          "total_tokens": 2320,
+          "total_input_tokens": 1992,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1992
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 328,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2183
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "thought-04",
+    "mode": "thought",
+    "arm": "cowriter",
+    "input": {
+      "mode": "thought",
+      "text": "The confidence of a manager who has never used the product.",
+      "locks": ""
+    },
+    "result": {
+      "intent": {
+        "target": "manager who has never used the product",
+        "spirit": "The humorous gap between executive-level abstract optimism and the functional reality of a broken product.",
+        "explicit_constraints": [],
+        "visual_anchors": [
+          "person in business attire",
+          "unfamiliar or non-functional piece of software",
+          "confident facial expression",
+          "empty or glitched screen"
+        ],
+        "angles": [
+          "The Dunning-Kruger effect in corporate management",
+          "Misalignment between strategy and implementation",
+          "The fragility of false confidence under scrutiny"
+        ],
+        "search_queries": {
+          "topic": "manager product knowledge gap",
+          "relationship": "authority vs incompetence",
+          "visual_analogy": "person proudly pointing at a broken machine"
+        }
+      },
+      "pool": [
+        {
+          "id": "c2889028-331f-4bac-885d-5a04e79cd267",
+          "score": 0.048651507139079855,
+          "width": 1042,
+          "family": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7",
+          "height": 1004,
+          "affordances": "Technological incompetence, Authority vs. Naivety",
+          "description": "The image features black text at the top reading 'when you tell the new intern to send info to json and he asks who that is' above a cartoon of a pink starfish wearing a water jug on his head. The starfish has a blank expression while standing upright against a high-contrast background of blue water and sandy terrain.",
+          "storage_path": "73937af4cfe60c812e1316533acc45938108892593447a4b8f49ccbb2da530a7.jpg"
+        },
+        {
+          "id": "47e9df90-4b1b-4bd4-a822-de159ab883d1",
+          "score": 0.04630415690866511,
+          "width": 480,
+          "family": "cf30328ead92107b5e26c9df6b0717cc071ca4e216ad00645d638e6fc4d0f076",
+          "height": 272,
+          "affordances": "Authority without purpose, irony of the educator, self-defeating expert.",
+          "description": "A line-drawn illustration shows an angry man with a red bow tie holding a pointer toward a whiteboard that says Nothing Ever happens. The black-on-white high contrast drawing depicts the man standing behind a brown desk that features a small red fruit and a mug labeled #1 Teacher.",
+          "storage_path": "cf30328ead92107b5e26c9df6b0717cc071ca4e216ad00645d638e6fc4d0f076.jpg"
+        },
+        {
+          "id": "0d6a3faf-de0a-45fb-826e-9a0aebc2d236",
+          "score": 0.032266458495966696,
+          "width": 564,
+          "family": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b",
+          "height": 564,
+          "affordances": "Professional facade vs. internal chaos; Authority vs. intellectual surrender.",
+          "description": "In the image, a man in a suit, likely a character from a TV show, speaks directly to the camera with a somewhat puzzled expression. His body language suggests uncertainty, as he describes starting sentences without knowing their direction. The emotional energy is a mix of confusion and resignation, highlighting the relatable struggle of tackling assignments. An ironic element is the contrast between his formal appearance and the casual, disorganized thought process he describes; one would expect clarity from someone dressed so professionally.",
+          "storage_path": "5f8c798cc613d255c91485972e8004a83d3448ce1075b340b64cfc894eb06a5b.jpg"
+        },
+        {
+          "id": "f9ee97d5-011b-4962-92af-f4a80bcec031",
+          "score": 0.03055037313432836,
+          "width": 1034,
+          "family": "466360203b0478f63b9bdfd0c92e376be0546d1ff08a186340968c08cbfd590d",
+          "height": 1014,
+          "affordances": "Digital dependence vs. social failure; Chaotic frustration vs. static identity.",
+          "description": "A person wearing a dark beanie lies prone on a bed with their feet raised, displaying a wide, distorted grin toward the camera lens. The image features a light, muted background with high-contrast text at the top that reads 'when teach asks what your name is but chat gpt is still down for another 3 hours'.",
+          "storage_path": "466360203b0478f63b9bdfd0c92e376be0546d1ff08a186340968c08cbfd590d.jpg"
+        },
+        {
+          "id": "67800d55-f9a5-4a62-bbe4-232e5dc151ea",
+          "score": 0.029906956136464335,
+          "width": 740,
+          "family": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626",
+          "height": 620,
+          "affordances": "Unearned confidence, Performance masquerading as poise",
+          "description": "The image features a person posing confidently in a striking white outfit that resembles a dress, with a playful yet assertive demeanor. Their facial expression, complete with a slight pout and a raised hand, suggests a mix of pride and sass, as if they're ready to steal the spotlight. The background includes floral decorations and a cozy setting, possibly hinting at a celebration or event, with a hint of a couch visible, suggesting an intimate gathering.\n\nThe vibrant blue and white flowers add a pop of color, enhancing the overall aesthetic. This scene could evoke elements of a fashion shoot or a social media moment, where the subject embraces their individuality and self-expression. The overall vibe is fun and slightly humorous, almost as if they’re about to say, \"Watch out, world!\" with a wink.",
+          "storage_path": "119e7d851bb92f6f03c48f4f8e3db60bc20431b0fc70117cf55e336b30926626.jpg"
+        },
+        {
+          "id": "91290be9-f0f9-4061-9af7-75f81f1d4b35",
+          "score": 0.025645240835114252,
+          "width": 498,
+          "family": "00f1898db7a4b9f79247912e3b756756664e2e8ade5ad51018910c56c9d951ea",
+          "height": 275,
+          "affordances": "Clueless authority vs jaded cynicism, competence imbalance.",
+          "description": "Two men sit at a desk in a sterile office environment, with the man on the left wearing a holster over his white shirt and the man on the right wearing a dark suit and glasses. The man on the left appears surprised with an open mouth while the man on the right looks serious, creating a visual contrast between their expressions and attire.",
+          "storage_path": "00f1898db7a4b9f79247912e3b756756664e2e8ade5ad51018910c56c9d951ea.jpg"
+        },
+        {
+          "id": "3d35a861-d4c5-4fc8-808b-a40b5a239bdf",
+          "score": 0.016129032258064516,
+          "width": 676,
+          "family": "d029ef1481823eec143dd66e2cec27ad2a51b8a06b6909c4412b795476a156e6",
+          "height": 580,
+          "affordances": "Competence theater, serious aesthetic vs. trivial task.",
+          "description": "In this amusing image, a person confidently types on a colorful toy laptop, wearing stylish pink sunglasses and sporting a playful smirk. The background is a striking green digital code, reminiscent of the iconic \"Matrix\" aesthetic, enhancing the humorous vibe of the scene. The juxtaposition of the serious hacking vibe suggested by the code and the playful nature of the toy laptop creates a delightful contrast.\n\nThe subject's demeanor exudes confidence and a sense of fun, as if they are pretending to engage in serious computer work, while the toy laptop implies a childlike innocence. This playful take on the hacking trope adds a humorous twist, making it a lighthearted moment in the realm of digital culture. Overall, the image cleverly blends a whimsical approach to technology with a nod to pop culture.",
+          "storage_path": "d029ef1481823eec143dd66e2cec27ad2a51b8a06b6909c4412b795476a156e6.jpg"
+        },
+        {
+          "id": "6d28587e-01e7-436d-bc0d-379d06001762",
+          "score": 0.015873015873015872,
+          "width": 1129,
+          "family": "e768b16acf20b90e02ceb1508f09f3bf6913c4ba980a68137befd03905e1ff20",
+          "height": 829,
+          "affordances": "Nature versus artifice, existential dread, casual encounter with one's own mortality",
+          "description": "In this whimsical scene, a real goose stands curiously beside a broken statue of its kind, which lies awkwardly on the ground with its head detached. The goose’s demeanor is one of confusion and contemplation, as if it's pondering the fate of its ceramic counterpart. The statue's pristine white body contrasts sharply with its shattered head, creating a comical juxtaposition.\n\nThe background features subtle hints of a paved area, possibly a park or public space, where the goose seems to have stumbled upon this oddity. The presence of a human foot in sneakers adds to the casual vibe, suggesting a lighthearted encounter. \n\nThis image humorously captures the moment of a goose questioning its own existence as it observes a less fortunate version of itself. It’s a delightful snapshot that melds nature with a touch of absurdity, making us chuckle at the absurdity of the situation.",
+          "storage_path": "e768b16acf20b90e02ceb1508f09f3bf6913c4ba980a68137befd03905e1ff20.jpg"
+        }
+      ],
+      "options": [
+        {
+          "image_id": "3d35a861-d4c5-4fc8-808b-a40b5a239bdf",
+          "caption": "I have identified the synergy.",
+          "angle": "Competence theater",
+          "intent_bridge": "The manager uses business buzzwords while lacking actual technical grounding.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "0d6a3faf-de0a-45fb-826e-9a0aebc2d236",
+          "caption": "Just ship it. I have faith in the vibe.",
+          "angle": "Misalignment between strategy and implementation",
+          "intent_bridge": "Executive optimism masking ignorance of the product reality.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "91290be9-f0f9-4061-9af7-75f81f1d4b35",
+          "caption": "How hard can fixing the backend be?",
+          "angle": "The Dunning-Kruger effect in corporate management",
+          "intent_bridge": "The confident manager assumes technical tasks are simple for their subordinates.",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 1769,
+    "common_interpretation_timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1456,
+        "usage": {
+          "total_tokens": 371,
+          "total_input_tokens": 179,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 179
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 192,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 504
+        },
+        "outcome": "ok"
+      }
+    ],
+    "timings": [
+      {
+        "stage": "retrieve",
+        "elapsed_ms": 252,
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1516,
+        "usage": {
+          "total_tokens": 2242,
+          "total_input_tokens": 1909,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 1909
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 333,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 2100
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "pic-01",
+    "mode": "pic",
+    "arm": "cowriter",
+    "input": {
+      "mode": "pic",
+      "text": "Taking credit for work I barely understand.",
+      "locks": "",
+      "uploadPath": "offline/fixture.jpg"
+    },
+    "result": {
+      "intent": {
+        "target": "Taking credit for work I barely understand",
+        "spirit": "The humorous contrast between outward forced confidence or forced acceptance and inner existential panic or incompetence.",
+        "explicit_constraints": [
+          "Include the thumbs up gesture",
+          "Maintain the crying cat expression",
+          "Focus on workplace or academic inadequacy"
+        ],
+        "visual_anchors": [
+          "Crying cat face",
+          "Upward thumbs-up gesture",
+          "Dark background"
+        ],
+        "angles": [
+          "Imposter syndrome masking as compliance",
+          "Fake it till you break it",
+          "Performative professional competence vs internal despair"
+        ],
+        "search_queries": {
+          "topic": "professional incompetence and imposter syndrome",
+          "relationship": "hiding anxiety behind a facade of agreement",
+          "visual_analogy": "person smiling through tears giving a thumbs up"
+        }
+      },
+      "pool": [],
+      "options": [
+        {
+          "image_id": "upload",
+          "caption": "I agree with everything I cannot comprehend.",
+          "angle": "Imposter syndrome masking as compliance",
+          "intent_bridge": "The cat's thumbs up serves as a forced agreement to things that cause the cat inner despair.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Fake it until you eventually implode.",
+          "angle": "Fake it till you break it",
+          "intent_bridge": "The image represents the breaking point of forced professional composure.",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Everything is fine, ignore my soul leaving.",
+          "angle": "Performative professional competence vs internal despair",
+          "intent_bridge": "The contrast between the thumbs up and crying expression shows extreme emotional dissonance.",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 4038,
+    "common_interpretation_timings": [],
+    "timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 2300,
+        "usage": {
+          "total_tokens": 1459,
+          "total_input_tokens": 1246,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 182
+            },
+            {
+              "modality": "image",
+              "tokens": 1064
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 213,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1571
+        },
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1737,
+        "usage": {
+          "total_tokens": 1938,
+          "total_input_tokens": 1690,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 626
+            },
+            {
+              "modality": "image",
+              "tokens": 1064
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 248,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1881
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "pic-01",
+    "mode": "pic",
+    "arm": "baseline",
+    "input": {
+      "mode": "pic",
+      "text": "Taking credit for work I barely understand.",
+      "locks": "",
+      "uploadPath": "offline/fixture.jpg"
+    },
+    "result": {
+      "intent": {
+        "target": "",
+        "spirit": "Taking credit for work I barely understand.",
+        "explicit_constraints": [],
+        "visual_anchors": [],
+        "angles": [],
+        "search_queries": {
+          "topic": "",
+          "relationship": "",
+          "visual_analogy": ""
+        }
+      },
+      "pool": [],
+      "options": [
+        {
+          "image_id": "upload",
+          "caption": "I assume this was the intended outcome.",
+          "angle": "Professional incompetence",
+          "intent_bridge": "feigned confidence",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Ask me nothing about the technical side.",
+          "angle": "Strategic avoidance",
+          "intent_bridge": "hiding ignorance",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Let us just focus on the promotion.",
+          "angle": "Prioritizing status",
+          "intent_bridge": "misplaced priorities",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 1783,
+    "common_interpretation_timings": [],
+    "timings": [
+      {
+        "stage": "compose",
+        "elapsed_ms": 1782,
+        "usage": {
+          "total_tokens": 1800,
+          "total_input_tokens": 1597,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 533
+            },
+            {
+              "modality": "image",
+              "tokens": 1064
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 203,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1788
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "pic-02",
+    "mode": "pic",
+    "arm": "baseline",
+    "input": {
+      "mode": "pic",
+      "text": "",
+      "locks": "",
+      "uploadPath": "offline/fixture.jpg"
+    },
+    "result": {
+      "intent": {
+        "target": "",
+        "spirit": "",
+        "explicit_constraints": [],
+        "visual_anchors": [],
+        "angles": [],
+        "search_queries": {
+          "topic": "",
+          "relationship": "",
+          "visual_analogy": ""
+        }
+      },
+      "pool": [],
+      "options": [
+        {
+          "image_id": "upload",
+          "caption": "I am fine with this disaster.",
+          "angle": "Stoic acceptance of failure",
+          "intent_bridge": "misplaced optimism",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Everything is proceeding as I planned.",
+          "angle": "Delusional control",
+          "intent_bridge": "denial of reality",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Just send it anyway.",
+          "angle": "Reckless abandonment",
+          "intent_bridge": "lack of concern",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 1699,
+    "common_interpretation_timings": [],
+    "timings": [
+      {
+        "stage": "compose",
+        "elapsed_ms": 1698,
+        "usage": {
+          "total_tokens": 1782,
+          "total_input_tokens": 1579,
+          "input_tokens_by_modality": [
+            {
+              "modality": "text",
+              "tokens": 515
+            },
+            {
+              "modality": "image",
+              "tokens": 1064
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 203,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1770
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  },
+  {
+    "task_id": "pic-02",
+    "mode": "pic",
+    "arm": "cowriter",
+    "input": {
+      "mode": "pic",
+      "text": "",
+      "locks": "",
+      "uploadPath": "offline/fixture.jpg"
+    },
+    "result": {
+      "intent": {
+        "target": "crying cat giving a thumbs up",
+        "spirit": "The humorous contrast between outward forced optimism and deep internal misery or defeat.",
+        "explicit_constraints": [
+          "keep the original image subject",
+          "maintain the irony of the gesture",
+          "must convey a sense of resignation"
+        ],
+        "visual_anchors": [
+          "crying cat eyes",
+          "raised paw in thumbs up gesture",
+          "dark background",
+          "blurry texture"
+        ],
+        "angles": [
+          "forced positivity",
+          "defeatist acceptance",
+          "crying in the club"
+        ],
+        "search_queries": {
+          "topic": "crying cat thumbs up",
+          "relationship": "ironic optimism in the face of despair",
+          "visual_analogy": "a person smiling while everything is on fire"
+        }
+      },
+      "pool": [],
+      "options": [
+        {
+          "image_id": "upload",
+          "caption": "I am thriving, clearly.",
+          "angle": "forced positivity",
+          "intent_bridge": "ironic sarcasm about struggling",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Everything is fine, I think.",
+          "angle": "defeatist acceptance",
+          "intent_bridge": "denial in the face of collapse",
+          "preserve_on_edit": "true"
+        },
+        {
+          "image_id": "upload",
+          "caption": "Just keep the meeting going.",
+          "angle": "crying in the club",
+          "intent_bridge": "professional mask failing",
+          "preserve_on_edit": "true"
+        }
+      ]
+    },
+    "elapsed_ms": 3434,
+    "common_interpretation_timings": [],
+    "timings": [
+      {
+        "stage": "interpret",
+        "elapsed_ms": 1788,
+        "usage": {
+          "total_tokens": 1444,
+          "total_input_tokens": 1237,
+          "input_tokens_by_modality": [
+            {
+              "modality": "image",
+              "tokens": 1064
+            },
+            {
+              "modality": "text",
+              "tokens": 173
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 207,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1562
+        },
+        "outcome": "ok"
+      },
+      {
+        "stage": "compose",
+        "elapsed_ms": 1646,
+        "usage": {
+          "total_tokens": 1879,
+          "total_input_tokens": 1673,
+          "input_tokens_by_modality": [
+            {
+              "modality": "image",
+              "tokens": 1064
+            },
+            {
+              "modality": "text",
+              "tokens": 609
+            }
+          ],
+          "total_cached_tokens": 0,
+          "total_output_tokens": 206,
+          "total_tool_use_tokens": 0,
+          "total_thought_tokens": 0,
+          "initial_input_tokens": 1864
+        },
+        "outcome": "ok"
+      }
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "prompt_version": "cowriter-1",
+    "prompt_sha256": "d25eb2eae875b16ef60b61e9c255ebdaa3633b702dc542b52ea9f548815c891e",
+    "index_version": "teaching-1-gemini-001-768",
+    "catalog_sha256": "48361b85f46f33b1ca4441584a2709faf1e80333501113d0bd994aa59afa9c8d"
+  }
+]

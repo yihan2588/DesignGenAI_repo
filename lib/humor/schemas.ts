@@ -9,6 +9,8 @@ export function captionMethod(slot: Choice, baselineSlot?: Choice, labels?: Reco
 export const isUuid = (value: unknown): value is string => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 export function safeReturn(value: unknown): string {
   if (typeof value !== "string") return "/members";
+  if (/^\/\?mode=(pic|thought)(?:&draft=[0-9a-f-]{36})?$/.test(value)) return value;
+  if (value === "/compare") return value;
   if (value === "/" || value === "/upload" || value === "/members" || /^\/runs\/[0-9a-f-]{36}$/.test(value)) return value;
   return "/members";
 }
