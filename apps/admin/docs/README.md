@@ -8,7 +8,7 @@
 - [User-app architecture, retrieval, and evaluation](https://github.com/yihan2588/FunnyLLM/blob/main/apps/web/docs/co-writer.md)
 - [Visual engineering study guide](https://github.com/yihan2588/FunnyLLM/tree/main/apps/web/docs/study-guide)
 
-The canonical shared migration source is the user-app repository. Matching copies remain here for reproducibility. Do not apply a second copy or replay local timestamps against already-applied live migrations.
+The canonical shared migration source is `apps/web/supabase`. Matching historical copies remain here for reproducibility. SQL regression tests run from `apps/web/tests`; the admin test suite covers current operations only. Do not apply a second copy or replay local timestamps against already-applied live migrations.
 
 ## Historical records
 

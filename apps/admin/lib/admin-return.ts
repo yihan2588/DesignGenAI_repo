@@ -2,7 +2,7 @@ export function adminReturn(value: unknown): string {
   if (typeof value !== "string" || !value.startsWith("/admin") || /[\\\u0000-\u0020]/.test(value)) return "/admin";
   try {
     const url = new URL(value, "https://admin.invalid");
-    if (url.origin !== "https://admin.invalid" || !/^\/admin(?:\/(?:content|library|activity|workflow|examples|people|history|media(?:\/new)?|prompts|cowriter))?$/.test(url.pathname)) return "/admin";
+    if (url.origin !== "https://admin.invalid" || !/^\/admin(?:\/(?:content|library|activity|workflow|examples|people))?$/.test(url.pathname)) return "/admin";
     const next = new URLSearchParams();
     const newImage = url.searchParams.get("new");
     if (url.pathname === "/admin/library" && newImage === "1") next.set("new", "1");

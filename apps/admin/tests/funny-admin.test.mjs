@@ -9,7 +9,7 @@ test('admin sign-in preserves only known app destinations and bounded filters',(
  assert.equal(adminReturn('/admin/activity?id='+id),'/admin/activity?id='+id);
  assert.equal(adminReturn('/admin/library?new=1'),'/admin/library?new=1');
  assert.equal(adminReturn('/admin/content?tab=reports'),'/admin/content?tab=reports');
- for(const value of ['https://evil.test','//evil.test','/admin\\evil','/api/admin/image','/adminx','/members','/admin/unknown']) assert.equal(adminReturn(value),'/admin');
+ for(const value of ['https://evil.test','//evil.test','/admin\\evil','/api/admin/image','/adminx','/members','/admin/unknown','/admin/history','/admin/prompts','/admin/media','/admin/media/new','/admin/cowriter']) assert.equal(adminReturn(value),'/admin');
  assert.equal(adminReturn('/admin/people?next=https://evil.test'),'/admin/people');
 });
 test('admin actions are allowlisted and destructive actions require an explicit confirmation',()=>{

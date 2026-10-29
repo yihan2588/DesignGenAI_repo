@@ -29,7 +29,7 @@ Actual local release-check capture using the live backend, 29 October 2026. Valu
 - **Changes do not silently rewrite history.** Models and active examples are frozen per draft. Retired images remain available to authorized historical drafts. A model selection probes the actual Interactions API and structured-output support before activation.
 - **Traces have a clear boundary.** Private details may contain original input text; secrets and image bytes are excluded. Successful-draft compute p95 excludes upload, browser rendering, and final save. Usage events are not calibrated humor ratings.
 
-There is **one co-writer workflow and one implemented Gemini provider adapter**. Provider information is read-only. The app does not present unused terms, prompt mixes, or signup-domain administration. Legacy prompt experiments are preserved as history; new operations serve the gallery and co-writer.
+There is **one co-writer workflow and one implemented Gemini provider adapter**. Provider information is read-only. The app does not present unused terms, prompt mixes, or signup-domain administration. The admin runtime contains only gallery and co-writer operations. Retired comparison routes, APIs, editors and user-app screens have been removed. Historical records and shared migrations are retained; the historical SQL regression runs from `apps/web/tests/legacy-admin-db.test.mjs`.
 
 ## Run and verify
 
@@ -59,7 +59,7 @@ The [29 October release record](docs/gallery-system.md) reports **51 passing adm
 | `app/` | Admin routes, forms, and server actions |
 | `lib/` | Authorization, data access, library/media handling, and runtime validation |
 | `supabase/migrations/` | Shared schema and access policy history; review the live/local migration mapping before applying |
-| `tests/` | Executable SQL and deterministic operational contracts |
+| `tests/` | Current admin operational, upload and authentication contracts |
 | `docs/` | Current release evidence and labeled historical records |
 
 [Documentation index](docs/README.md) · [User-app architecture and evaluation](https://github.com/yihan2588/FunnyLLM/blob/main/apps/web/docs/co-writer.md) · [Engineering study guide](https://github.com/yihan2588/FunnyLLM/tree/main/apps/web/docs/study-guide)

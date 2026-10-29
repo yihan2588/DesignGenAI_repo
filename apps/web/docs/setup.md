@@ -45,3 +45,7 @@ Use the admin's writing pause during an incident; saved drafts, manual edits, an
 The Google provider's authorized redirect URI remains `https://nqmwkajkucwfipdowvzh.supabase.co/auth/v1/callback`. This is distinct from each application's callback. App OAuth actions derive their redirect from the current public host; no new URL environment variable or credential is needed.
 
 Old production domains remain attached. Page GET/HEAD requests redirect to the corresponding new host while preserving path and query. Old callbacks, API requests, and POST actions stay on their original host so in-flight PKCE exchanges and writes retain their cookies. Keep old exact callback allowlist entries during this compatibility period. Because cookies are scoped to a hostname, users sign in once on each new domain.
+
+## Historical migration consolidation
+
+The admin cleanup copied the existing `20261023042219_save_configurations_in_place.sql` into the canonical `apps/web/supabase/migrations` directory and moved its SQL regression to `tests/legacy-admin-db.test.mjs`. This preserves the former admin history; it is not a new production database change. Do not reapply it to the provisioned project.
