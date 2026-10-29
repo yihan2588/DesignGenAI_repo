@@ -17,6 +17,7 @@ export default async function Layout({
         </Link>
         <nav>
           <Link href="/admin">◉ Overview</Link>
+          <Link href="/admin/cowriter">Co-writer</Link>
           <Link href="/admin/media">▧ Media library</Link>
           <Link href="/admin/prompts">✳ Prompt lab</Link>
           <Link href="/admin/people">♙ People & votes</Link>
