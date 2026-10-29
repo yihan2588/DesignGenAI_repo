@@ -1,5 +1,7 @@
 # Week 6 verification — October 22, 2026
 
+Historical admin verification. The gallery/co-writer remake is documented in [the current system release record](gallery-system.md).
+
 ## Baseline and scope
 
 The user-supplied deployment `design-gen-ai-repo-oc112fjxq-yihan2588-5788s-projects.vercel.app` was verified through Vercel metadata as commit `13edf43fd3a5de69f6f2e3d07724d5fa86286bf6`. This preserves the prior feedback implementation. The new admin app is in a separate private repository and Vercel project. Generation uses the pre-RAG app's Gemini transport and scene-plan/caption approach; it does not dispatch the retrieval worker.

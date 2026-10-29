@@ -34,7 +34,7 @@ Displayed draft compute p95 is measured over successful recent draft requests; i
 
 ## Migration and retirement
 
-Canonical files: `20261029161615_funnyllm_gallery_system.sql` and `20261029162549_funnyllm_release_guards.sql`, copied unchanged into the admin checkout. Applied to Supabase project `nqmwkajkucwfipdowvzh` as `funnyllm_gallery_system` and `funnyllm_release_guards`. Local filename times and service application times can differ.
+Canonical files: `20261029161615_funnyllm_gallery_system.sql` and `20261029162549_funnyllm_release_guards.sql`, copied unchanged into the admin checkout. Applied to Supabase project `nqmwkajkucwfipdowvzh` as `funnyllm_gallery_system` and `funnyllm_release_guards`. The live versions are `20261029162242` and `20261029162713`, respectively; local filename times and service application times differ.
 
 Legacy `/compare` and run reads remain an archive. Old generation, voting and upload handlers return an archive message; legacy database function and table write privileges are revoked. Historical rows remain. Rolling back app code alone will not restore old A/B writes; do not silently restore those privileges. Keep the additive schema and use a forward fix for the new system.
 
@@ -48,4 +48,21 @@ Legacy `/compare` and run reads remain an archive. Old generation, voting and up
 - Admin upload of a disabled test image completed storage and indexing; description edit completed re-indexing. It remains retired and cannot enter new retrievals.
 - Gallery responsive sweep: 1280/1440/1920/375 px; zero FAIL/WARN, one existing explicit control-height waiver. Authenticated app/editor captures supplement anonymous capture. Fresh-context finish review: ship; one mobile button-wrapping defect fixed and recaptured. Before screenshots were unavailable.
 
-Production release IDs and final checks will be recorded after staging and promotion. These checks establish implementation and access contracts. They do not establish that jokes improved; blinded human preference evaluation is still pending.
+## Production release
+
+The initial release used user build `dpl_2qk56ayPjBes275xxMXxzCKtcjww` at `22ac29d`; the final user build below adds the verified private-preview link fix. Both final staged production builds reached READY and were promoted; Vercel confirmed both canonical aliases completed.
+
+| App | Source commit | Deployment | Live URL |
+|---|---|---|---|
+| User | `09426f3` | `dpl_8gX4i5LjyiXNGvwL2MDVSSQZMQ4r` | https://design-gen-ai-repo.vercel.app |
+| Admin | `95db108` | `dpl_5hFASp1RPDyYDHEjR96TuJp3yZAT` | https://humorllm-admin.vercel.app/admin |
+
+The source commits were pushed to `codex/funnyllm-cowriter`; neither repository's main branch was merged. The user CLI deployment has no Git metadata attached, so its source mapping is the verified application files at upload time (release documentation is excluded from deployment). The admin deployment explicitly records its Git SHA. Later documentation-only commits do not change the deployed build.
+
+Staged and canonical HTTP checks passed: gallery and feed 200, eight public studio posts, JPEG and PNG decoded, anonymous private-session request 401, removed-post image 404, legacy-generation POST 410. The staged admin login rendered and an anonymous admin request redirected to sign-in (307).
+
+Authenticated production browser checks confirmed the gallery, a new thought request with three complete memes, and the admin overview, exact email allowlist, source workflow and request activity. The production Longer refinement increased the selected caption from 9 to 12 words. Publication produced a public share page and an anonymously readable image; Remix created a private picture draft. Unpublish returned the user to My creations and changed the anonymous image response from 200 to 404. The test publication was left private. A follow-up UI fix removes public-page links from private and admin-removed publication previews; local and canonical production browser verification found zero such links. Bounded error/fatal log queries returned no matching records during release verification, including the final user build. These are smoke windows, not a long-term reliability claim.
+
+The guide checkpoint was updated in `deliverables/funnyllm-cowriter/index.html` outside the two application repositories. Its added anchors and content were checked. The gallery screenshot is retained in the user repository at `docs/gallery/released-gallery.jpg`.
+
+ These checks establish implementation and access contracts. They do not establish that jokes improved; blinded human preference evaluation is still pending.
