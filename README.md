@@ -4,7 +4,7 @@
 
 FunnyLLM is a meme creation app with a public gallery and an AI co-writer. Start with your own image or an idea, choose from three complete memes, and steer the result before exporting or sharing it.
 
-[Try the gallery](https://design-gen-ai-repo.vercel.app) · [Open Funny Lab](https://design-gen-ai-repo.vercel.app/lab) · [Engineering study guide](apps/web/docs/study-guide/README.md) · [Admin repository](https://github.com/yihan2588/FunnyLLM/tree/main/apps/admin)
+[Try the gallery](https://design-gen-ai-repo.vercel.app) · [Open Funny Lab](https://design-gen-ai-repo.vercel.app/lab) · [Engineering study guide](apps/web/docs/study-guide/README.md) · [Admin app source](https://github.com/yihan2588/FunnyLLM/tree/main/apps/admin)
 
 ![FunnyLLM gallery with curated studio memes and a link to Funny Lab](apps/web/docs/gallery/released-gallery.jpg)
 
@@ -92,13 +92,15 @@ Current tradeoffs include one Gemini provider, English/Latin caption rendering, 
 
 | Path | Purpose |
 |---|---|
-| `app/` | Gallery, Funny Lab, My creations, sign-in, and API routes |
-| `lib/cowriter/` | Workflow, prompt contracts, provider calls, layout, and export |
-| `lib/gallery/` | Publication, gallery access, reactions, and moderation integration |
-| `supabase/migrations/` | Versioned schema, functions, and access policies |
-| `tests/` | Deterministic contracts and executable SQL checks |
-| `scripts/` | Catalog preparation, controlled evaluations, and analysis |
-| `public/catalog/` | 722 sanitized, content-addressed teaching images used at runtime |
-| `docs/` | Setup, implementation, release evidence, study guide, and historical records |
+| `apps/web/app/` | Gallery, Funny Lab, My creations, sign-in, and API routes |
+| `apps/web/lib/cowriter/` | Workflow, prompt contracts, provider calls, layout, and export |
+| `apps/web/lib/gallery/` | Publication, gallery access, reactions, and moderation integration |
+| `apps/web/supabase/migrations/` | Versioned schema, functions, and access policies |
+| `apps/web/tests/` | Deterministic contracts and executable SQL checks |
+| `apps/web/scripts/` | Catalog preparation, controlled evaluations, and analysis |
+| `apps/web/public/catalog/` | 722 sanitized, content-addressed teaching images used at runtime |
+| `apps/web/docs/` | Setup, implementation, release evidence, study guide, and historical records |
+| `apps/admin/` | Admin interface, operations API, tests, and documentation |
+| `docs/monorepo.md` | Repository layout and deployment mapping |
 
 [Browse the documentation index](apps/web/docs/README.md). Historical snapshots remain labeled and separate from current product guidance. Raw course exports, local credentials, build output, and preparation caches are not part of the published source. Teaching assets retain their original rights; repository inclusion does not grant a new blanket license.
