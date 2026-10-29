@@ -1,17 +1,15 @@
-# FunnyLLM repository and deployment map
+# Repository and deployment map
 
-The user and admin apps share one Git repository and one existing Supabase project. They remain independent Next.js applications so routes, cookies, working-directory asset paths, environment variables, and access controls do not change.
-
-| Component | Source root | Project |
+| Component | Source | Production |
 |---|---|---|
-| User app | apps/web | Vercel funnyllm |
-| Admin | apps/admin | Vercel funnyllm-admin |
-| Database/Auth/Storage | canonical SQL in apps/web/supabase | Supabase FunnyLLM, ID nqmwkajkucwfipdowvzh |
+| Gallery and Funny Lab | `apps/web` | https://funnyllm.vercel.app |
+| Operations app | `apps/admin` | https://funnyllm-admin.vercel.app/admin |
+| Auth, database and Storage | `apps/web/supabase` is the canonical migration source | Shared Supabase FunnyLLM project |
 
-Each app has its own lockfile and install/build/test commands. From the repository root, `pnpm install:apps`, `pnpm test`, `pnpm lint`, and `pnpm build` operate on both. Dev commands are `pnpm dev:web` and `pnpm dev:admin`. Configure separate ignored `.env.local` files in the app folders.
+Each app has an independent lockfile, `.env.local`, working directory and Vercel project. Root commands `pnpm install:apps`, `pnpm test`, `pnpm lint`, and `pnpm build` run across both. Use `pnpm dev:web` or `pnpm dev:admin` for development.
 
-The shared SQL copies under admin are retained for historical SQL tests; do not apply both copies. This consolidation does not change SQL, Auth policies, storage, provider keys, or the database URL. Canonical domains are `funnyllm.vercel.app` and `funnyllm-admin.vercel.app`. Old domains redirect page navigation, while in-flight auth callbacks and API requests retain their original host. See [OAuth setup](../apps/web/docs/setup.md#production-urls-and-google-login).
+Vercel deploys `main` using the corresponding app root. Configure credentials separately for each app. Do not apply duplicate SQL copies; reconcile the canonical migrations against the provisioned database ledger.
 
-Both original Git histories are reachable from the consolidation merge commit. The former admin GitHub repository is retained as a read-only archive, with current development in FunnyLLM. Never delete or rewrite the old history as part of this migration.
+Account → Admin is ordinary navigation. Host-scoped sessions and the admin’s server/database allowlist remain independent. See [OAuth and environment setup](../apps/web/docs/setup.md).
 
-The study guide lives in apps/web/docs/study-guide; historical verification records remain in their app's docs folder.
+The [study guide](../apps/web/docs/study-guide/README.md) is editable offline HTML. Runtime inputs, private traces and credentials are not portfolio artifacts.

@@ -1,6 +1,6 @@
 # FunnyLLM co-writer: implementation and engineering decisions
 
-Status: implemented on 29 October 2026. This document describes the shipped code, not a claim that its jokes beat a baseline.
+FunnyLLM combines a public gallery with a controllable AI co-writer. This document explains its implementation, contracts, and engineering tradeoffs.
 
 ## Product contract
 
@@ -8,15 +8,13 @@ The home screen is the public gallery. Funny Lab at `/lab` has two starting poin
 
 Users can select a take, request Shorter / Longer, Less / More obvious, Less / More mean, or Different angle, manually edit, undo, save a preference, or export a captioned PNG. Image swaps adapt the caption to a chosen image in the same shortlist. These are different operations with different invariants. Quoted phrases in the constraints field are exact locks for generated text. Manual edits give the user final control.
 
-The previous comparison experience is read-only at `/compare`; historical runs, votes and configurations remain. New operations are organized around the co-writer workflow. There is no self-evolving prompt process or automatic prompt promotion.
-
 ## Architecture and tool choices
 
 | Layer | Implementation | Reason and tradeoff |
 |---|---|---|
-| Web app | Existing Next.js 16 / React 19 / TypeScript, Hum styling, local Chillax fonts | Reuse auth and deployment; avoid a second frontend. |
-| Generation | Gemini 3.1 Flash-Lite Interactions API, `store:false`, Zod structured contracts | Existing credentials and multimodal support. Direct REST is sufficient for a bounded workflow; no agent framework or orchestration graph. |
-| Retrieval | Postgres FTS + pgvector cosine, Gemini embedding-001, normalized 768 dimensions | One operational database. Exact scans are appropriate for 887 rows; introduce ANN only after measuring larger indexes. |
+| Web app | Next.js 16 / React 19 / TypeScript, Hum styling, local Chillax fonts | Two focused applications share one data platform and repository. |
+| Generation | Admin-selected Gemini model through the Interactions API, `store:false`, Zod structured contracts | Multimodal input and structured output. Direct REST is sufficient for a bounded workflow; no agent framework or orchestration graph. |
+| Retrieval | Postgres FTS + pgvector cosine, Gemini embedding-001, normalized 768 dimensions | One operational database. Exact scans fit the small catalog; introduce ANN only after measuring larger indexes. |
 | Storage | Supabase private uploads; 722 sanitized teaching JPEGs deployed as content-addressed static assets | Owner access for personal images; predictable image availability and no browser CORS dependency for teaching images. The initial catalog adds about 65 MB to the repository. New admin uploads use private `funny-library` Storage and are indexed without redeployment. |
 | State and concurrency | Postgres claim/finish RPCs, request IDs, content fingerprints, optimistic revision checks, prior snapshots | Protect against duplicate actions, race conditions and silent overwrites. Request-bound execution means interrupted operations may need an explicit retry. |
 | Export | Shared layout plus Fontkit glyph outlines and Sharp | PNG lettering uses the actual bundled font, independent of host font installation. MVP supports English/Latin captions and supported punctuation, not emoji or all writing systems. |
@@ -51,7 +49,7 @@ Picture mode sends the image and optional spirit to interpretation, then sends t
 
 The three search views retain the original target, express the abstract relationship, and describe a visual analogy. Each contributes its top 20 cosine and lexical results. Reciprocal rank fusion uses `1/(60+rank)` across six ranked lists. The top 40 become an eight-family shortlist. The composer chooses the image and caption together. Retrieval rank is evidence of potential connection, not a humor score.
 
-The writer is directed to add a voice, status claim, consequence or reversal instead of narrating the image or echoing the user's nouns. It aims for 3–10 words, with hard limits of 20 words, 200 characters and one line. It is allowed to omit incidental objects. It must retain a recoverable connection and explicit constraints. Validation rejects unknown image IDs, duplicate captions, unsupported glyphs and missed quoted locks without truncating punchlines.
+The writer is directed to add a voice, status claim, consequence or reversal instead of narrating the image or echoing the user's nouns. It aims for 3–10 words, with hard limits of 20 words, 200 characters and one line. It is allowed to omit incidental objects. It must retain a recoverable connection and explicit constraints. The composition schema restricts image IDs to the current mode: retrieved IDs for thoughts, or `upload` for pictures. The prompt includes only that mode’s instructions. Validation rejects unknown image IDs, duplicate captions, unsupported glyphs and missed quoted locks without truncating punchlines.
 
 These constraints prevent mechanical failures; they cannot certify humor. The development samples still contain literal restatements and familiar phrases. Prompt examples can also anchor wording. Use the error taxonomy and human review to decide the next change, rather than increasing chain depth by default.
 
@@ -61,7 +59,7 @@ The generation deadline is 15 seconds; the Vercel write route allows 30 seconds 
 
 Each account gets 50 AI operations per rolling 24 hours; the project guard is 500. Failed attempts count. One active AI request per owner is admitted within a 25-second window. These database admission limits bound ordinary use, but the global allowance is not a billing guarantee under simultaneous admissions across different owners. Configure provider spending limits separately for broader public use. Upload insertion is capped at 100 files per owner, with 2 MB sanitized JPEGs. This is an abuse guard, not automatic retention cleanup.
 
-All personal sessions and revisions are private. SQL checks verified identity and the existing narrow server writer key; no service-role secret enters the browser. Same-origin mutation checks, bounded request bodies, decoded image validation, strict media paths and pinned provider endpoints limit unintended input paths. Catalog images remain public teaching assets. The empty, unused `cowriter-catalog` bucket remains with no upload policies; personal uploads use `cowriter-uploads`.
+All personal sessions and revisions are private. SQL checks verified identity and the existing narrow server writer key; no service-role secret enters the browser. Same-origin mutation checks, bounded request bodies, decoded image validation, strict media paths and pinned provider endpoints limit unintended input paths. Catalog images remain public teaching assets. Personal uploads use `cowriter-uploads`.
 
 Admin activity lists omit large trace bodies. Authorized details contain bounded sent prompts and parsed responses, which may include private input text; secrets and image bytes are excluded. Stored `elapsed_ms` measures generation work before the final database save; it excludes upload, client rendering and the final commit. The successful-draft p95 is conditional on successful runs and must be read alongside failures. It is not end-to-end perceived latency.
 
@@ -74,9 +72,9 @@ pnpm eval:cowriter docs/evaluation/tasks.json .cowriter-cache/my-run
 python3 scripts/analyze-cowriter.py .cowriter-cache/my-run reviewer-1.json reviewer-2.json
 ```
 
-The thought ablation uses the same interpreted intent, writer prompt, model, output limits and number of options. Only retrieval query construction changes: literal query versus target/relationship/analogy. Picture mode compares direct composition with interpretation followed by composition. This estimates the value of the interpretation step. It is **not** an exact replay of the historical `/compare` production configuration, whose prompts and length limits differ. To claim improvement over that product, freeze its active configuration and run a separate product-level comparison, explicitly treating its different interaction and output count as part of the product change.
+The thought ablation uses the same interpreted intent, writer prompt, model, output limits and number of options. Only retrieval query construction changes: literal query versus target/relationship/analogy. Picture mode compares direct composition with interpretation followed by composition. This estimates the value of the interpretation step.
 
-Every run records task, input, candidate IDs, shortlist, stage usage, model, prompt hash, catalog hash and failures. Thought timings record the shared interpretation separately. The order of system execution and A/B labels is randomized. No failed arm is silently removed. `review.html` presents complete sets, then reveals intent. Reviewers export pseudonymous ratings; `blind-key.json` stays separate until review ends. The analyzer reports raw wins, ties and neither, missing-task coverage, failures and task-cluster bootstrap intervals.
+Every run records task, input, candidate IDs, shortlist, stage usage, model, prompt hash, catalog hash and failures. Thought timings record the shared interpretation separately. System execution and blinded option labels are randomized. No failed arm is silently removed. `review.html` presents complete sets, then reveals intent. Reviewers export pseudonymous ratings; `blind-key.json` stays separate until review ends. The analyzer reports raw wins, ties and neither, missing-task coverage, failures and task-cluster bootstrap intervals.
 
 The six supplied tasks are **development smoke fixtures**: four thoughts and two variants of the same picture. They are not held-out evidence. A real pilot should use 30–50 fresh tasks per mode, several independent reviewers, held-out image families, and preregistered success criteria. Capture paired humor preference, intent preservation, at least one keepable option, time to first keep, edits to keep, failures, end-to-end p50/p95 and cost per kept meme. Do not count three captions from one request as three independent tasks. Do not tune prompts on the final holdout.
 
@@ -91,12 +89,14 @@ The six supplied tasks are **development smoke fixtures**: four thoughts and two
 
 Recall practice: Why might a semantically closer image produce a worse joke? What changes in a valid retrieval ablation? Why can successful-request p95 conceal a regression? What happens if two refinements finish in the opposite order? Why is a “Keep” click not a calibrated humor label? Answer these using one actual trace and one failed example from this implementation.
 
-## Release and rollback
+## Deployment and operations
 
-Both applications share one Supabase project. The media-app repository owns the additive co-writer migrations. The live core migration is `20261029063715_funnyllm_cowriter_core`; the local source is `20261029063133_funnyllm_cowriter.sql`. A preceding live placeholder migration contains no DDL. Do not replay the core migration into an existing database or rewrite applied history. The subsequent operational-guards migration removes unused catalog import endpoints and installs upload limits.
+The monorepo publishes separate user and admin Vercel apps from `main`. Both use one Supabase project. See [setup](setup.md) before provisioning: the SQL files extend a required base schema and must be reconciled with the target migration ledger.
 
-Both repositories publish the current source on `main` after checks. The original release was built from `codex/funnyllm-cowriter`; the release record preserves that provenance. The admin can pause AI writing while saved drafts, manual edits and exports remain available. Rollback re-promotes the previous deployment; the additive schema and private drafts can remain. Do not run destructive down migrations as part of an app rollback.
+The admin can pause AI writing while saved drafts, manual edits and exports remain available. A deployment rollback restores application code; it does not roll back data or SQL access policies. Prefer reviewed additive migrations and forward repairs for persistent state.
 
 ## Gallery and operations integration
 
-See [the system release record](gallery/system.md) for publication snapshots, moderation, exact admin access, image administration and current verification. The selected model and at most three active examples are frozen when each draft starts. Admin changes affect new sessions. The read-only workflow manifest is generated from the source fingerprint; no prompt mix or automatic evolution is enabled.
+See [publication and operations](gallery/system.md) for snapshot semantics, moderation, exact admin access, and image administration. The selected model and at most three active examples are frozen when each draft starts. Admin changes affect new sessions. The source workflow manifest records the prompt fingerprint.
+
+The gallery reserves consistent image and caption frames. Contain-fit preserves the full image; caption text wraps and scales within its area. Full meme views and PNG export retain image-specific proportions.

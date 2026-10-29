@@ -7,9 +7,10 @@
 .funny-header .funny-main-nav { gap: var(--space-lg); margin-right: auto; margin-left: var(--space-xl); font-size: 16px; }
 .funny-main-nav a[aria-current=page] { color: var(--color-ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--color-accent-deep); text-decoration-thickness: 3px; text-underline-offset: 10px; }
 .funny-account { position: relative; font-size: 15px; }
-.funny-account summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; border-radius: var(--radius-input); padding: var(--space-xs); }
-.funny-account summary::after { content: '+'; padding-left: var(--space-xs); }
-.funny-account[open] summary::after { content: '−'; }
+.funny-account summary.funny-account-toggle { display:flex; gap:var(--space-sm); align-items:center; min-height:46px; padding:var(--space-xs) 20px; white-space:nowrap; list-style:none; color:var(--color-accent-2); }
+.funny-account summary::-webkit-details-marker { display:none; }
+.funny-account summary::marker { content:''; }
+.funny-account[open] summary svg { transform:rotate(180deg); }
 .funny-account>div { position: absolute; z-index: 100; right: 0; top: 100%; width: 180px; padding: var(--space-sm) var(--space-md); background: var(--color-card); border: 1px solid var(--color-edge); border-radius: var(--radius-input); box-shadow: var(--shadow-card); }
 .funny-account>div>a { display: flex; min-height: 44px; align-items: center; }
 .funny-footer>div { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
