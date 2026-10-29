@@ -66,3 +66,7 @@ Authenticated production browser checks confirmed the gallery, a new thought req
 The guide checkpoint was updated in `deliverables/funnyllm-cowriter/index.html` outside the two application repositories. Its added anchors and content were checked. The gallery screenshot is retained in the user repository at `docs/gallery/released-gallery.jpg`.
 
  These checks establish implementation and access contracts. They do not establish that jokes improved; blinded human preference evaluation is still pending.
+
+## GitHub publication
+
+The repository now publishes the completed operations app on `main`, with the root README and documentation index describing the gallery/co-writer product. Earlier release SHA and deployment records above remain historical evidence.
