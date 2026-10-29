@@ -23,7 +23,7 @@
 .funny-search { display: flex; align-items: center; gap: var(--space-sm); }
 .funny-search input[type=search] { width: 220px; min-height: 44px; padding-block: var(--space-xs); font-size: 15px; }
 .funny-search .cw-secondary { min-height: 44px; }
-.funny-gallery-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-lg); align-items: start; }
+.funny-gallery-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-lg); align-items: stretch; }
 .funny-post { border: 1px solid var(--color-edge); border-radius: 20px; overflow: clip; background: var(--color-card); min-width: 0; }
 .funny-post-image { display: block; }
 .funny-post-image:hover { background: var(--color-paper-2); }
@@ -136,3 +136,7 @@
 .cw-app :is(.funny-page-intro,.funny-account-page,.funny-reading-page,.funny-draft-list) :is(h1,h2) { text-wrap: balance; }
 
 .cw-options:has(>.cw-option:only-child) { grid-template-columns: minmax(0,520px); }
+
+.funny-gallery-grid .funny-post { display:flex; flex-direction:column; }
+.funny-gallery-grid .funny-post-body { flex:1; }
+.funny-gallery-grid .funny-byline { min-height:40px; }

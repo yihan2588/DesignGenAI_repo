@@ -1,7 +1,7 @@
 import { z } from "zod";
 import fontWidths from "./font-widths.json" with {type:"json"};
 
-export const VERSION = "cowriter-2";
+export const VERSION = "cowriter-2.1";
 export const INDEX_VERSION = "teaching-1-gemini-001-768";
 export const MODEL = "gemini-3.1-flash-lite";
 export const EMBEDDING_MODEL = "gemini-embedding-001";

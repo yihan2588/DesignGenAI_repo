@@ -12,7 +12,7 @@ test('thought workflow has two generation calls and one embedding batch, with th
 });
 test('picture workflow sends image on both calls, does not retrieve, and will not invent a valid image',async()=>{
  let count=0;const image=Buffer.from('fixture');
- await assert.rejects(writeDraft({input:{mode:'pic',text:'',locks:'',uploadPath:'local'},image,apiKey:'test',signal:AbortSignal.timeout(2000),retrieve:async()=>assert.fail('Picture mode must not search'),request:async(url,init)=>{count++;assert.equal(JSON.parse(init.body).input[1].data,image.toString('base64'));return Response.json({output_text:JSON.stringify(count===1?intent:{options})});}}),/None of these takes/);
+ await assert.rejects(writeDraft({input:{mode:'pic',text:'',locks:'',uploadPath:'local'},image,apiKey:'test',signal:AbortSignal.timeout(2000),retrieve:async()=>assert.fail('Picture mode must not search'),request:async(url,init)=>{count++;assert.equal(JSON.parse(init.body).input[1].data,image.toString('base64'));return Response.json({output_text:JSON.stringify(count===1?intent:{options})});}}),/incomplete result/);
  assert.equal(count,2);
 });
 test('controlled retrieval ablation reuses intent and changes only the search queries',async()=>{
@@ -46,4 +46,20 @@ test('admin workflow manifest matches the generation source fingerprint',async()
  for(const file of manifest.sourceFiles)hash.update(file).update(await readFile(new URL('../lib/cowriter/'+file,import.meta.url)));
  assert.equal(manifest.sourceHash,hash.digest('hex'),'Regenerate the workflow manifest after a prompt/provider change.');
  assert.equal(manifest.maxWords,20);assert.equal(manifest.generationCalls.draft,2);assert.equal(manifest.generationCalls.automaticRetries,0);
+});
+
+test('thought composition constrains image IDs and excludes picture-mode instructions',async()=>{
+ let composition;
+ await writeDraft({input:{mode:'thought',text:'The professor only reads slides',locks:''},intentOverride:intent,apiKey:'x',signal:AbortSignal.timeout(2000),retrieve:async()=>['one','two','three'].map(id=>({id,family:id,description:id})),request:async(url,init)=>{
+  if(url.includes('batchEmbed'))return Response.json({embeddings:[0,1,2].map(()=>({values:Array(768).fill(1)}))});
+  composition=JSON.parse(init.body);return Response.json({output_text:JSON.stringify({options})});
+ }});
+ assert.deepEqual(composition.response_format.schema.properties.options.items.properties.image_id.enum,['one','two','three']);
+ assert.doesNotMatch(composition.input[0].text,/image_id "upload"/);
+});
+test('gallery layouts use constant frames and fit long captions',async()=>{
+ const {galleryLayout}=await import('../lib/cowriter/layout.ts');
+ for(const text of ['Noted.', 'word '.repeat(20), 'W'.repeat(200)]){
+  const l=galleryLayout(text);assert.equal(l.height,1040);assert.equal(l.photoHeight,720);assert.ok(l.lines.length<=4);
+ }
 });

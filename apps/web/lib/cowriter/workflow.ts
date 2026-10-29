@@ -28,8 +28,10 @@ export async function writeDraft(options:WorkflowOptions){
   if(pool.length<3)throw new CowriterError('There are not enough available images for this thought. Try a different angle or upload a picture.',503);
  }
  onStage?.('Writing three different takes');
- const raw=await generate(composePrompt(input,intent,pool,runtime.examples),z.object({options:z.array(wireOption)}),apiKey,signal,image,onTiming,'compose',options.request,runtime.model);
- const allowed=new Set(input.mode==='pic'?['upload']:pool.map(i=>i.id));
+ const imageIds=input.mode==='pic'?['upload']:pool.map(i=>i.id);
+ const outputOption=wireOption.extend({image_id:z.enum(imageIds as [string,...string[]])});
+ const raw=await generate(composePrompt(input,intent,pool,runtime.examples),z.object({options:z.array(outputOption).min(1).max(3)}),apiKey,signal,image,onTiming,'compose',options.request,runtime.model);
+ const allowed=new Set(imageIds);
  let result=validOptions(raw,allowed).filter(o=>keepsLiterals(o.caption,input.locks));
  if(input.mode==='thought'){const seen=new Set<string>();result=result.filter(o=>{if(seen.has(o.image_id))return false;seen.add(o.image_id);return true;});}
  if(!result.length)throw new CowriterError('None of these takes fit the caption limits and locks. Please try another angle.');
