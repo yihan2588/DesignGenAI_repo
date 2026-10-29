@@ -1,0 +1,13 @@
+export type Post = { id: string; caption: string; alt: string; width: number; height: number; author_name: string; featured: boolean; like_count: number; status: "published" | "unpublished" | "removed"; created_at: string; session_id?: string; option_id?: string; revision?: number };
+export type Report = { id: string; post_id: string; reason: string; status: string; created_at: string };
+export type LibraryImage = { id: string; description: string; affordances: string; storage_path: string; width: number; height: number; available: boolean; indexed: boolean; description_origin: string; updated_at: string; family?: string };
+export type Example = { id: string; intent: string; image_description: string; caption: string; enabled: boolean; created_at: string };
+export type Model = { id: string; label: string; model_id: string; enabled: boolean; selected: boolean };
+export type Trace = { stage: string; elapsed_ms?: number; outcome?: string; usage?: unknown; prompt?: string; response?: unknown; input?: unknown; request?: unknown; model?: string };
+export type RequestRecord = { id: string; owner_id: string; session_id: string; action: string; status: string; error?: string; metrics: { elapsed_ms?: number; model?: string; prompt_version?: string; index_version?: string; timings?: Trace[] }; created_at: string; finished_at?: string; mode?: string; input?: Record<string, unknown>; result?: { input?: { mode: string; uploadPath?: string }; pool?: { id: string; storage_path: string }[]; options?: { id: string; image_id: string; caption: string; alt?: string; width?: number; height?: number }[] } };
+export type Overview = { enabled: boolean; catalog: { total: number; available: number; embedded: number }; summary: { requests: number; completed: number; failed: number; posts: number; reports: number; users: number; p95_ms: number | null }; activity: { id: string; action: string; status: string; created_at: string; elapsed_ms?: number }[]; feedback: { reason: string; total: number }[] };
+export type ContentSnapshot = { posts: Post[]; reports: Report[]; more: boolean; reports_more: boolean };
+export type LibrarySnapshot = { images: LibraryImage[]; more: boolean };
+export type ActivitySnapshot = { requests: RequestRecord[]; more: boolean; request?: RequestRecord };
+export type Configuration = { enabled: boolean; models: Model[]; provider: { name: string; adapter: string }; workflow: { version: string; steps: string[]; max_words: number } };
+export type People = { users: { id: string; email: string; first_name: string | null; last_name: string | null; created_at: string; is_admin: boolean }[]; admins: { email: string }[]; more: boolean };

@@ -1,0 +1,2 @@
+import { signOut } from "@/app/auth/actions";
+export default function Denied() { return <main className="admin-login" id="main-content"><h1>This account is not an administrator.</h1><p>Admin access is limited to the project’s three approved Google accounts. All Google accounts can use the public app.</p><form action={signOut}><button className="button primary">Sign out and switch accounts</button></form><a href="https://design-gen-ai-repo.vercel.app">Open the gallery</a></main>; }

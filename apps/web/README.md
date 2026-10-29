@@ -4,7 +4,7 @@
 
 FunnyLLM is a meme creation app with a public gallery and an AI co-writer. Start with your own image or an idea, choose from three complete memes, and steer the result before exporting or sharing it.
 
-[Try the gallery](https://design-gen-ai-repo.vercel.app) · [Open Funny Lab](https://design-gen-ai-repo.vercel.app/lab) · [Engineering study guide](docs/study-guide/README.md) · [Admin repository](https://github.com/yihan2588/humorllm-admin)
+[Try the gallery](https://design-gen-ai-repo.vercel.app) · [Open Funny Lab](https://design-gen-ai-repo.vercel.app/lab) · [Engineering study guide](docs/study-guide/README.md) · [Admin repository](https://github.com/yihan2588/FunnyLLM/tree/main/apps/admin)
 
 ![FunnyLLM gallery with curated studio memes and a link to Funny Lab](docs/gallery/released-gallery.jpg)
 

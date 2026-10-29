@@ -11,7 +11,7 @@
 - [Implementation and decisions](co-writer.md): workflow, retrieval, data preparation, contracts, tradeoffs, and evaluation
 - [Gallery and operations release](gallery/system.md): publication, moderation, access, migrations, and deployed-flow verification
 - [Initial catalog import report](catalog-import-report.json): counts, provenance, and media failures
-- [Companion admin repository](https://github.com/yihan2588/humorllm-admin)
+- [Companion admin repository](https://github.com/yihan2588/FunnyLLM/tree/main/apps/admin)
 
 ## Evaluation material
 

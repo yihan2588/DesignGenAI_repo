@@ -1,0 +1,13 @@
+{
+  "name": "funnyllm",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev:web": "pnpm --dir apps/web dev --webpack",
+    "dev:admin": "pnpm --dir apps/admin dev --webpack --port 3001",
+    "install:apps": "pnpm --dir apps/web install --frozen-lockfile && pnpm --dir apps/admin install --frozen-lockfile",
+    "test": "pnpm --dir apps/web test && pnpm --dir apps/admin test",
+    "lint": "pnpm --dir apps/web lint && pnpm --dir apps/admin lint",
+    "build": "pnpm --dir apps/web build && pnpm --dir apps/admin build"
+  }
+}

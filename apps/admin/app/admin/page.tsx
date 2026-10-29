@@ -1,0 +1,14 @@
+import Link from "next/link";
+import { adminData, duration, timestamp } from "@/lib/funny/data";
+import type { Overview } from "@/lib/funny/types";
+import { OperationForm } from "./components/forms";
+import { Empty, PageHeading, Status } from "./components/common";
+export default async function Admin() {
+  const s = await adminData<Overview>("overview");
+  return <><PageHeading title="Overview" action={<OperationForm action="writing_enabled" label={s.enabled ? "Pause AI writing" : "Enable AI writing"}><input type="hidden" name="enabled" value={String(!s.enabled)} /></OperationForm>}>Keep the gallery healthy and the lab running.</PageHeading>
+    <p className="release-line"><Status value={s.enabled ? "enabled" : "paused"} /> AI writing. Manual editing, saved drafts and exports remain available.</p>
+    <dl className="metrics"><div><dt>Generation attempts, 7 days</dt><dd>{s.summary.requests}</dd></div><div><dt>Failed attempts, 7 days</dt><dd>{s.summary.failed}</dd></div><div><dt>Public memes</dt><dd>{s.summary.posts}</dd></div><div><dt>Open reports</dt><dd><Link href="/admin/content?tab=reports">{s.summary.reports}</Link></dd></div></dl>
+    <div className="overview-grid"><section className="section-block"><h2>Recent generation</h2>{s.activity.length ? <div className="table-scroll"><table><thead><tr><th>When</th><th>Operation</th><th>Result</th><th>Compute</th><th><span className="sr-only">Details</span></th></tr></thead><tbody>{s.activity.slice(0, 8).map(r => <tr key={r.id}><td>{timestamp(r.created_at)}</td><td>{r.action.replaceAll("_", " ")}</td><td><Status value={r.status} /></td><td>{duration(r.elapsed_ms)}</td><td><Link href={`/admin/activity?id=${r.id}`}>Inspect</Link></td></tr>)}</tbody></table></div> : <Empty>Requests appear here when someone writes or refines a meme.</Empty>}<Link href="/admin/activity">All generation activity</Link></section>
+    <section className="section-block"><h2>Library & performance</h2><dl className="facts"><div><dt>Images available</dt><dd>{s.catalog.available} / {s.catalog.total}</dd></div><div><dt>Embeddings stored</dt><dd>{s.catalog.embedded}</dd></div><div><dt>Successful draft compute p95</dt><dd>{duration(s.summary.p95_ms)}</dd></div><div><dt>Registered users</dt><dd>{s.summary.users}</dd></div></dl><p className="muted">Compute excludes upload, rendering and the final database save. Read failures alongside latency.</p><Link href="/admin/library">Manage the image library</Link></section></div>
+    <section className="section-block"><h2>What people kept</h2>{s.feedback.length ? <dl className="feedback-counts">{s.feedback.map(f => <div key={f.reason}><dt>{f.reason.replaceAll("_", " ")}</dt><dd>{f.total}</dd></div>)}</dl> : <Empty>Keep, export and refinement feedback will appear as people use the lab.</Empty>}<p className="muted">These actions measure usage. They do not establish that a caption is funny.</p></section></>;
+}

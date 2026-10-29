@@ -1,0 +1,8 @@
+import { adminData, timestamp } from "@/lib/funny/data";
+import type { People } from "@/lib/funny/types";
+import { queryPage, queryText } from "@/lib/funny/validation";
+import { Empty, PageHeading, Pagination, Search, Status } from "../components/common";
+export default async function PeoplePage({ searchParams }: { searchParams: Promise<{ q?: string; page?: string }> }) {
+  const p = await searchParams, page = queryPage(p.page), q = queryText(p.q), s = await adminData<People>("people", page, q);
+  return <><PageHeading title="People & access">Open creation. A small, explicit administration team.</PageHeading><section className="section-block access-summary"><div><h2>User app</h2><p>All Google accounts are eligible to sign in and create. Browsing the public gallery does not require an account.</p></div><div><h2>Admin app</h2><p>Google sign-in must match one of these addresses. This list is enforced in the database and cannot be edited here.</p><ul>{s.admins.map(a => <li key={a.email}>{a.email}</li>)}</ul></div></section><section className="section-block"><h2>Registered users</h2><Search q={q} placeholder="Search names or email addresses" />{s.users.length ? <div className="table-scroll"><table><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Access</th></tr></thead><tbody>{s.users.map(u => <tr key={u.id}><td>{[u.first_name, u.last_name].filter(Boolean).join(" ") || "Name not provided"}</td><td>{u.email}</td><td>{timestamp(u.created_at)}</td><td><Status value={u.is_admin ? "admin" : "member"} /></td></tr>)}</tbody></table></div> : <Empty>{q ? "No users match this search." : "Registered Google accounts will appear here."}</Empty>}<Pagination base="/admin/people" page={page} more={s.more} q={q} /></section></>;
+}

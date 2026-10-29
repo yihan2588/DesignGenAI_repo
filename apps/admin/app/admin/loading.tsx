@@ -1,0 +1,1 @@
+export default function Loading() { return <section className="loading-state" role="status" aria-live="polite"><h2>Loading your workspace…</h2><div className="loading-row"/><div className="loading-row"/><div className="loading-row"/><p>Retrieving saved content and activity.</p></section>; }
