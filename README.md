@@ -1,15 +1,16 @@
 # FunnyLLM
 
-A two-mode meme co-writer built with Next.js, Gemini and Supabase.
+A public meme gallery and two-mode co-writer built with Next.js, Gemini and Supabase. The gallery is the home page; Funny Lab is the creation workspace.
 
 - **I have a pic:** upload a private image, optionally describe its funny spirit, and get three short captioned takes.
 - **I have a thought:** describe a target or situation and get three complete image–caption options from a trusted teaching catalog.
-- Refine one take, edit wording, undo, swap a retrieved image, and export a PNG.
+- Refine one take with paired length, obviousness and meanness controls. All captions are capped at 20 words and 200 characters. Edit, undo, swap an image and export a PNG.
+- Publish an explicit snapshot to the gallery, like/save/remix public memes, report content, or unpublish your own work. Private drafts stay private.
 
-The previous blind comparison product remains at `/compare`. Existing votes and admin prompt configurations are retained.
+The previous blind comparison is a read-only archive at `/compare`. Historical votes and prompt configurations remain; legacy generation and voting writes are disabled.
 
 Production: https://design-gen-ai-repo.vercel.app
-Admin: https://humorllm-admin.vercel.app/admin/cowriter
+Admin: https://humorllm-admin.vercel.app/admin
 
 ## Run locally
 
@@ -26,6 +27,8 @@ pnpm build
 The webpack flag also supports this workspace’s shared dependency symlink. No new API key or service-role key is required. The migrations build on the existing course database; see the release mapping before applying to an existing project.
 
 ## Engineering evidence
+
+- [Gallery, operations, access and release verification](docs/gallery/system.md)
 
 - [Implementation, decisions, data preparation and evaluation protocol](docs/co-writer.md)
 - [Verification and release record](docs/co-writer-verification.md)

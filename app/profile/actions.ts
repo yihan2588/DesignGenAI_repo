@@ -41,8 +41,8 @@ export async function saveProfile(_previous: ProfileState, formData: FormData): 
     if (cleanupError) console.error("Old avatar cleanup failed:", cleanupError.message);
   }
   revalidatePath("/profile");
-  revalidatePath("/members");
+  revalidatePath("/creations");
   revalidatePath("/");
   if (formData.get("next")) redirect(safeReturn(formData.get("next")));
-  return { success: "Profile saved. You’re ready to compare." };
+  return { success: "Your profile is saved." };
 }

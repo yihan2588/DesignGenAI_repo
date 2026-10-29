@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./cowriter/cowriter.css";
+import "./funny.css";
 
 export const metadata: Metadata = {
   title: "FunnyLLM — Make a meme worth keeping.",

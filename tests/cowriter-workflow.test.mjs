@@ -28,3 +28,22 @@ test('export renders decoded non-square media and safe glyph paths with the same
  assert.equal(captionSchema.safeParse('A résumé with confidence.').success,true);assert.equal(captionSchema.safeParse('🙂').success,false);
  assert.ok(captionLayout('W'.repeat(90),960,540).lines.length>1);
 });
+
+test('the saved runtime selects both generation calls and injects examples only into composition',async()=>{
+ const calls=[];const runtime={model:'gemini-configured',config_version:'fixture-1',examples:[{id:'00000000-0000-4000-8000-000000000001',intent:'unused credit',image_description:'An idle colleague watching a team',caption:'I supervised the outcome.'}]};
+ const result=await writeDraft({input:{mode:'pic',text:'teamwork',locks:'',uploadPath:'fixture'},image:Buffer.from('picture'),runtime,apiKey:'key',signal:AbortSignal.timeout(2000),retrieve:async()=>assert.fail('No retrieval in picture mode'),request:async(url,init)=>{const body=JSON.parse(init.body);calls.push(body);return Response.json({output_text:JSON.stringify(calls.length===1?intent:{options:[option('upload','Put my name on it.')]})});}});
+ assert.equal(result.options.length,1);assert.deepEqual(calls.map(x=>x.model),['gemini-configured','gemini-configured']);assert.equal(calls[0].input[0].text.includes('I supervised the outcome.'),false);assert.equal(calls[1].input[0].text.includes('I supervised the outcome.'),true);assert.equal(calls.length,2);
+});
+test('PNG rendering independently rejects captions beyond twenty words',async()=>{
+ const image=await sharp({create:{width:80,height:80,channels:3,background:'#cccccc'}}).jpeg().toBuffer();
+ await assert.rejects(renderMeme(image,'word '.repeat(21)),/20 words/);
+ const png=await renderMeme(image,'word '.repeat(20));assert.equal((await sharp(png).metadata()).format,'png');
+});
+
+test('admin workflow manifest matches the generation source fingerprint',async()=>{
+ const {readFile}=await import('node:fs/promises');const {createHash}=await import('node:crypto');
+ const manifest=JSON.parse(await readFile(new URL('../lib/cowriter/workflow-manifest.json',import.meta.url),'utf8'));const hash=createHash('sha256');
+ for(const file of manifest.sourceFiles)hash.update(file).update(await readFile(new URL('../lib/cowriter/'+file,import.meta.url)));
+ assert.equal(manifest.sourceHash,hash.digest('hex'),'Regenerate the workflow manifest after a prompt/provider change.');
+ assert.equal(manifest.maxWords,20);assert.equal(manifest.generationCalls.draft,2);assert.equal(manifest.generationCalls.automaticRetries,0);
+});

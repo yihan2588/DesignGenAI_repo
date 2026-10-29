@@ -112,10 +112,10 @@ html,body { overflow-x: clip; }
  .cw-header nav { gap: var(--space-md); font-size: 13px; }
  .cw-brand { font-size: 22px; flex-direction: column; gap: 0; }
  .cw-brand span { font-size: 12px; }
- .cw-intro { align-items: start; padding-top: 32px; }
+ .cw-intro { align-items: start; flex-direction: column; gap: var(--space-md); padding-top: 32px; }
  .cw-intro h1 { font-size: 32px; }
  .cw-intro p { font-size: 15px; }
- .cw-intro>.cw-secondary { font-size: 13px; padding-inline: var(--space-sm); }
+ .cw-intro>.cw-secondary { font-size: 14px; padding-inline: var(--space-md); white-space: nowrap; }
  .cw-compose { padding: var(--space-lg) 20px; }
  .cw-inputs-pic { grid-template-columns: minmax(0,1fr); gap: var(--space-lg); }
  .cw-upload,.cw-upload-button { min-height: 154px; }

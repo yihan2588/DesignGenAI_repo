@@ -4,11 +4,11 @@ Status: implemented on 29 October 2026. This document describes the shipped code
 
 ## Product contract
 
-The home screen has two starting points. **I have a pic** keeps a private upload fixed and accepts an optional comic spirit. **I have a thought** retrieves images and returns three complete image–caption options before offering image swaps. A valid partial result is shown with an explicit notice when fewer than three options survive validation. Failure preserves the previous draft; it does not invent a third caption.
+The home screen is the public gallery. Funny Lab at `/lab` has two starting points. **I have a pic** keeps a private upload fixed and accepts an optional comic spirit. **I have a thought** retrieves images and returns three complete image–caption options before offering image swaps. A valid partial result is shown with an explicit notice when fewer than three options survive validation. Failure preserves the previous draft; it does not invent a third caption.
 
-Users can select a take, request Shorter / Less obvious / Less mean / Different angle, manually edit, undo, save a preference, or export a captioned PNG. Image swaps adapt the caption to a chosen image in the same shortlist. These are different operations with different invariants. Quoted phrases in the constraints field are exact locks for generated text. Manual edits give the user final control.
+Users can select a take, request Shorter / Longer, Less / More obvious, Less / More mean, or Different angle, manually edit, undo, save a preference, or export a captioned PNG. Image swaps adapt the caption to a chosen image in the same shortlist. These are different operations with different invariants. Quoted phrases in the constraints field are exact locks for generated text. Manual edits give the user final control.
 
-The previous comparison experience lives at `/compare`; existing runs, votes, configurations and the admin Prompt Lab retain their behavior. There is no self-evolving prompt process or automatic prompt promotion.
+The previous comparison experience is read-only at `/compare`; historical runs, votes and configurations remain. New operations are organized around the co-writer workflow. There is no self-evolving prompt process or automatic prompt promotion.
 
 ## Architecture and tool choices
 
@@ -17,7 +17,7 @@ The previous comparison experience lives at `/compare`; existing runs, votes, co
 | Web app | Existing Next.js 16 / React 19 / TypeScript, Hum styling, local Chillax fonts | Reuse auth and deployment; avoid a second frontend. |
 | Generation | Gemini 3.1 Flash-Lite Interactions API, `store:false`, Zod structured contracts | Existing credentials and multimodal support. Direct REST is sufficient for a bounded workflow; no agent framework or orchestration graph. |
 | Retrieval | Postgres FTS + pgvector cosine, Gemini embedding-001, normalized 768 dimensions | One operational database. Exact scans are appropriate for 887 rows; introduce ANN only after measuring larger indexes. |
-| Storage | Supabase private uploads; 722 sanitized teaching JPEGs deployed as content-addressed static assets | Owner access for personal images; predictable image availability and no browser CORS dependency for teaching images. Static catalog updates require redeployment and add about 65 MB to the repository. |
+| Storage | Supabase private uploads; 722 sanitized teaching JPEGs deployed as content-addressed static assets | Owner access for personal images; predictable image availability and no browser CORS dependency for teaching images. The initial catalog adds about 65 MB to the repository. New admin uploads use private `funny-library` Storage and are indexed without redeployment. |
 | State and concurrency | Postgres claim/finish RPCs, request IDs, content fingerprints, optimistic revision checks, prior snapshots | Protect against duplicate actions, race conditions and silent overwrites. Request-bound execution means interrupted operations may need an explicit retry. |
 | Export | Shared layout plus Fontkit glyph outlines and Sharp | PNG lettering uses the actual bundled font, independent of host font installation. MVP supports English/Latin captions and supported punctuation, not emoji or all writing systems. |
 | Observability | Versioned private request records, stage duration, provider usage, admin dashboard, pause control | Uses existing secured infrastructure. Langfuse/OpenTelemetry integration is deferred; no account or SDK integration is claimed. |
@@ -51,7 +51,7 @@ Picture mode sends the image and optional spirit to interpretation, then sends t
 
 The three search views retain the original target, express the abstract relationship, and describe a visual analogy. Each contributes its top 20 cosine and lexical results. Reciprocal rank fusion uses `1/(60+rank)` across six ranked lists. The top 40 become an eight-family shortlist. The composer chooses the image and caption together. Retrieval rank is evidence of potential connection, not a humor score.
 
-The writer is directed to add a voice, status claim, consequence or reversal instead of narrating the image or echoing the user's nouns. It aims for 3–10 words, with hard limits of 14 words, 90 characters and one line. It is allowed to omit incidental objects. It must retain a recoverable connection and explicit constraints. Validation rejects unknown image IDs, duplicate captions, unsupported glyphs and missed quoted locks without truncating punchlines.
+The writer is directed to add a voice, status claim, consequence or reversal instead of narrating the image or echoing the user's nouns. It aims for 3–10 words, with hard limits of 20 words, 200 characters and one line. It is allowed to omit incidental objects. It must retain a recoverable connection and explicit constraints. Validation rejects unknown image IDs, duplicate captions, unsupported glyphs and missed quoted locks without truncating punchlines.
 
 These constraints prevent mechanical failures; they cannot certify humor. The development samples still contain literal restatements and familiar phrases. Prompt examples can also anchor wording. Use the error taxonomy and human review to decide the next change, rather than increasing chain depth by default.
 
@@ -96,3 +96,7 @@ Recall practice: Why might a semantically closer image produce a worse joke? Wha
 Both applications share one Supabase project. The media-app repository owns the additive co-writer migrations. The live core migration is `20261029063715_funnyllm_cowriter_core`; the local source is `20261029063133_funnyllm_cowriter.sql`. A preceding live placeholder migration contains no DDL. Do not replay the core migration into an existing database or rewrite applied history. The subsequent operational-guards migration removes unused catalog import endpoints and installs upload limits.
 
 Deploy the user app and admin from their `codex/funnyllm-cowriter` branches after checks. The admin can pause AI writing while saved drafts, manual edits and exports remain available. Rollback re-promotes the previous deployment; the additive schema and private drafts can remain. Do not run destructive down migrations as part of an app rollback.
+
+## Gallery and operations integration
+
+See [the system release record](gallery/system.md) for publication snapshots, moderation, exact admin access, image administration and current verification. The selected model and at most three active examples are frozen when each draft starts. Admin changes affect new sessions. The read-only workflow manifest is generated from the source fingerprint; no prompt mix or automatic evolution is enabled.

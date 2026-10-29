@@ -16,8 +16,8 @@ test('image analysis requires bounded generated metadata before publishing',()=>
  assert.throws(()=>parsePlan({...plan,title:'<script>'}));
 });
 test('login return destinations cannot escape the app or enter API/auth routes',()=>{
- assert.equal(safeReturn('/upload'),'/upload'); assert.equal(safeReturn('/runs/77777777-7777-4777-8777-777777777777'),'/runs/77777777-7777-4777-8777-777777777777');
- for(const s of ['//evil.test','https://evil.test','/\\evil.test','/%2f%2fevil.test','/api/humor','/auth/callback','/runs/x','/members?next=https://evil.test']) assert.equal(safeReturn(s),'/members');
+ assert.equal(safeReturn('/upload'),'/lab'); assert.equal(safeReturn('/runs/77777777-7777-4777-8777-777777777777'),'/runs/77777777-7777-4777-8777-777777777777');
+ for(const s of ['//evil.test','https://evil.test','/\\evil.test','/%2f%2fevil.test','/api/humor','/auth/callback','/runs/x','/members?next=https://evil.test']) assert.equal(safeReturn(s),'/');
 });
 test('candidate selection must refer to unique captions grounded in the validated plan',()=>{
  assert.deepEqual(parsePlan(plan),plan); assert.deepEqual(parseCandidates(candidates,plan),candidates);
@@ -69,4 +69,14 @@ test('a duplicate final pair triggers replacement, never a fabricated second cap
  selectionCalls++;return response(selectionCalls===1?candidates:{...candidates,selected_id:'b'});
  }});
  assert.equal(result.attempts,4);assert.notEqual(result.baseline,result.guided);
+});
+
+test('sign-in returns to gallery or a bounded creation/share destination', () => {
+ assert.equal(safeReturn(undefined), '/');
+ assert.equal(safeReturn('/members'), '/creations');
+ assert.equal(safeReturn('/creations?tab=shared'), '/creations?tab=shared');
+ assert.equal(safeReturn('/lab?mode=thought&draft=77777777-7777-4777-8777-777777777777'), '/lab?mode=thought&draft=77777777-7777-4777-8777-777777777777');
+ assert.equal(safeReturn('/?mode=pic'), '/lab?mode=pic');
+ assert.equal(safeReturn('/meme/77777777-7777-4777-8777-777777777777'), '/meme/77777777-7777-4777-8777-777777777777');
+ for (const target of ['/lab?next=https://evil.test','/meme/../auth/callback','/creations?tab=saved&next=//evil.test','/lab?draft=x','javascript:alert(1)']) assert.equal(safeReturn(target), '/');
 });

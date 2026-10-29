@@ -20,7 +20,7 @@ export const getUser = cache(async () => {
   return error ? null : data.user;
 });
 
-export async function requireUser(next = "/members") {
+export async function requireUser(next = "/creations") {
   const user = await getUser();
   if (!user) redirect(`/login?next=${encodeURIComponent(safeReturn(next))}`);
   return user;

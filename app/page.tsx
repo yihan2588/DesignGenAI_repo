@@ -1,10 +1,22 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
-import { signOut } from "@/app/auth/actions";
-import { Cowriter } from "@/app/cowriter/cowriter";
-import "./cowriter/cowriter.css";
-export const dynamic="force-dynamic";
-export default async function Home({searchParams}:{searchParams:Promise<{mode?:string;draft?:string}>}){
- const [user,params]=await Promise.all([getUser(),searchParams]);
- return <div className="cw-app"><header className="cw-header"><Link className="cw-brand" href="/">FunnyLLM<span>Co-writer</span></Link><nav aria-label="Main navigation"><Link href="/compare">Compare</Link>{user?<form action={signOut}><button className="cw-link">Sign out</button></form>:<Link href="/login?next=/">Sign in</Link>}</nav></header><main id="main-content"><Cowriter signedIn={!!user} initialMode={params.mode==='thought'?'thought':'pic'} initialDraft={params.draft}/></main><footer className="cw-footer"><span>A picture. A thought. Your sense of humor.</span><Link href="/privacy">Privacy & how it works</Link></footer></div>;
+import { isUuid } from "@/lib/humor/schemas";
+import { SiteHeader, SiteFooter } from "@/app/site-header";
+import { galleryFeed, pageNumber } from "./gallery/feed-data";
+import { GalleryFeed } from "./gallery/feed";
+import type { GalleryResult } from "./gallery/types";
+export const dynamic = "force-dynamic";
+export default async function Home({ searchParams }: { searchParams: Promise<{ mode?: string; draft?: string; filter?: string; page?: string; q?: string }> }) {
+  const params = await searchParams;
+  if (params.mode === "pic" || params.mode === "thought" || isUuid(params.draft)) redirect(`/lab?mode=${params.mode === "thought" ? "thought" : "pic"}${isUuid(params.draft) ? `&draft=${params.draft}` : ""}`);
+  const filter = params.filter === "featured" ? "featured" : "latest", page = pageNumber(params.page), query = (params.q ?? "").trim().slice(0,120);
+  const user = await getUser(); let result: GalleryResult | null = null;
+  try { result = await galleryFeed(filter,page,query); } catch { /* Render a retryable region without losing navigation. */ }
+  const base = `/?filter=${filter}&q=${encodeURIComponent(query)}`;
+  return <div className="cw-app"><SiteHeader active="gallery"/><main id="main-content">
+    <section className="funny-page-intro"><div><h1>A little less serious.</h1><p>Memes worth keeping. Yours could be next.</p></div><Link className="cw-primary" href="/lab">Make a meme</Link></section>
+    <section aria-label="Funny gallery"><div className="funny-toolbar"><nav className="funny-tabs" aria-label="Gallery views"><Link href={`/?filter=latest&q=${encodeURIComponent(query)}`} aria-current={filter === "latest" ? "page" : undefined}>Newest</Link><Link href={`/?filter=featured&q=${encodeURIComponent(query)}`} aria-current={filter === "featured" ? "page" : undefined}>Featured</Link></nav><form className="funny-search" action="/"><input type="hidden" name="filter" value={filter}/><label className="cw-sr" htmlFor="gallery-search">Search captions</label><input id="gallery-search" type="search" name="q" defaultValue={query} maxLength={120} placeholder="Search captions"/><button className="cw-secondary">Search</button>{query && <Link className="cw-link" href={`/?filter=${filter}`}>Clear</Link>}</form></div>
+    {result ? <GalleryFeed result={result} signedIn={!!user} page={page} base={base} emptyTitle={query ? "No captions match that search." : undefined} emptyText={query ? "Try another word or clear your search." : undefined}/> : <div className="funny-empty" role="alert"><h2>The gallery could not load.</h2><p>Your drafts are safe. Try loading the gallery again.</p><Link className="cw-secondary" href={base}>Try again</Link></div>}
+    </section></main><SiteFooter/></div>;
 }
