@@ -4,12 +4,12 @@ import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requestOrigin } from "@/lib/request-origin";
-import { safeReturn } from "@/lib/humor/schemas";
+import { adminReturn } from "@/lib/admin-return";
 
 export async function signInWithGoogle(form: FormData) {
   const requestHeaders = await headers();
   const origin = requestOrigin(requestHeaders);
-  (await cookies()).set("humor_return",safeReturn(form.get("next")),{httpOnly:true,secure:origin.startsWith("https:"),sameSite:"lax",path:"/",maxAge:600});
+  (await cookies()).set("humor_return",adminReturn(form.get("next")),{httpOnly:true,secure:origin.startsWith("https:"),sameSite:"lax",path:"/",maxAge:600});
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
@@ -22,6 +22,6 @@ export async function signInWithGoogle(form: FormData) {
 export async function signOut() {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut({ scope: "local" });
-  if (error) redirect("/profile?error=signout");
+  if (error) redirect("/admin?error=signout");
   redirect("/");
 }

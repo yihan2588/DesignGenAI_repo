@@ -43,3 +43,7 @@ next-env.d.ts
 
 # Supabase CLI cache
 supabase/.temp/
+
+# Local visual verification artifacts
+/.hallmark/shots/
+/.hallmark/before/

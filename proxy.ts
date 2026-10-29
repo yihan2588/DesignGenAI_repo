@@ -1,4 +1,4 @@
-import { safeReturn } from "@/lib/humor/schemas";
+import { adminReturn } from "@/lib/admin-return";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
   });
   const {data:{user}}=await supabase.auth.getUser();
   if(!["/login","/auth/callback","/denied"].includes(request.nextUrl.pathname)){
-    if(!user)return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(safeReturn(request.nextUrl.pathname + request.nextUrl.search))}`,request.url));
+    if(!user)return NextResponse.redirect(new URL(`/login?next=${encodeURIComponent(adminReturn(request.nextUrl.pathname + request.nextUrl.search))}`,request.url));
     const {data,error}=await supabase.rpc("admin_access");
     if(error||data!==true)return NextResponse.redirect(new URL("/denied",request.url));
   }
@@ -28,4 +28,4 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config={matcher:["/((?!_next/static|_next/image|favicon.ico|icon.svg).*)"]};
+export const config={matcher:["/((?!_next/static|_next/image|favicon.ico|icon.svg|fonts/).*)"]};

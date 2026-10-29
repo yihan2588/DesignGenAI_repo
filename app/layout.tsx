@@ -1,4 +1,4 @@
 import type { Metadata } from "next";
-import "./globals.css";import "./admin.css";
-export const metadata:Metadata={title:"HumorLLM · Control Room",description:"Private experiment administration"};
-export default function Layout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
+import "./admin.css";
+export const metadata: Metadata = { title: "FunnyLLM — Admin", description: "Gallery curation and Funny Lab operations", robots: { index: false, follow: false } };
+export default function Layout({ children }: { children: React.ReactNode }) { return <html lang="en"><body><a className="skip-link" href="#main-content">Skip to content</a>{children}</body></html>; }
