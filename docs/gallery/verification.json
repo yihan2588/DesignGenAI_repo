@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-29",
+  "user_tests": 59,
+  "admin_tests": 51,
+  "lint": "passed",
+  "typecheck": "passed",
+  "production_builds": "passed",
+  "design_review": "ship; mobile Saved drafts wrapping fixed",
+  "user_source": "09426f3de647eb56e9e7a076a6bd3b34137af2f5",
+  "admin_source": "95db108c9aa109a55df44a1851165c520d657451",
+  "admin_deployment": "dpl_5hFASp1RPDyYDHEjR96TuJp3yZAT",
+  "http_checks": {
+    "home": 200,
+    "feed": 200,
+    "jpeg": "decoded",
+    "png": "decoded",
+    "anonymous_private_session": 401,
+    "removed_post_image": 404,
+    "unpublished_post_image": 404,
+    "legacy_write": 410
+  },
+  "browser_checks": [
+    "thought generation: three image-caption options",
+    "Longer: 9 to 12 words in production",
+    "manual 20 words accepted and 21 rejected locally",
+    "report and admin removal via live database",
+    "library upload and description re-index via live database",
+    "production publish, share page, remix and unpublish",
+    "admin overview, exact allowlist, workflow and request response traces"
+  ],
+  "human_humor_evaluation": "not performed",
+  "user_deployment": "dpl_8gX4i5LjyiXNGvwL2MDVSSQZMQ4r"
+}

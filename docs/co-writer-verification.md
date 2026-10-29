@@ -1,5 +1,7 @@
 # Co-writer verification record — 29 October 2026
 
+This records the initial co-writer release. For the later gallery/admin remake, see [the current system release record](gallery/system.md).
+
 ## Completed checks
 
 - User app: 47 automated tests pass, including existing comparison behavior, image decoding, provider failures, co-writer contracts, workflow call budgets, exact SQL retrieval, owner isolation, writer-key enforcement, idempotency, revision conflicts, admin denial, pause behavior, upload admission and PNG rendering.
