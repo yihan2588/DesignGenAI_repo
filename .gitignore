@@ -7,3 +7,6 @@ node_modules/
 .hallmark/
 *.tsbuildinfo
 .DS_Store
+
+node_modules
+next-env.d.ts
