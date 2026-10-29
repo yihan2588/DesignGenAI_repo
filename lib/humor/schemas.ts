@@ -12,7 +12,7 @@ export function safeReturn(value: unknown): string {
   const revision = value.match(/^\/admin\/prompts\?revision=([0-9a-f-]{36})$/i)?.[1];
   if (revision && isUuid(revision)) return `/admin/prompts?revision=${revision}`;
   if (value === "/admin?view=history") return value;
-  if (value === "/admin" || /^\/admin\/(media|media\/new|prompts|people)$/.test(value)) return value;
+  if (value === "/admin" || /^\/admin\/(media|media\/new|prompts|people|cowriter)$/.test(value)) return value;
   if (value === "/" || value === "/upload" || value === "/members" || /^\/runs\/[0-9a-f-]{36}$/.test(value)) return value;
   return "/members";
 }

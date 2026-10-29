@@ -72,3 +72,5 @@ test('a duplicate final pair triggers replacement, never a fabricated second cap
 });
 
 test('admin login returns preserve only safe configuration deep links',()=>{const id='00000000-0000-4000-8000-000000000001';assert.equal(safeReturn('/admin/prompts?revision='+id),'/admin/prompts?revision='+id);assert.equal(safeReturn('/admin?view=history'),'/admin?view=history');for(const input of ['/admin/prompts?revision=bad','/admin/prompts?revision='+id+'&next=https://evil.test','//evil.test/admin'])assert.equal(safeReturn(input),'/members');});
+
+test('co-writer admin login preserves its route without accepting injected destinations',()=>{assert.equal(safeReturn('/admin/cowriter'),'/admin/cowriter');assert.equal(safeReturn('/admin/cowriter?next=https://evil.test'),'/members');});
