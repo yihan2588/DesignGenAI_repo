@@ -12,6 +12,8 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await db.exec(`create role anon;create role authenticated;create schema private;create schema auth;create schema storage;create schema extensions;create extension vector with schema extensions;
  create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,created_at timestamptz default now());
  create table public.profiles(id uuid primary key,first_name text,last_name text,is_superadmin boolean default false,created_at timestamptz default now());
+ create function extensions.digest(text,text) returns bytea language sql immutable as $$select convert_to($1,'UTF8')$$;
+ create table private.humor_config(writer_key_sha256 text);insert into private.humor_config values(encode(extensions.digest('writer','sha256'),'hex'));
  create table private.admin_audit(id bigint generated always as identity,actor uuid,action text,target text,created_at timestamptz default now());
  create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
  create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb$$;
@@ -26,6 +28,7 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await db.exec(await readFile(new URL('../supabase/migrations/20261029135346_cowriter_operational_guards.sql',import.meta.url),'utf8'));
  await db.exec(await readFile(migration,'utf8'));
  await db.exec(await readFile(new URL('../supabase/migrations/20261029162549_funnyllm_release_guards.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/migrations/20261030230559_funnyllm_downloads_and_restore.sql',import.meta.url),'utf8'));
  await q('insert into auth.users(id,email,email_confirmed_at) values($1,$2,now()),($3,$4,now()),($5,$6,now())',[admin,'yihan2588@gmail.com',user,'someone@gmail.com',other,'unlisted@columbia.edu']);
  await q('insert into public.profiles(id,is_superadmin)values($1,true),($2,false),($3,true)',[admin,user,other]);
  await impersonate(other);await assert.rejects(q("select public.funny_admin_snapshot()"),/admin access/);
@@ -36,8 +39,9 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  const claim=(await q("select public.cowriter_begin('writer',gen_random_uuid(),'draft',$1,null,0,$2) d",['a'.repeat(64),{mode:'thought',text:'Doing nothing professionally',locks:''}]))[0].d;
  await db.exec('reset role');
  const option='00000000-0000-4000-8000-000000000004',postPath=`${user}/00000000-0000-4000-8000-000000000005.jpg`;
- const state={id:claim.sessionId,revision:1,input:{mode:'thought',text:'Private direction',locks:'Private phrase'},options:[{id:option,image_id:'upload',caption:'My presence has been noted.',alt:'A cat at a desk',width:600,height:400}],pool:[]};
+ const state={id:claim.sessionId,revision:1,input:{mode:'thought',text:'Private direction',locks:'Private phrase',uploadPath:`${user}/00000000-0000-4000-8000-000000000005.jpg`},options:[{id:option,image_id:'upload',caption:'My presence has been noted.',alt:'A cat at a desk',width:600,height:400}],pool:[]};
  await q('update private.cowriter_sessions set state=$1,revision=1 where id=$2',[state,state.id]);
+ await q('insert into private.cowriter_revisions(session_id,revision,state)values($1,1,$2)',[state.id,state]);
  await impersonate(user);await q("insert into storage.objects values('funny-gallery',$1)",[postPath]);
  await db.exec('reset role;set role anon');await q("select set_config('request.jwt.claim.sub','',false),set_config('request.jwt.claims','{}',false)");
  assert.deepEqual((await q("select * from storage.objects where bucket_id='funny-gallery'")),[]);
@@ -52,6 +56,17 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await db.exec('reset role;set role anon');await q("select set_config('request.jwt.claim.sub','',false)");
  const feed=(await q('select public.funny_feed() d'))[0].d;assert.equal(feed.posts.length,1);assert.equal(feed.posts[0].caption,state.options[0].caption);assert.ok(!JSON.stringify(feed).includes('Private direction'));assert.ok(!JSON.stringify(feed).includes(user));
  assert.equal((await q("select * from storage.objects where bucket_id='funny-gallery'" )).length,1);
+ // Anonymous gallery downloads count separately, but cannot be forged without the server key.
+ await q("select public.funny_record_download('writer',$1)",[post]);await q("select public.funny_record_download('writer',$1)",[post]);
+ await assert.rejects(q("select public.funny_record_download('wrong',$1)",[post]),/Writer denied/);
+ await assert.rejects(q("select public.funny_download_log()"),/permission/);
+ await impersonate(other);await assert.rejects(q("select public.funny_record_download('writer',null,$1,1,$2)",[state.id,option]),/not found/);
+ await assert.rejects(q("select public.funny_download_log()"),/admin access/);
+ await impersonate(user);await q("select public.funny_record_download('writer',null,$1,1,$2)",[state.id,option]);
+ await impersonate(admin);const downloads=(await q("select public.funny_download_log() d"))[0].d;
+ assert.equal(downloads.total,3);assert.equal(downloads.downloads.filter(d=>d.actor===null).length,2);
+ assert.ok(downloads.downloads.every(d=>d.caption===state.options[0].caption));
+ assert.equal(downloads.downloads.find(d=>d.source==='lab').path,state.input.uploadPath);
  await impersonate(other);await assert.rejects(q("select public.funny_gallery_action($1,'unpublish')",[post]),/not your/);
  await q("select public.funny_gallery_action($1,'like',true)",[post]);await q("select public.funny_gallery_action($1,'like',true)",[post]);
  assert.equal((await q('select public.funny_feed() d'))[0].d.posts[0].like_count,1);
@@ -61,11 +76,20 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await impersonate(user);assert.equal((await q("select public.funny_feed('mine') d"))[0].d.posts.length,1);await q("select public.funny_gallery_action($1,'republish')",[post]);
  await impersonate(admin);await q("select public.funny_admin_mutate('post_remove',$1,'{\"reason\":\"Test moderation\"}')",[post]);
  await impersonate(user);await assert.rejects(q("select public.funny_gallery_action($1,'republish')",[post]),/admin removed/);
- await impersonate(admin);await q("select public.funny_admin_mutate('post_restore',$1)",[post]);assert.equal((await q("select public.funny_admin_snapshot('content') d"))[0].d.posts[0].status,'unpublished');
+ await impersonate(admin);await q("select public.funny_admin_mutate('post_restore',$1)",[post]);assert.equal((await q("select public.funny_admin_snapshot('content') d"))[0].d.posts[0].status,'published');
+ // Restoring a public post makes it visible in the actual public feed.
+ await db.exec('reset role;set role anon');await q("select set_config('request.jwt.claim.sub','',false)");
+ assert.equal((await q('select public.funny_feed() d'))[0].d.posts[0].id,post);
+ await impersonate(user);await q("select public.funny_gallery_action($1,'unpublish')",[post]);
+ await impersonate(other);await assert.rejects(q("select public.funny_record_download('writer',$1)",[post]),/unavailable/);
+ await impersonate(admin);await q("select public.funny_admin_mutate('post_remove',$1,'{\"reason\":\"Test private post\"}')",[post]);
+ await q("select public.funny_admin_mutate('post_restore',$1)",[post]);
+ assert.equal((await q("select public.funny_admin_snapshot('content') d"))[0].d.posts[0].status,'unpublished');
  const example={intent:'Unearned credit',image_description:'A cat sits on a laptop',caption:'Put my name on it.',enabled:true};
  for(let i=0;i<3;i++)await q("select public.funny_admin_mutate('example_save',null,$1)",[example]);
  await assert.rejects(q("select public.funny_admin_mutate('example_save',null,$1)",[example]),/three active/);
- await impersonate(user);assert.equal((await q('select public.funny_runtime() d'))[0].d.examples.length,3);
+ const preview=(await q("select public.funny_admin_snapshot('examples') d"))[0].d.examples.filter(e=>e.enabled).map(({id,intent,image_description,caption})=>({id,intent,image_description,caption}));
+ await impersonate(user);const runtimeExamples=(await q('select public.funny_runtime() d'))[0].d.examples;assert.equal(runtimeExamples.length,3);assert.deepEqual(preview,runtimeExamples);
  await impersonate(admin);const config=(await q("select public.funny_admin_snapshot('configuration') d"))[0].d;
  await assert.rejects(q("select public.funny_admin_mutate('model_delete',$1)",[config.models[0].id]),/Select another/);
  const model=(await q("select public.funny_admin_mutate('model_save',null,$1) d",[{label:'Test Gemini',model_id:'gemini-test',enabled:true}]))[0].d;

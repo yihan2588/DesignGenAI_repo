@@ -1,3 +1,4 @@
+import {downloadLog} from "@/lib/funny/downloads";
 import { requireAdmin } from "@/lib/admin";
 import { adminData, appOrigin } from "@/lib/funny/data";
 import { isUuid } from "@/lib/funny/validation";
@@ -9,7 +10,9 @@ export async function GET(request: Request) {
   if (!isUuid(id)) return reply(400);
   try {
     let bucket = "", path = "";
-    if (kind === "library") {
+    if (kind === "download") {
+      const entry=(await downloadLog(1,"",id)).downloads[0];if(!entry)return reply(404);bucket=entry.bucket;path=entry.path;
+    } else if (kind === "library") {
       const entry = (await adminData<LibrarySnapshot>("library", 1, "", id)).images.find(i => i.id === id);
       if (!entry) return reply(404);
       path = entry.storage_path; bucket = path.startsWith("managed/") ? "funny-library" : "catalog";

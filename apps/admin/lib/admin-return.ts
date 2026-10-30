@@ -10,7 +10,7 @@ export function adminReturn(value: unknown): string {
     if (q) next.set("q", q.slice(0, 120));
     if (page && /^\d{1,4}$/.test(page)) next.set("page", page);
     if (id && /^[a-f0-9-]{36}$/i.test(id)) next.set("id", id);
-    if (tab && ["posts", "reports"].includes(tab)) next.set("tab", tab);
+    if (tab && ["posts", "reports", "downloads"].includes(tab)) next.set("tab", tab);
     return url.pathname + (next.size ? `?${next}` : "");
   } catch { return "/admin"; }
 }

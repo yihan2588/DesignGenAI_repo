@@ -17,7 +17,9 @@ FunnyLLM is a full-stack AI meme co-writer with a public gallery. It helps users
 
 Select a take and adjust **Length**, **Clarity**, or **Bite** in either direction. Change the angle, swap a retrieved image, edit the words yourself, or undo. Captions are capped at **20 words and 200 characters**. A failed edit preserves the last saved result.
 
-**My creations** holds private drafts and saved memes. Export a captioned PNG or explicitly publish a snapshot. Gallery visitors can browse; signed-in users can like, save, remix, and report posts. Owners can unpublish; admins can feature or remove content. Private edits do not change an already published snapshot.
+**My creations** holds private drafts and saved memes. Export a captioned PNG or explicitly publish a snapshot. Gallery visitors can browse; signed-in users can like, save, remix, and report posts. Owners can unpublish; admins can feature or remove content. Restoring a moderated post returns it to its previous visibility. Private edits do not change an already published snapshot.
+
+Admin → **Activity → Downloads** records each gallery or Funny Lab PNG response with its image, caption, source, time, and post/draft identifiers. Repeated downloads count separately; a successful response does not prove the browser saved the file. Admin → **Workflow** combines prompt templates, the current composition preview, and editable reference examples. New sessions snapshot those examples; saved drafts retain their original references.
 
 New Google signups require an allowed email domain or an individual email exception, managed in Admin → People & access. Existing accounts remain eligible. **Account → Admin** opens the separate operations app; its exact administrator allowlist still controls access. Signed-out browsers show **Sign in**, while signed-in browsers show **Account**.
 

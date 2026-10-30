@@ -85,7 +85,7 @@ const publicationStates = [
   "2. Publish: public snapshot 7 becomes visible. Publishing again with the same key does not create another post.",
   "3. Edit privately: revision 8 exists, but public snapshot 7 stays unchanged.",
   "4. Admin removes: snapshot 7 is hidden, reports are resolved, and the owner cannot republish it.",
-  "5. Admin restores: this user post becomes unpublished. It stays private until the owner explicitly republishes."
+  "5. Admin restores: public snapshot 7 returns to the gallery. Posts that were private before removal stay private."
 ];
 let publicationIndex = 0;
 function renderPublication() {

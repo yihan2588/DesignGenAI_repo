@@ -10,7 +10,7 @@ Anonymous readers can browse and retrieve published media. Reactions, saves, rem
 
 ## Moderation
 
-Owners can unpublish their posts. Admin removal hides a post and its public media, resolves reports, and blocks owner republication. Restoring a user post makes it unpublished: the owner must choose to publish it again. Downloaded copies cannot be recalled.
+Owners can unpublish their posts. Admin removal hides a post and its public media, resolves reports, and blocks owner republication. Restoring a removed post returns it to its recorded previous visibility: public posts reappear in the gallery, while previously private posts stay private. Older removals without a visibility record restore as published. Downloaded copies cannot be recalled.
 
 Gallery thumbnails use fixed image and caption areas. Images retain their aspect ratios with contain-fit; captions wrap and scale within the reserved area. Meme detail and PNG export use image-specific proportions.
 
@@ -27,9 +27,8 @@ The model and active examples are saved when the draft begins. Admin changes aff
 | Overview | Failures, requests, content counts, catalog readiness and writing pause |
 | Content | Gallery posts, reports, featuring, removal and restoration |
 | Image library | Sanitized uploads, descriptions, relationships, indexing and retirement |
-| Activity | Request status, stage timing, prompts, responses and results |
-| Workflow | Source prompt definitions, provider status and model selection |
-| Examples | Few-shot demonstrations used by new drafts |
+| Activity | Generation traces and individual gallery/Funny Lab download events |
+| Workflow | Source prompts, active-example composition preview, example editing, provider and model selection |
 | People & access | User list and exact administrator allowlist |
 
 New Google signups require an allowed domain or an individual email exception managed in People & access. Existing accounts remain eligible. Account → Admin opens the separate app. Admin reads and writes require verified identity and the exact allowlist at the server/database boundary. A visible link never grants access.
@@ -43,3 +42,7 @@ Node tests exercise parsing, rendering, media sanitization, request handling and
 Private traces contain bounded input text, parsed responses, timing and usage. They omit secrets and image bytes, but can still contain sensitive user text. Successful-draft compute p95 excludes upload, browser rendering and final persistence. Read it alongside failures and end-to-end completion metrics.
 
 Use the writing pause during provider incidents. Saved drafts, manual edits and exports remain useful. Automated retention, a complete fresh-database bootstrap and external tracing are future work.
+
+## Download observability
+
+Each successfully rendered gallery or Funny Lab PNG response records its image path, caption, source, timestamp, and post/session/take identifiers. Anonymous gallery downloads are included and repeat downloads count separately. Activity → Downloads shows the image and links back to its post or generation history. Events are private to admins; only server-authorized writers can record them. A recorded response cannot prove that a browser saved the file. Historical unique-take export feedback stays separate from the new event total.
