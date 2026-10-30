@@ -144,3 +144,18 @@ details[open] > summary { margin-bottom: var(--space-xs); }
 
 ::selection { background: var(--color-accent); color: var(--color-ink); }
 html { scrollbar-color: var(--color-edge) var(--color-paper); }
+
+.signup-tabs { display:flex; gap:12px; flex-wrap:wrap; margin:24px 0; }
+.signup-columns { display:grid; grid-template-columns:minmax(0,2fr) minmax(240px,1fr); gap:40px; align-items:start; }
+.signup-help { color:var(--color-muted); }
+.signup-check { border:1px solid var(--color-rule); border-radius:var(--radius-input); background:var(--color-card); padding:24px; }
+.signup-search { display:grid; gap:8px; margin:24px 0 12px; }
+.signup-rule-list { list-style:none; padding:0; margin:0; }
+.signup-rule-list>li { padding:16px 0; border-top:1px solid var(--color-rule); }
+.signup-rule-row { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.signup-rule-row strong { overflow-wrap:anywhere; min-width:0; }
+.signup-row-actions { display:flex; gap:12px; flex-wrap:wrap; }
+.signup-row-actions .button { font-size:14px; }
+.signup-removal { padding:16px; margin-top:12px; background:var(--color-paper-2); border-radius:var(--radius-input); }
+.signup-access input { width:100%; box-sizing:border-box; }
+@media(max-width:760px) { .signup-columns {grid-template-columns:1fr;gap:24px;} .signup-rule-row {align-items:flex-start;flex-direction:column;} }

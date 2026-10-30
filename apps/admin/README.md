@@ -20,7 +20,7 @@ The dashboard shows operational state. Screenshot values are illustrative and ar
 | **Activity** | Inspect request status, errors, results, model usage, and bounded prompt/response traces. |
 | **Workflow** | Read the source-controlled co-writer steps; manage Gemini model entries and probe compatibility before activation. |
 | **Examples** | Create, edit, and retire few-shot references; at most three active examples enter new drafts. |
-| **People & access** | Read users and the exact admin allowlist. |
+| **People & access** | Manage allowed signup domains and email exceptions, check eligibility, read users and the exact admin allowlist. |
 
 ## Operational contracts
 
@@ -63,3 +63,5 @@ Tests cover current operations, input validation, media sanitization, and safe a
 | `docs/` | Operational contracts and setup |
 
 [Documentation index](docs/README.md) · [User-app architecture and evaluation](https://github.com/yihan2588/FunnyLLM/blob/main/apps/web/docs/co-writer.md) · [Engineering study guide](https://github.com/yihan2588/FunnyLLM/tree/main/apps/web/docs/study-guide)
+
+Signup eligibility is managed in **People & access**. Rules match an exact email domain or full email address; subdomains need separate entries. CRUD is protected by the same database admin check as other operations. The interface reports whether enforcement is active. Existing accounts and admin authorization are unaffected by rule edits.

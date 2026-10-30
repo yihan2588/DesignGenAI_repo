@@ -1,0 +1,45 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {PGlite} from '@electric-sql/pglite';
+test('signup rules enforce exact domains or email exceptions and protect admin mutations',async()=>{
+ const db=new PGlite();const q=async(s,a=[])=>(await db.query(s,a)).rows;
+ const admin='00000000-0000-4000-8000-000000000001';
+ try{
+ await db.exec(`create role anon;create role authenticated;create role supabase_auth_admin;create schema private;create schema auth;
+ create table auth.users(id uuid primary key default gen_random_uuid(),email text);
+ insert into auth.users(email) values('existing@outside.test');
+ create table private.admin_audit(actor uuid,action text,target text);
+ create function auth.uid() returns uuid language sql as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
+ create function private.require_superadmin() returns void language plpgsql as $$begin if auth.uid() is distinct from '${admin}'::uuid then raise exception 'admin denied';end if;end$$;
+ grant usage on schema private,auth to authenticated;grant usage on schema auth to supabase_auth_admin;grant insert,select on auth.users to supabase_auth_admin;`);
+ await db.exec(await readFile(new URL('../supabase/migrations/20261030135106_funnyllm_signup_access.sql',import.meta.url),'utf8'));
+ await db.exec('create trigger funny_signup_allowed before insert on auth.users for each row execute function private.funny_guard_signup()');
+ await db.exec('set role anon');await assert.rejects(q('select public.funny_signup_access()'),/permission denied/);
+ await db.exec('reset role;set role authenticated');await assert.rejects(q('select public.funny_signup_access()'),/admin denied/);
+ await q("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
+ const run=async(action,kind=null,id=null,value=null,expected=null)=>(await q('select public.funny_signup_access($1,$2,$3,$4,$5) d',[action,kind,id,value,expected]))[0].d;
+ const domain=(await run('save','domain',null,' Columbia.EDU ')).id;
+ const email=(await run('save','email',null,' Guest@Elsewhere.test ')).id;
+ assert.equal((await run('list')).rules.length,2);
+ assert.equal((await run('check','email',null,'USER@COLUMBIA.EDU')).allowed,true);
+ assert.equal((await run('check','email',null,'guest@elsewhere.test')).reason,'email');
+ for(const address of ['user@sub.columbia.edu','user@evilcolumbia.edu','user@columbia.edu.evil.test','other@elsewhere.test','bad@@columbia.edu','']) assert.equal((await run('check','email',null,address)).allowed,false);
+ await assert.rejects(run('save','domain',null,'columbia.edu'),/already exists/);
+ for(const value of ['*.columbia.edu','@columbia.edu','https://columbia.edu','-bad.test','x..test'])await assert.rejects(run('save','domain',null,value),/valid domain/);
+ await assert.rejects(run('save','email',null,'.bad@x.test'),/valid domain/);
+ await assert.rejects(run('save','domain',domain,'example.org','stale.test'),/changed/);
+ await run('save','domain',domain,'example.org','columbia.edu');
+ assert.equal((await run('check','email',null,'user@columbia.edu')).allowed,false);
+ await db.exec('reset role;set role supabase_auth_admin');
+ await q("insert into auth.users(email)values('new@example.org'),('GUEST@ELSEWHERE.TEST')");
+ await assert.rejects(q("insert into auth.users(email)values('new@outside.test')"),/allowed email domain/);
+ assert.equal((await q("select count(*) n from auth.users where email='existing@outside.test'"))[0].n,1);
+ await db.exec('reset role;set role authenticated');
+ await run('delete','email',email,null,'guest@elsewhere.test');
+ assert.equal((await run('check','email',null,'guest@elsewhere.test')).allowed,false);
+ await assert.rejects(run('delete','email',email,null,'guest@elsewhere.test'),/changed/);
+ await assert.rejects(q('select * from private.funny_signup_rules'),/permission denied/);
+ await assert.rejects(q("select private.funny_signup_matches('any@example.org')"),/permission denied/);
+ }finally{await db.close();}
+});
