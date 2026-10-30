@@ -32,7 +32,7 @@ The model and active examples are saved when the draft begins. Admin changes aff
 | Examples | Few-shot demonstrations used by new drafts |
 | People & access | User list and exact administrator allowlist |
 
-All Google accounts are eligible for the user app. Account → Admin opens the separate app. Admin reads and writes require verified identity and the exact allowlist at the server/database boundary. A visible link never grants access.
+New Google signups require an allowed domain or an individual email exception managed in People & access. Existing accounts remain eligible. Account → Admin opens the separate app. Admin reads and writes require verified identity and the exact allowlist at the server/database boundary. A visible link never grants access.
 
 Model activation performs a small structured-output probe. This detects basic API incompatibility; it does not test the complete creative workflow or humor quality. Production smoke checks and controlled evaluation remain necessary.
 

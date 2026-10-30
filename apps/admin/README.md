@@ -24,7 +24,7 @@ The dashboard shows operational state. Screenshot values are illustrative and ar
 
 ## Operational contracts
 
-- **Authorization lives in the database.** A verified Google identity must match the exact admin allowlist on every admin read/write. User-editable profile fields cannot grant access. All Google accounts remain eligible for the user app.
+- **Authorization lives in the database.** A verified Google identity must match the exact admin allowlist on every admin read/write. User-editable profile fields cannot grant access. New user signups require an allowed domain or an individual email exception; existing users remain eligible.
 - **Moderation controls media access.** Removal hides the post, resolves reports, and blocks owner republication. Restoring a user post leaves it unpublished until the owner explicitly republishes it.
 - **Configuration is stable within a draft.** Models and active examples are frozen per draft. Retired images remain available to authorized saved drafts. A model selection probes the actual Interactions API and structured-output support before activation.
 - **Traces have a clear boundary.** Private details may contain original input text; secrets and image bytes are excluded. Successful-draft compute p95 excludes upload, browser rendering, and final save. Usage events are not calibrated humor ratings.

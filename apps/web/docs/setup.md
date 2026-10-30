@@ -21,7 +21,7 @@ Run `pnpm dev --webpack` and open `http://localhost:3000`. The webpack option su
 
 1. Reconcile the existing schema and applied migration ledger before executing any SQL. The first checked-in migration already references `public.food_photos` from the required base schema.
 2. Compare checked-in SQL with the target project’s applied migration ledger. Match content as well as names; never replay a migration already applied under another timestamp.
-3. Configure Google OAuth in Supabase and the Google provider. Register the actual local and deployed `/auth/callback` origins for each app. Public user eligibility includes all Google accounts; admin RPCs require verified Google identity and the exact configured allowlist.
+3. Configure Google OAuth in Supabase and the Google provider. Register the actual local and deployed `/auth/callback` origins for each app. New signups require an allowed domain or full email exception; existing accounts are unaffected. The signup gate runs before insertion into auth.users, so a direct Auth API request cannot bypass it. Separately, admin RPCs require verified Google identity and the exact configured allowlist.
 4. Provision the private upload/library/gallery buckets and policies from the migrations. Make catalog rows and their media available; source image files alone do not seed the database.
 5. Prepare/import the catalog only through the [documented pipeline](co-writer.md#teaching-data-preparation). Raw course exports and `.cowriter-cache/` stay outside Git. Initial teaching media are already tracked in `public/catalog/`; new admin uploads use private Storage.
 

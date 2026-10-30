@@ -19,7 +19,7 @@ Select a take and adjust **Length**, **Clarity**, or **Bite** in either directio
 
 **My creations** holds private drafts and saved memes. Export a captioned PNG or explicitly publish a snapshot. Gallery visitors can browse; signed-in users can like, save, remix, and report posts. Owners can unpublish; admins can feature or remove content. Private edits do not change an already published snapshot.
 
-Any Google account can use the user app. **Account → Admin** opens the separate operations app; its exact administrator allowlist still controls access. Signed-out browsers show **Sign in**, while signed-in browsers show **Account**.
+New Google signups require an allowed email domain or an individual email exception, managed in Admin → People & access. Existing accounts remain eligible. **Account → Admin** opens the separate operations app; its exact administrator allowlist still controls access. Signed-out browsers show **Sign in**, while signed-in browsers show **Account**.
 
 ## Engineering design
 

@@ -14,7 +14,11 @@ test('signup rules enforce exact domains or email exceptions and protect admin m
  create function private.require_superadmin() returns void language plpgsql as $$begin if auth.uid() is distinct from '${admin}'::uuid then raise exception 'admin denied';end if;end$$;
  grant usage on schema private,auth to authenticated;grant usage on schema auth to supabase_auth_admin;grant insert,select on auth.users to supabase_auth_admin;`);
  await db.exec(await readFile(new URL('../supabase/migrations/20261030135106_funnyllm_signup_access.sql',import.meta.url),'utf8'));
- await db.exec('create trigger funny_signup_allowed before insert on auth.users for each row execute function private.funny_guard_signup()');
+ await db.exec(await readFile(new URL('../supabase/migrations/20261030135633_funnyllm_activate_signup_access.sql',import.meta.url),'utf8'));
+ assert.equal((await q("select private.funny_signup_matches('new@columbia.edu') ok"))[0].ok,true);
+ assert.equal((await q("select private.funny_signup_matches('yihan2588@gmail.com') ok"))[0].ok,true);
+ assert.equal((await q("select private.funny_signup_matches('other@gmail.com') ok"))[0].ok,false);
+ await db.exec('delete from private.funny_signup_rules');
  await db.exec('set role anon');await assert.rejects(q('select public.funny_signup_access()'),/permission denied/);
  await db.exec('reset role;set role authenticated');await assert.rejects(q('select public.funny_signup_access()'),/admin denied/);
  await q("select set_config('request.jwt.claim.sub',$1,false)",[admin]);
