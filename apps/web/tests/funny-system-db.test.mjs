@@ -29,6 +29,7 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await db.exec(await readFile(migration,'utf8'));
  await db.exec(await readFile(new URL('../supabase/migrations/20261029162549_funnyllm_release_guards.sql',import.meta.url),'utf8'));
  await db.exec(await readFile(new URL('../supabase/migrations/20261030230559_funnyllm_downloads_and_restore.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../supabase/migrations/20261031002556_funnyllm_current_draft_downloads.sql',import.meta.url),'utf8'));
  await q('insert into auth.users(id,email,email_confirmed_at) values($1,$2,now()),($3,$4,now()),($5,$6,now())',[admin,'yihan2588@gmail.com',user,'someone@gmail.com',other,'unlisted@columbia.edu']);
  await q('insert into public.profiles(id,is_superadmin)values($1,true),($2,false),($3,true)',[admin,user,other]);
  await impersonate(other);await assert.rejects(q("select public.funny_admin_snapshot()"),/admin access/);
@@ -41,7 +42,7 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  const option='00000000-0000-4000-8000-000000000004',postPath=`${user}/00000000-0000-4000-8000-000000000005.jpg`;
  const state={id:claim.sessionId,revision:1,input:{mode:'thought',text:'Private direction',locks:'Private phrase',uploadPath:`${user}/00000000-0000-4000-8000-000000000005.jpg`},options:[{id:option,image_id:'upload',caption:'My presence has been noted.',alt:'A cat at a desk',width:600,height:400}],pool:[]};
  await q('update private.cowriter_sessions set state=$1,revision=1 where id=$2',[state,state.id]);
- await q('insert into private.cowriter_revisions(session_id,revision,state)values($1,1,$2)',[state.id,state]);
+
  await impersonate(user);await q("insert into storage.objects values('funny-gallery',$1)",[postPath]);
  await db.exec('reset role;set role anon');await q("select set_config('request.jwt.claim.sub','',false),set_config('request.jwt.claims','{}',false)");
  assert.deepEqual((await q("select * from storage.objects where bucket_id='funny-gallery'")),[]);
@@ -63,6 +64,7 @@ test('gallery system: anonymous publication boundary, snapshots, moderation, exa
  await impersonate(other);await assert.rejects(q("select public.funny_record_download('writer',null,$1,1,$2)",[state.id,option]),/not found/);
  await assert.rejects(q("select public.funny_download_log()"),/admin access/);
  await impersonate(user);await q("select public.funny_record_download('writer',null,$1,1,$2)",[state.id,option]);
+ await assert.rejects(q("select public.funny_record_download('writer',null,$1,2,$2)",[state.id,option]),/Draft changed/);
  await impersonate(admin);const downloads=(await q("select public.funny_download_log() d"))[0].d;
  assert.equal(downloads.total,3);assert.equal(downloads.downloads.filter(d=>d.actor===null).length,2);
  assert.ok(downloads.downloads.every(d=>d.caption===state.options[0].caption));
